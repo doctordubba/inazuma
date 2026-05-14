@@ -1,458 +1,1040 @@
-// @ts-nocheck
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from ‘react’;
 
-interface Tier {
-  id: number;
-  label: string;
-  sublabel: string;
-  time: string;
-  color: string;
-  bg: string;
-  border: string;
-  glow: string;
-  icon: string;
-}
+/* ============================================================
+IDEAL BUILD TARGETS
+Sources: Game8, KQM, Icy-Veins, GamesGG (Version 6.5, May 2026)
+============================================================ */
 
-interface ChainTag {
-  label: string;
-  color: string;
-}
-
-interface Quest {
-  id: number;
-  tier: number;
-  chain: string;
-  name: string;
-  time: string;
-  region: string;
-  activate: string;
-  prereqs: string;
-  notes: string;
-  rewards: string;
-  isSpecial?: boolean;
-  link: string;
-}
-
-interface OrderNote {
-  step: number;
-  text: string;
-}
-
-const TIERS: Tier[] = [
-  { id:2, label:"Tier 2", sublabel:"Short",        time:"15–35 min",      color:"#86efac", bg:"rgba(134,239,172,0.07)", border:"rgba(134,239,172,0.22)", glow:"rgba(134,239,172,0.12)", icon:"🌸" },
-  { id:3, label:"Tier 3", sublabel:"Medium",       time:"30–60 min",      color:"#d8b4fe", bg:"rgba(216,180,254,0.07)", border:"rgba(216,180,254,0.22)", glow:"rgba(216,180,254,0.12)", icon:"⛩" },
-  { id:4, label:"Tier 4", sublabel:"Long / Gated", time:"60 min+ or RNG", color:"#fca5a5", bg:"rgba(252,165,165,0.07)", border:"rgba(252,165,165,0.22)", glow:"rgba(252,165,165,0.12)", icon:"⚔" },
+const CHARACTERS = [
+{
+id: ‘lauma’,
+name: ‘Lauma’,
+epithet: ‘Moonchanter of Verdant Dew’,
+element: ‘dendro’,
+role: ‘Lunar-Bloom Support’,
+weaponType: ‘Catalyst’,
+set: “4pc Silken Moon’s Serenade”,
+setAlt: ‘4pc Deepwood Memories · 4pc Gilded Dreams’,
+weapon: “Nightweaver’s Looking Glass”,
+weaponAlt: ‘A Thousand Floating Dreams · Etherlight Spindlelute (F2P)’,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘EM’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘EM’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘EM’ },
+{ id: ‘em’, label: ‘Total Elemental Mastery’, target: ‘≥ 900’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 160 %’ },
+{ id: ‘cr’, label: ‘CRIT Rate (damage build only)’, target: ‘≥ 40 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG (damage build only)’, target: ‘≥ 100 %’ },
+],
+note: ‘EM is king. CRIT only matters if she is also doing personal damage.’,
+},
+{
+id: ‘nefer’,
+name: ‘Nefer’,
+epithet: ‘Curator of the Seeds of Deceit’,
+element: ‘dendro’,
+role: ‘Lunar-Bloom On-Field DPS’,
+weaponType: ‘Catalyst’,
+set: “4pc Night of the Sky’s Unveiling”,
+setAlt: ‘4pc Gilded Dreams · 2pc/2pc EM hybrid’,
+weapon: ‘Reliquary of Truth’,
+weaponAlt: ‘Tome of the Eternal Flow · Dawning Frost (4★)’,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘EM’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘EM’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘em’, label: ‘Total Elemental Mastery’, target: ‘900 – 1000’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 140 %’ },
+],
+note: ‘NotSU 4pc grants +30% CR at Ascendant Gleam — count it toward your total.’,
+},
+{
+id: ‘zibai’,
+name: ‘Zibai’,
+epithet: ‘The Selenic Adeptus Descends’,
+element: ‘geo’,
+role: ‘Lunar-Crystallize On-Field DPS’,
+weaponType: ‘Sword’,
+set: “4pc Night of the Sky’s Unveiling”,
+setAlt: ‘4pc Husk of Opulent Dreams’,
+weapon: ‘Lightbearing Moonshard’,
+weaponAlt: ‘Uraku Misugiri · Harbinger of Dawn (3★) · Flute of Ezpitzal (F2P)’,
+talents: ‘Skill ›› Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘DEF %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF %  ⚠ not Geo %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 3000’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (+30% from set)’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘150 – 200 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+],
+note: ‘Geo DMG goblet does NOT scale Lunar-Crystallize. Always DEF%.’,
+},
+{
+id: ‘linnea’,
+name: ‘Linnea’,
+epithet: ‘Wandering Advisor of Lumi’,
+element: ‘geo’,
+role: ‘Lunar-Crystallize Sub-DPS / Healer’,
+weaponType: ‘Bow’,
+set: ‘4pc Aubade of Morningstar and Moon’,
+setAlt: ‘4pc Husk of Opulent Dreams’,
+weapon: ‘Golden Frostbound Oath’,
+weaponAlt: ‘Aqua Simulacra · Slingshot (3★)’,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘DEF %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 3000’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (24.2% ascension)’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+],
+note: ‘Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage — ER is low priority.’,
+},
+{
+id: ‘arlecchino’,
+name: ‘Arlecchino’,
+epithet: ‘Knave of the House of the Hearth’,
+element: ‘pyro’,
+role: ‘On-Field Main DPS’,
+weaponType: ‘Polearm’,
+set: ‘4pc Fragment of Harmonic Whimsy’,
+setAlt: “4pc Gladiator’s Finale (Vape teams)”,
+weapon: “Crimson Moon’s Semblance”,
+weaponAlt: ‘Staff of Homa · Staff of the Scarlet Sands’,
+talents: ‘Normal ›› Skill › Burst’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK % (or EM in Vape)’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Pyro DMG %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2400’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 130 %’ },
+],
+note: ‘Bond of Life uptime drives Whimsy stacks. Target a ~1:2 CRIT ratio.’,
+},
+{
+id: ‘durin’,
+name: ‘Durin’,
+epithet: ‘The Dragon of Twin Forms’,
+element: ‘pyro’,
+role: ‘Off-Field Sub-DPS / Hexerei’,
+weaponType: ‘Sword’,
+set: ‘4pc A Day Carved from Rising Winds’,
+setAlt: ‘4pc Emblem of Severed Fate · 4pc Noblesse Oblige’,
+weapon: ‘Athame Artis’,
+weaponAlt: ‘Freedom-Sworn · Wolf-Fang (4★)’,
+talents: ‘Burst › Skill ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Pyro DMG %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500 (caps A4)’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 150 %’ },
+],
+note: ‘Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.’,
+},
+{
+id: ‘chevreusse’,
+name: ‘Chevreusse’,
+epithet: ‘Sergeant, Special Security Patrol’,
+element: ‘pyro’,
+role: ‘Overload Support’,
+weaponType: ‘Polearm’,
+set: ‘4pc Scroll of the Hero of Cinder City’,
+setAlt: ‘4pc Noblesse Oblige · 4pc Instructor · 4pc Tenacity of the Millelith’,
+weapon: ‘Right Hand of the Boss’,
+weaponAlt: ‘Favonius Lance · Black Tassel · Prototype Starglitter (F2P)’,
+talents: ‘Burst › Skill ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %  (or ER if low energy)’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP %’ },
+{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘160 – 200 %’ },
+],
+note: “Her team buff scales off combined Pyro + Electro HP. Pure support — no CRIT needed.”,
+},
+{
+id: ‘fischl’,
+name: ‘Fischl’,
+epithet: ‘Prinzessin der Verurteilung’,
+element: ‘electro’,
+role: ‘Off-Field Sub-DPS’,
+weaponType: ‘Bow’,
+set: ‘4pc Golden Troupe’,
+setAlt: ‘4pc Thundering Fury · 2pc ATK + 2pc Electro’,
+weapon: ‘Polar Star’,
+weaponAlt: ‘Skyward Harp · The Stringless · Mitternachts Waltz (4★) · Alley Hunter’,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Electro DMG %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2200’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 150 %’ },
+],
+note: ‘Oz is the damage. C6 makes her self-sufficient on energy and lifts the personal multiplier.’,
+},
+{
+id: ‘flins’,
+name: ‘Flins’,
+epithet: ‘Whispers of the Wild Hunt’,
+element: ‘electro’,
+role: ‘Lunar-Charged On-Field DPS’,
+weaponType: ‘Polearm’,
+set: “4pc Night of the Sky’s Unveiling”,
+setAlt: ‘4pc Marechaussee Hunter (Furina teams)’,
+weapon: ‘Bloodsoaked Ruins’,
+weaponAlt: “Staff of the Scarlet Sands · Deathmatch (4★) · Prospector’s Shovel (F2P)”,
+talents: ‘Burst › Skill ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK % (or ER if low energy)’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  ⚠ not Electro %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (set adds 30%)’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 175 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘125 – 140 %’ },
+],
+note: ‘Electro DMG goblet does NOT scale Lunar-Charged. Always ATK%.’,
+},
+{
+id: ‘varesa’,
+name: ‘Varesa’,
+epithet: ‘Rising Furious Yaca’,
+element: ‘electro’,
+role: ‘Plunge On-Field DPS’,
+weaponType: ‘Catalyst’,
+set: “4pc Long Night’s Oath”,
+setAlt: ‘4pc Obsidian Codex · 4pc Thundering Fury’,
+weapon: ‘Vivid Notions’,
+weaponAlt: “Kagura’s Verity · Lost Prayer · The Widsith R5 · Flowing Purity R5 (F2P)”,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: “ATK % (Long Night) or Electro %” },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2400’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘≥ 70 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘120 – 140 %’ },
+],
+note: ‘Plunge specialist. Best in Overload-Chevreusse-Iansan or Xianyun plunge teams.’,
+},
+{
+id: ‘ororon’,
+name: ‘Ororon’,
+epithet: ‘Whisperer of the Night Wind’,
+element: ‘electro’,
+role: ‘Off-Field Sub-DPS’,
+weaponType: ‘Bow’,
+set: ‘4pc Scroll of the Hero of Cinder City’,
+setAlt: ‘4pc Noblesse Oblige · 4pc Thundering Fury’,
+weapon: ‘Elegy for the End’,
+weaponAlt: ‘Aqua Simulacra · Alley Hunter · Favonius Warbow · Chain Breaker (F2P)’,
+talents: ‘Burst › Skill ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Electro DMG %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2000’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘≥ 60 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 120 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 150 % (team-dependent)’ },
+],
+note: ‘Locked into Electro-Charged / taser teams — needs the reaction to trigger Hypersense.’,
+},
+{
+id: ‘xilonen’,
+name: ‘Xilonen’,
+epithet: ‘Cloud-Striding Heartforger’,
+element: ‘geo’,
+role: ‘RES Shred Support / Healer’,
+weaponType: ‘Sword’,
+set: ‘4pc Scroll of the Hero of Cinder City’,
+setAlt: ‘4pc Song of Days Past · 4pc Noblesse Oblige · 2pc Vourukasha + 2pc HP’,
+weapon: ‘Peak Patrol Song’,
+weaponAlt: “Freedom-Sworn · Favonius Sword · Xiphos’ Moonlight (F2P)”,
+talents: ‘Burst › Skill ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ER %  (then DEF %)’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF % (or Geo %)’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘Healing Bonus or DEF %’ },
+{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 2500’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘160 – 200 %’ },
+],
+note: ‘Heal and Source Samples scale off DEF, not HP. Pump ER first — Burst is the whole point.’,
+},
+{
+id: ‘chasca’,
+name: ‘Chasca’,
+epithet: ‘Soulsniper of the Flower-Feather Clan’,
+element: ‘anemo’,
+role: ‘Multi-Element On-Field DPS’,
+weaponType: ‘Bow’,
+set: ‘4pc Obsidian Codex’,
+setAlt: ‘4pc Marechaussee Hunter (Furina) · 4pc Viridescent Venerer (driver build)’,
+weapon: “Astral Vulture’s Crimson Plumage”,
+weaponAlt: ‘Aqua Simulacra · The First Great Magic · Song of Stillness (F2P)’,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  ⚠ not Anemo %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT DMG (overcap risk on CR)’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2200’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘~100 % (Codex +40, ascension +24.2)’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+],
+note: ‘Team needs 3 PHEC elements for full shell conversion. Burst optional every other rotation.’,
+},
+{
+id: ‘varka’,
+name: ‘Varka’,
+epithet: ‘Grand Master of Favonius, Knight of Boreas’,
+element: ‘anemo’,
+role: ‘PHEC Infusion On-Field DPS / Hexerei’,
+weaponType: ‘Claymore’,
+set: ‘4pc A Day Carved from Rising Winds’,
+setAlt: ‘4pc Marechaussee Hunter · 2pc ATK + 2pc Anemo’,
+weapon: ‘Gest of the Mighty Wolf’,
+weaponAlt: ‘Beacon of the Reed Sea · Serpent Spine (4★ BP) · Prototype Archaic (F2P)’,
+talents: ‘Skill ›› Burst ››› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  (multi-element damage)’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 % (+20% from set, ⚠ overcap)’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 180 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 130 %’ },
+],
+note: ‘Burst is bait — leave at lv 1. 2 Anemo + 2 same PHEC = 220 % multiplier. Mono-Pyro is BiS.’,
+},
+{
+id: ‘columbina’,
+name: ‘Columbina’,
+epithet: ‘Damselette of the Fatui’,
+element: ‘hydro’,
+role: ‘Lunar Reaction Enabler / Sub-DPS’,
+weaponType: ‘Catalyst’,
+set: ‘4pc Aubade of Morningstar and Moon’,
+setAlt: “4pc Silken Moon’s Serenade · 4pc Night of the Sky’s Unveiling (driver build)”,
+weapon: “Columbina’s signature catalyst”,
+weaponAlt: “Surf’s Up · Sacrificial Fragments · Prototype Amber (F2P)”,
+talents: ‘Skill › Burst ›› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP % (or ER)’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP % (Hydro % if driver)’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP % or CRIT’ },
+{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 35 000 (buff cap)’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘150 – 180 %’ },
+{ id: ‘cr’, label: ‘CRIT Rate (driver only)’, target: ‘≥ 50 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG (driver only)’, target: ‘≥ 120 %’ },
+],
+note: ‘HP buff caps at 35k — triple HP is a trap. Drop a CRIT circlet if she drives Lunar-Bloom.’,
+},
+{
+id: ‘neuvillette’,
+name: ‘Neuvillette’,
+epithet: ‘Iudex of Fontaine’,
+element: ‘hydro’,
+role: ‘On-Field Main DPS’,
+weaponType: ‘Catalyst’,
+set: ‘4pc Marechaussee Hunter’,
+setAlt: ‘4pc Golden Troupe · 4pc Heart of Depth’,
+weapon: ‘Tome of the Eternal Flow’,
+weaponAlt: ‘Lost Prayer to the Sacred Winds · Cashflow Supervision · Prototype Amber (F2P)’,
+talents: ‘Normal ›› Skill › Burst’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Hydro DMG %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
+{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000 (40k+ ideal)’ },
+{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 %’ },
+{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 120 %’ },
+],
+note: ‘Charged-Attack carry. HP scaling still needs CRIT — pair with Furina for Marechaussee uptime.’,
+},
+{
+id: ‘kirara’,
+name: ‘Kirara’,
+epithet: ‘Komaneko-Yamato Courier’,
+element: ‘dendro’,
+role: ‘Shielder / Off-Field Dendro’,
+weaponType: ‘Sword’,
+set: ‘4pc Tenacity of the Millelith’,
+setAlt: ‘4pc Instructor · 4pc Deepwood Memories (if no other holder)’,
+weapon: ‘Favonius Sword’,
+weaponAlt: ‘Sacrificial Sword · Freedom-Sworn · Key of Khaj-Nisut’,
+talents: ‘Skill ›› Burst ››› Normal’,
+stats: [
+{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %’ },
+{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP %’ },
+{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP %’ },
+{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000 (40k+ for endgame shield)’ },
+{ id: ‘er’, label: ‘Energy Recharge’, target: ‘150 – 200 %’ },
+],
+note: ‘Off-element shield is 250% effective. Pure HP-stacker — no CRIT, no offensive substats.’,
+},
 ];
 
-const CHAIN_TAG: Record<string, ChainTag> = {
-  gourmet:    { label:"Gourmet Supremos",  color:"#fb923c" },
-  tatara:     { label:"Tatara Tales",       color:"#fbbf24" },
-  neko:       { label:"Neko Is a Cat",      color:"#f9a8d4" },
-  mists:      { label:"Through the Mists",  color:"#67e8f9" },
-  enka:       { label:"Enkanomiya Chain",   color:"#c084fc" },
-  standalone: { label:"Standalone",         color:"#94a3b8" },
+const ELEMENT_THEME = {
+dendro:  { color: ‘#7fb069’, glow: ‘rgba(127, 176, 105, 0.18)’, label: ‘Dendro’ },
+geo:     { color: ‘#d4a857’, glow: ‘rgba(212, 168, 87, 0.18)’,  label: ‘Geo’ },
+pyro:    { color: ‘#d96b50’, glow: ‘rgba(217, 107, 80, 0.18)’,  label: ‘Pyro’ },
+electro: { color: ‘#b48cd9’, glow: ‘rgba(180, 140, 217, 0.18)’, label: ‘Electro’ },
+anemo:   { color: ‘#76d4b8’, glow: ‘rgba(118, 212, 184, 0.18)’, label: ‘Anemo’ },
+hydro:   { color: ‘#5db4e8’, glow: ‘rgba(93, 180, 232, 0.18)’,  label: ‘Hydro’ },
 };
 
-const QUESTS: Quest[] = [
-  {
-    id:1, tier:2, chain:"standalone",
-    name:"O Archon, Have I Done Right?",
-    time:"20–30 min",
-    region:"Watatsumi Island",
-    activate:"Progress through Watatsumi Island after Ch2 Act 3 — find the NPC linked to the Orobashi aftermath storyline on Watatsumi Island.",
-    prereqs:"Chapter 2: Act 3 (Omnipresence Over Mortals) completed + Watatsumi Island accessible",
-    notes:"Emotional epilogue reflecting on serpent god Orobashi's legacy. Dialogue-heavy with meaningful Watatsumi lore. Short travel, no combat.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×4",
-    link:"https://game8.co/games/Genshin-Impact/archives/337746",
-  },
-  {
-    id:2, tier:2, chain:"standalone",
-    name:"Gazing Three Thousand Miles Away",
-    time:"25–35 min (+real-world days between parts)",
-    region:"Yashiori Island → Tatarasuna → Inazuma City",
-    activate:"Complete Chapter 2: Act 1 (Ritou Escape Plan), then find Chouji on Yashiori Island.",
-    prereqs:"Chapter 2: Act 1 completed",
-    notes:"Multi-part quest following Chouji. Needs 24× Crystal Marrow total split across 2 visits. After the quest completes, Chouji moves — find him in Tatarasuna then Inazuma City for the full chain. Unlocks Imported Poultry recipe.",
-    rewards:"Imported Poultry Recipe · 100 Adv EXP · 30,000 Mora · Achievement: ...And I Would Walk 3,000 More",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/337751",
-  },
-  {
-    id:3, tier:3, chain:"gourmet",
-    name:"The Gourmet Supremos: The Importance of Eating Well",
-    time:"30–40 min",
-    region:"Narukami Island → Watatsumi Island",
-    activate:"Complete 'Gourmet Supremos: Breakthrough Thinking' Daily Commission — MUST give ingredients to Xiangling (not Chef Mao). Then find Parvaneh (relog if she doesn't appear).",
-    prereqs:"All prior Gourmet Supremos quests + 'Breakthrough Thinking' Daily Commission (Inazuma preferred region — may take weeks of RNG)",
-    notes:"Final Inazuma Gourmet Supremos quest. Two enemy groups along the way — bring AoE DPS. Rewards Sashimi Platter recipe.",
-    rewards:"Sashimi Platter Recipe · 100 Adv EXP · 30,000 Mora · Hero's Wit ×5",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/337761",
-  },
-  {
-    id:4, tier:3, chain:"standalone",
-    name:"Treatment on the Island",
-    time:"30–45 min (+optional multi-day bonus)",
-    region:"Kannazuka (Tatarasuna / Mikage Forge area)",
-    activate:"Find Yasumoto (doctor NPC) in the Tatarasuna area of Kannazuka island.",
-    prereqs:"Inazuma accessible",
-    notes:"Collect 20x Naku Weed — farm near the Mikage Forge or plant in Serenitea Pot. Final phase: defend Yasumoto from Nobushi and Kairagi waves. BONUS: Keep adding Naku Weed to Yasumoto's basket for a few real-world days post-quest for extra chest + A Doctor's Odyssey achievement.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×4 · Post-quest chest + A Doctor's Odyssey achievement",
-    link:"https://game8.co/games/Genshin-Impact/archives/337752",
-  },
-  {
-    id:5, tier:3, chain:"tatara",
-    name:"Tatara Tales: The Last Act",
-    time:"35–45 min",
-    region:"Tatarasuna (Kannazuka)",
-    activate:"Complete all prior Tatara Tales quests, then find Xavier in Tatarasuna.",
-    prereqs:"All previous Tatara Tales World Quests fully completed. Must be done BEFORE The Seventh Samurai.",
-    notes:"Culminating act of the Tatara Tales chain — resolves the Mikage Furnace storyline. Mandatory prerequisite for The Seventh Samurai.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×5",
-    link:"https://game8.co/games/Genshin-Impact/archives/337748",
-  },
-  {
-    id:6, tier:3, chain:"tatara",
-    name:'"The Seventh Samurai"',
-    time:"30–40 min",
-    region:"Narukami Island (east of Inazuma City, beside Toranosuke)",
-    activate:"Complete ALL Tatara Tales quests including The Last Act, then talk to Xavier east of Inazuma City beside Toranosuke.",
-    prereqs:"All Tatara Tales quests (including The Last Act) must be completed first",
-    notes:"Xavier wants help producing a film! Enemies have elevated HP — bring your hardest hitters. One of the most creative and memorable Inazuma quests.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×5",
-    link:"https://game8.co/games/Genshin-Impact/archives/337745",
-  },
-  {
-    id:7, tier:3, chain:"standalone",
-    name:"Storytelling Method",
-    time:"30–40 min",
-    region:"Narukami Island (Yae Publishing House area)",
-    activate:"Unlock via 'Is This Novel Amazing?' Daily Commission (Inazuma preferred). Side with Shigeru (editor) OR side with Junkichi (author). You'll know it triggered when you earn the Editorial Opinion achievement.",
-    prereqs:"Inazuma preferred commissions set. RNG dependent — may take days or weeks.",
-    notes:"Two branching paths give different dialogue but the same quest credit. Either side is equally valid.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×5 · Achievement: Editorial Opinion",
-    link:"https://game8.co/games/Genshin-Impact/archives/341300",
-  },
-  {
-    id:8, tier:3, chain:"standalone",
-    name:"The Saga of Mr. Forgetful",
-    time:"15–20 min",
-    region:"Inazuma (Reputation Request)",
-    activate:"Unlock Inazuma Reputation system — quest appears as a Reputation Request.",
-    prereqs:"Inazuma Reputation system unlocked (Chapter 2: Act 3 + Commission's Commission quest done)",
-    notes:"Help the famously forgetful Mr. Forgetful. Short and comedic. Fastest one remaining on this list.",
-    rewards:"Inazuma Reputation EXP · 100 Adv EXP · 20,000 Mora",
-    link:"https://game8.co/games/Genshin-Impact/archives/341304",
-  },
-  {
-    id:9, tier:3, chain:"mists",
-    name:"The Sun-Wheel and Mt. Kanna",
-    time:"35–50 min",
-    region:"Tsurumi Island → Inazuma City",
-    activate:"Complete the first three Through the Mists sub-quests in order, then talk to Sumida in Inazuma City (by the stairs). Finish at Kiminami Restaurant.",
-    prereqs:"Full Through the Mists chain: A Particularly Particular Author → Octave of the Maushiro → The Sea of Fog and the Rite of the Trees → THEN this quest.",
-    notes:"Finale of Through the Mists — permanently clears Tsurumi Island's fog. KAMA WILL appear if prerequisites are correct.",
-    rewards:"Tsurumi fog permanently removed · 100 Adv EXP · 30,000 Mora · Hero's Wit ×6 · Primogems ×10",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/346187",
-  },
-  {
-    id:10, tier:3, chain:"enka",
-    name:"The Phaethons' Syrtos",
-    time:"30–45 min",
-    region:"Enkanomiya (Byakuyakoku)",
-    activate:"Unlock Enkanomiya via The Entrance to Tokoyo quest. Find the quest marker inside Enkanomiya.",
-    prereqs:"The Entrance to Tokoyo + Enkanomiya unlocked",
-    notes:"Explores the Phaethon family legacy in Enkanomiya. Lore-rich with light puzzle elements.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×5",
-    link:"https://game8.co/games/Genshin-Impact/archives/353530",
-  },
-  {
-    id:11, tier:4, chain:"neko",
-    name:"The Narukami Trail",
-    time:"60+ min across multiple days",
-    region:"Grand Narukami Shrine (Narukami Island)",
-    activate:"Complete ALL 9 Neko Is a Cat world quests. Then with Inazuma as preferred commission region, get all three: 'The Cat's Trail', 'Fishy Flavor', and 'Shrine Cleanup'. Quest unlocks once all three are done.",
-    prereqs:"All 9 Neko Is a Cat World Quests completed + 3 specific Neko daily commissions. Potentially weeks of RNG.",
-    notes:"Grand finale of Neko's entire questline. Set Inazuma as your ONLY preferred region. Commissions don't need to appear on the same day.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×8 · Primogems ×10",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/341302",
-  },
-  {
-    id:12, tier:4, chain:"standalone",
-    name:"Battle of Revenge",
-    time:"20 min quest + weeks of RNG unlock",
-    region:"Inazuma City (Shogun's Palace gate)",
-    activate:"Complete 'An Art to Be Honed' Daily Commission featuring Asakura exactly 4 times cumulative, then talk to Asakura inside the Shogun's palace near the gate.",
-    prereqs:"'An Art to Be Honed' commission completed 4x — purely RNG. Set Inazuma as preferred region.",
-    notes:"Asakura found the Kairagi who wronged him. The quest combat is straightforward. The real boss is the commission RNG. You're not alone in hating this one.",
-    rewards:"100 Adv EXP · 30,000 Mora · Hero's Wit ×5",
-    link:"https://game8.co/games/Genshin-Impact/archives/337760",
-  },
-  {
-    id:13, tier:4, chain:"enka",
-    name:"The Subterranean Trials of Drake and Serpent",
-    time:"90–120 min (full chain)",
-    region:"Enkanomiya (Byakuyakoku)",
-    activate:"Complete The Entrance to Tokoyo to unlock Enkanomiya access. Then explore Enkanomiya to find the chain starting points.",
-    prereqs:"The Entrance to Tokoyo must be completed. Enkanomiya requires Chapter 2: Act 3 + Watatsumi quests.",
-    notes:"The mandatory Enkanomiya main chain. Unlocks the Day-Night switch mechanic — REQUIRED for nearly ALL other Enkanomiya quests. Do this BEFORE anything else in Enkanomiya.",
-    rewards:"100 Adv EXP · 50,000 Mora · Hero's Wit ×8 · Primogems ×10 — Unlocks Enkanomiya Day-Night mechanics",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/353480",
-  },
-  {
-    id:14, tier:4, chain:"enka",
-    name:"Lotus Eater",
-    time:"45–60 min (+server reset wait)",
-    region:"Enkanomiya — Secret Island (Evernight mode)",
-    activate:"Complete The Entrance to Tokoyo AND the Heart of Ouroboros sub-quest. Go to Secret Island via Phase Gate north of Dainichi Mikoshi in Evernight (Night) mode.",
-    prereqs:"Entrance to Tokoyo + Heart of Ouroboros (Subterranean Trials) completed + Evernight mode active",
-    notes:"Find the afterimage in the Vishap Research Lab. Password: 'After the sun, the darkness starts...' (2nd choice). TIME-LOCKED: a section requires waiting for a server reset. Rewards Dragonbone Orb — sell at any Souvenir Shop for 80,000 Mora + a regional dish.",
-    rewards:"Dragonbone Orb (sell for 80,000 Mora + dish) · 100 Adv EXP · 30,000 Mora · Hero's Wit ×6",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/353533",
-  },
-  {
-    id:15, tier:4, chain:"enka",
-    name:"Collection of Dragons and Snakes",
-    time:"120+ min (multiple sub-quests)",
-    region:"Enkanomiya (multiple zones) + Inazuma City",
-    activate:"Unlock Enkanomiya + complete Subterranean Trials. Then collect all 5 of Ema's lost books and bring them to her.",
-    prereqs:"Subterranean Trials + Lotus Eater completed. Each book requires its own sub-quest.",
-    notes:"Collect 5 books for Ema:\n1. Serpent and Drakes of Tokoyokoku — buy from Kuroda, Yae Publishing House (1,500 Mora — DO THIS FIRST)\n2. Before Sun and Moon — from Antigonus quest (Dainichi Mikoshi, Evernight)\n3. Hydrological Studies — from Date's Challenge (Evernight Temple Maze)\n4. Bathysmal Vishap Records — from Tricolor File quest (Secret Island, Evernight)\n5. In the Light Beneath the Shadow — Phase Gate Symbol Puzzle at The Serpent's Heart\nCannot finish until all 5 are collected.",
-    rewards:"'Before Sun and Moon' lore book · 100 Adv EXP · 50,000 Mora · Hero's Wit ×8 · Primogems ×10",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/353515",
-  },
-  {
-    id:16, tier:4, chain:"enka",
-    name:"The Three Great Martial Trials",
-    time:"60–90 min",
-    region:"Enkanomiya (The Serpent's Heart)",
-    activate:"Complete Entrance to Tokoyo AND Subterranean Trials. Find the three trial ghosts in The Serpent's Heart — each unlocks a sub-quest.",
-    prereqs:"Entrance to Tokoyo + Subterranean Trials fully completed. Individual trials may require Lotus Eater completion.",
-    notes:"Three combat challenges (Yachimatahime's Trial + two others) feed into this quest. Individual sub-trials give NO rewards — only the final completion pays out. Prepare a strong team for all three.",
-    rewards:"100 Adv EXP · 50,000 Mora · Hero's Wit ×10 · Primogems ×20",
-    isSpecial: true,
-    link:"https://game8.co/games/Genshin-Impact/archives/353560",
-  },
-];
+const STORAGE_KEY = ‘genshin-build-progress-v1’;
 
-const regionIcons: Record<string, string> = {
-  "Watatsumi Island": "🐍",
-  "Yashiori Island → Tatarasuna → Inazuma City": "🌿",
-  "Narukami Island → Watatsumi Island": "🍜",
-  "Kannazuka (Tatarasuna / Mikage Forge area)": "⚒",
-  "Tatarasuna (Kannazuka)": "🔥",
-  "Narukami Island (east of Inazuma City, beside Toranosuke)": "🎬",
-  "Narukami Island (Yae Publishing House area)": "📖",
-  "Inazuma (Reputation Request)": "📜",
-  "Tsurumi Island → Inazuma City": "🌫",
-  "Enkanomiya (Byakuyakoku)": "🌑",
-  "Enkanomiya — Secret Island (Evernight mode)": "🌑",
-  "Enkanomiya (multiple zones) + Inazuma City": "🌑",
-  "Enkanomiya (The Serpent's Heart)": "🌑",
-  "Grand Narukami Shrine (Narukami Island)": "🐱",
-  "Inazuma City (Shogun's Palace gate)": "⚔",
+/* ============================================================
+APP
+============================================================ */
+
+export default function App() {
+const [progress, setProgress] = useState({});
+const [hydrated, setHydrated] = useState(false);
+
+// Load saved progress on mount
+useEffect(() => {
+let cancelled = false;
+(async () => {
+try {
+const result = await window.storage.get(STORAGE_KEY);
+if (!cancelled && result?.value) {
+setProgress(JSON.parse(result.value));
+}
+} catch {
+// No saved state yet — that’s fine.
+} finally {
+if (!cancelled) setHydrated(true);
+}
+})();
+return () => { cancelled = true; };
+}, []);
+
+const toggle = async (charId, statId) => {
+const current = progress?.[charId]?.[statId] || false;
+const next = {
+…progress,
+[charId]: { …(progress[charId] || {}), [statId]: !current },
+};
+setProgress(next);
+try {
+await window.storage.set(STORAGE_KEY, JSON.stringify(next));
+} catch (e) {
+console.error(‘Failed to save progress:’, e);
+}
 };
 
-const ORDER_NOTE: OrderNote[] = [
-  { step:1,  text:"The Saga of Mr. Forgetful — fastest, just needs Inazuma Reputation unlocked" },
-  { step:2,  text:"O Archon, Have I Done Right? — short, no grinding, just post-Ch2 Act 3" },
-  { step:3,  text:"Gazing Three Thousand Miles Away — gather Crystal Marrow now; cross off over a couple days" },
-  { step:4,  text:"Treatment on the Island — farm Naku Weed while doing others; visit Yasumoto daily for bonus chest" },
-  { step:5,  text:"Tatara Tales: The Last Act → The Seventh Samurai — do both in one session" },
-  { step:6,  text:"The Sun-Wheel and Mt. Kanna — do full Through the Mists chain on Tsurumi Island" },
-  { step:7,  text:"The Phaethons' Syrtos — after Enkanomiya unlocks" },
-  { step:8,  text:"Subterranean Trials → Lotus Eater → Collection of Dragons & Snakes → Three Martial Trials — all Enkanomiya in order" },
-  { step:9,  text:"Gourmet Supremos: Importance of Eating Well — set Inazuma commissions, wait for Breakthrough Thinking daily" },
-  { step:10, text:"Storytelling Method — set Inazuma commissions, wait for Is This Novel Amazing? daily" },
-  { step:11, text:"Battle of Revenge — set Inazuma commissions, wait for An Art to Be Honed x4 (most stubborn)" },
-  { step:12, text:"The Narukami Trail — complete all 9 Neko quests first, then farm 3 Neko daily commissions" },
-];
+const resetAll = async () => {
+if (!window.confirm(‘Clear all checked boxes? This cannot be undone.’)) return;
+setProgress({});
+try {
+await window.storage.delete(STORAGE_KEY);
+} catch (e) {
+console.error(e);
+}
+};
 
-export default function InazumaQuestTracker() {
-  const [completed, setCompleted] = useState<Record<number, boolean>>({});
-  const [expanded, setExpanded]   = useState<number | null>(null);
-  const [filterTier, setFilterTier] = useState<number | null>(null);
-  const [search, setSearch]         = useState<string>("");
-  const [showOrder, setShowOrder]   = useState<boolean>(false);
-  const [mounted, setMounted]       = useState<boolean>(false);
+const totalStats = CHARACTERS.reduce((s, c) => s + c.stats.length, 0);
+const doneStats = CHARACTERS.reduce(
+(s, c) => s + c.stats.filter(st => progress?.[c.id]?.[st.id]).length,
+0
+);
+const pct = totalStats ? Math.round((doneStats / totalStats) * 100) : 0;
 
-  useEffect(() => { setMounted(true); }, []);
+return (
+<>
+<style>{styles}</style>
+<div className="page">
+<div className="vignette" aria-hidden="true" />
+<div className="stars" aria-hidden="true" />
 
-  const toggle    = (id: number) => setCompleted((p: Record<number, boolean>) => ({ ...p, [id]: !p[id] }));
-  const toggleExp = (id: number) => setExpanded((p: number | null) => p === id ? null : id);
+```
+    <header className="top">
+      <div className="top-marks" aria-hidden="true">✦ ✦ ✦</div>
+      <h1 className="title">Almanac of the Moonbound</h1>
+      <p className="subtitle">Ideal build targets — checked when reached.</p>
 
-  const alreadyDone = 29;
-  const totalQuests = 45;
-  const sessionDone = Object.values(completed).filter(Boolean).length;
-  const totalDone   = alreadyDone + sessionDone;
-  const pct         = Math.round((totalDone / totalQuests) * 100);
-
-  const filtered = QUESTS.filter((q: Quest) => {
-    if (filterTier && q.tier !== filterTier) return false;
-    if (search && !q.name.toLowerCase().includes(search.toLowerCase()) &&
-        !q.region.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
-
-  const byTier = TIERS.map((t: Tier) => ({
-    ...t,
-    quests: filtered.filter((q: Quest) => q.tier === t.id),
-  })).filter((t) => t.quests.length > 0);
-
-  return (
-    <div style={{ minHeight:"100vh", background:"linear-gradient(160deg,#030008 0%,#06000f 40%,#0a0018 100%)", fontFamily:"Georgia,serif", color:"#e2d4f0", paddingBottom:64 }}>
-
-      <div style={{ background:"rgba(3,0,8,0.97)", borderBottom:"1px solid rgba(167,139,250,0.2)", padding:"32px 24px 24px", textAlign:"center", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:600, height:200, background:"radial-gradient(ellipse,rgba(124,58,237,0.08) 0%,transparent 70%)", pointerEvents:"none" }} />
-
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:12, marginBottom:4 }}>
-          <div style={{ width:36, height:36, borderRadius:"50%", background:"linear-gradient(135deg,#7c3aed,#4c1d95)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:18, boxShadow:"0 0 20px rgba(124,58,237,0.5)" }}>⛩</div>
-          <h1 style={{ fontSize:"clamp(18px,4vw,28px)", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", background:"linear-gradient(135deg,#e9d5ff 0%,#a78bfa 50%,#7c3aed 100%)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text", margin:0 }}>
-            Inazuma World Quests
-          </h1>
+      <div className="overall">
+        <div className="overall-bar">
+          <div className="overall-fill" style={{ width: `${pct}%` }} />
         </div>
-        <p style={{ fontSize:12, letterSpacing:"0.22em", color:"rgba(167,139,250,0.5)", textTransform:"uppercase", marginBottom:24 }}>
-          Updated · 29/45 Completed · 16 Remaining
-        </p>
-
-        <div style={{ maxWidth:480, margin:"0 auto 20px" }}>
-          <div style={{ display:"flex", justifyContent:"space-between", fontSize:11, color:"rgba(226,212,240,0.4)", marginBottom:6, letterSpacing:"0.08em" }}>
-            <span>OVERALL PROGRESS</span>
-            <span>{totalDone}/{totalQuests} — {pct}%</span>
-          </div>
-          <div style={{ height:6, background:"rgba(255,255,255,0.05)", borderRadius:3, overflow:"hidden" }}>
-            <div style={{ height:"100%", width:`${pct}%`, borderRadius:3, background:"linear-gradient(90deg,#4c1d95,#7c3aed,#e9d5ff)", transition:"width 0.5s ease", boxShadow:"0 0 8px rgba(167,139,250,0.5)" }} />
-          </div>
-        </div>
-
-        <div style={{ display:"flex", gap:8, maxWidth:720, margin:"0 auto", flexWrap:"wrap", justifyContent:"center" }}>
-          <input
-            style={{ background:"rgba(255,255,255,0.04)", border:"1px solid rgba(167,139,250,0.2)", borderRadius:6, padding:"8px 14px", color:"#e2d4f0", fontSize:13, outline:"none", width:200 }}
-            placeholder="Search quests or regions..."
-            value={search} onChange={(e) => setSearch(e.target.value)} />
-          <button onClick={() => setFilterTier(null)}
-            style={{ padding:"6px 14px", borderRadius:6, border:`1px solid ${!filterTier ? "#a78bfa" : "rgba(255,255,255,0.08)"}`, background:!filterTier ? "rgba(167,139,250,0.12)" : "rgba(255,255,255,0.02)", color:!filterTier ? "#a78bfa" : "rgba(226,212,240,0.4)", fontSize:12, cursor:"pointer", fontWeight:!filterTier ? 600 : 400 }}>
-            ALL
-          </button>
-          {TIERS.map((t: Tier) => (
-            <button key={t.id} onClick={() => setFilterTier(filterTier === t.id ? null : t.id)}
-              style={{ padding:"6px 14px", borderRadius:6, border:`1px solid ${filterTier===t.id ? t.color : "rgba(255,255,255,0.08)"}`, background:filterTier===t.id ? t.bg : "rgba(255,255,255,0.02)", color:filterTier===t.id ? t.color : "rgba(226,212,240,0.4)", fontSize:12, cursor:"pointer", fontWeight:filterTier===t.id ? 600 : 400 }}>
-              {t.icon} {t.label}
-            </button>
-          ))}
-          <button onClick={() => setShowOrder((p: boolean) => !p)}
-            style={{ padding:"6px 14px", borderRadius:6, border:`1px solid ${showOrder ? "#fbbf24" : "rgba(255,255,255,0.08)"}`, background:showOrder ? "rgba(251,191,36,0.1)" : "rgba(255,255,255,0.02)", color:showOrder ? "#fbbf24" : "rgba(226,212,240,0.4)", fontSize:12, cursor:"pointer" }}>
-            📋 Order
+        <div className="overall-meta">
+          <span>{doneStats} / {totalStats} stats reached</span>
+          <button className="reset" onClick={resetAll} disabled={!doneStats}>
+            Reset
           </button>
         </div>
       </div>
+    </header>
 
-      {showOrder && (
-        <div style={{ maxWidth:880, margin:"24px auto 0", padding:"0 16px" }}>
-          <div style={{ background:"rgba(251,191,36,0.06)", border:"1px solid rgba(251,191,36,0.2)", borderRadius:12, padding:"20px 24px" }}>
-            <h3 style={{ color:"#fbbf24", fontSize:13, letterSpacing:"0.15em", textTransform:"uppercase", margin:"0 0 16px 0" }}>📋 Recommended Completion Order</h3>
-            {ORDER_NOTE.map((o: OrderNote) => (
-              <div key={o.step} style={{ display:"flex", gap:12, marginBottom:10, alignItems:"flex-start" }}>
-                <span style={{ fontSize:11, minWidth:24, height:24, borderRadius:"50%", background:"rgba(251,191,36,0.15)", border:"1px solid rgba(251,191,36,0.3)", color:"#fbbf24", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:700, flexShrink:0 }}>{o.step}</span>
-                <span style={{ fontSize:12, color:"rgba(226,212,240,0.7)", lineHeight:1.5 }}>{o.text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+    <main className="grid">
+      {CHARACTERS.map((c) => (
+        <CharacterCard
+          key={c.id}
+          char={c}
+          checked={progress[c.id] || {}}
+          onToggle={toggle}
+          hydrated={hydrated}
+        />
+      ))}
+    </main>
 
-      <div style={{ maxWidth:880, margin:"0 auto", padding:"32px 16px 0" }}>
-        {byTier.length === 0 && (
-          <div style={{ textAlign:"center", padding:"60px 20px", color:"rgba(226,212,240,0.3)", fontSize:14 }}>
-            <div style={{ fontSize:32, marginBottom:12 }}>🔍</div>No quests found
-          </div>
-        )}
+    <footer className="bottom">
+      <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG · Version 6.5</p>
+      <p className="bottom-faint">Progress saved locally.</p>
+    </footer>
+  </div>
+</>
+```
 
-        {byTier.map((tier) => (
-          <div key={tier.id} style={{ marginBottom:32, opacity:mounted ? 1 : 0, transform:mounted ? "none" : "translateY(16px)", transition:"all 0.4s ease" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:12, paddingBottom:10, borderBottom:`1px solid ${tier.border}` }}>
-              <span style={{ fontSize:18 }}>{tier.icon}</span>
-              <span style={{ fontSize:15, fontWeight:700, color:tier.color, letterSpacing:"0.07em" }}>{tier.label} — {tier.sublabel}</span>
-              <span style={{ fontSize:11, color:"rgba(226,212,240,0.35)", marginLeft:"auto" }}>{tier.time}</span>
-              <div style={{ padding:"3px 10px", borderRadius:20, background:tier.bg, border:`1px solid ${tier.border}`, color:tier.color, fontSize:11, fontWeight:600 }}>
-                {tier.quests.filter((q: Quest) => completed[q.id]).length}/{tier.quests.length} done
-              </div>
-            </div>
+);
+}
 
-            {tier.quests.map((quest: Quest) => {
-              const isDone  = !!completed[quest.id];
-              const isOpen  = expanded === quest.id;
-              const chain   = CHAIN_TAG[quest.chain] ?? CHAIN_TAG["standalone"];
-              const icon    = regionIcons[quest.region] ?? "📍";
+/* ============================================================
+CHARACTER CARD
+============================================================ */
 
-              return (
-                <div key={quest.id}
-                  style={{ background:isDone ? "rgba(255,255,255,0.015)" : "linear-gradient(135deg,rgba(12,5,24,0.92),rgba(8,3,16,0.92))", border:`1px solid ${isOpen ? tier.color+"55" : isDone ? "rgba(255,255,255,0.05)" : tier.border}`, borderRadius:10, marginBottom:8, overflow:"hidden", transition:"all 0.2s", opacity:isDone ? 0.42 : 1, boxShadow:isOpen ? `0 0 22px ${tier.glow}` : "none", cursor:"pointer" }}>
+function CharacterCard({ char, checked, onToggle, hydrated }) {
+const theme = ELEMENT_THEME[char.element];
+const done = char.stats.filter(s => checked[s.id]).length;
+const total = char.stats.length;
+const pct = Math.round((done / total) * 100);
 
-                  <div style={{ display:"flex", alignItems:"center", gap:12, padding:"14px 16px" }} onClick={() => toggleExp(quest.id)}>
-                    <div onClick={(e) => { e.stopPropagation(); toggle(quest.id); }}
-                      style={{ width:20, height:20, minWidth:20, borderRadius:4, border:`2px solid ${isDone ? tier.color : "rgba(167,139,250,0.3)"}`, background:isDone ? tier.color+"28" : "transparent", display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"all 0.2s", fontSize:12, color:tier.color }}>
-                      {isDone && "✓"}
-                    </div>
-                    <span style={{ flex:1, fontSize:14, fontWeight:600, color:isDone ? "rgba(226,212,240,0.4)" : "#f0e8ff", letterSpacing:"0.03em", textDecoration:isDone ? "line-through" : "none" }}>
-                      {quest.name}
-                    </span>
-                    <div style={{ display:"flex", alignItems:"center", gap:6 }}>
-                      <span style={{ fontSize:9, padding:"2px 7px", borderRadius:10, background:`${chain.color}15`, color:chain.color, border:`1px solid ${chain.color}40`, whiteSpace:"nowrap" }}>
-                        {chain.label}
-                      </span>
-                      {quest.isSpecial && (
-                        <span style={{ fontSize:9, padding:"2px 6px", borderRadius:10, background:"rgba(167,139,250,0.15)", color:"#a78bfa", border:"1px solid rgba(167,139,250,0.35)", fontWeight:700 }}>KEY</span>
-                      )}
-                      <span style={{ fontSize:10, padding:"2px 8px", borderRadius:10, background:tier.bg, color:tier.color, border:`1px solid ${tier.border}`, whiteSpace:"nowrap" }}>{quest.time}</span>
-                      <span style={{ fontSize:10, color:"rgba(226,212,240,0.3)", transform:isOpen ? "rotate(180deg)" : "none", transition:"transform 0.2s" }}>▼</span>
-                    </div>
-                  </div>
+return (
+<article className=“card” style={{ ‘–accent’: theme.color, ‘–glow’: theme.glow }}>
+<div className="card-corner tl" />
+<div className="card-corner tr" />
+<div className="card-corner bl" />
+<div className="card-corner br" />
 
-                  <div style={{ maxHeight:isOpen ? 700 : 0, overflow:"hidden", transition:"max-height 0.35s ease" }}>
-                    <div style={{ padding:"14px 16px 16px 48px", borderTop:`1px solid ${tier.border}` }}>
-                      {([
-                        ["Region",   `${icon} ${quest.region}`],
-                        ["Activate", quest.activate],
-                        ["Prereqs",  quest.prereqs],
-                        ["Tips",     quest.notes],
-                        ["Rewards",  quest.rewards],
-                      ] as [string, string][]).map(([label, val]) => (
-                        <div key={label} style={{ display:"flex", gap:8, marginBottom:8, alignItems:"flex-start" }}>
-                          <span style={{ fontSize:10, color:"rgba(167,139,250,0.65)", letterSpacing:"0.12em", textTransform:"uppercase", minWidth:68, marginTop:2, fontWeight:600 }}>{label}</span>
-                          <span style={{ fontSize:12, lineHeight:1.6, flex:1, whiteSpace:"pre-line",
-                            color: label==="Prereqs" ? "#fde68a" : label==="Rewards" ? "#86efac" : label==="Tips" ? "rgba(226,212,240,0.55)" : "rgba(226,212,240,0.75)",
-                            fontStyle: label==="Tips" ? "italic" : "normal" }}>
-                            {val}
-                          </span>
-                        </div>
-                      ))}
-                      <a href={quest.link} target="_blank" rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        style={{ display:"inline-flex", alignItems:"center", gap:5, marginTop:10, padding:"6px 14px", borderRadius:6, background:tier.bg, border:`1px solid ${tier.border}`, color:tier.color, fontSize:11, textDecoration:"none", fontWeight:600 }}>
-                        📖 Game8 Guide ↗
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ))}
-
-        {totalDone === totalQuests && (
-          <div style={{ textAlign:"center", padding:"40px 20px", background:"linear-gradient(135deg,rgba(124,58,237,0.06),rgba(124,58,237,0.02))", border:"1px solid rgba(167,139,250,0.15)", borderRadius:12 }}>
-            <div style={{ fontSize:36, marginBottom:12 }}>⛩✨</div>
-            <div style={{ color:"#a78bfa", fontSize:16, fontWeight:700, letterSpacing:"0.15em" }}>ALL INAZUMA QUESTS COMPLETE</div>
-            <div style={{ color:"rgba(226,212,240,0.4)", fontSize:12, marginTop:8 }}>The Electro Archon looks upon your deeds with solemn approval, Traveler.</div>
-          </div>
-        )}
-      </div>
+```
+  <header className="card-head">
+    <div className="card-head-row">
+      <h2 className="char-name">{char.name}</h2>
+      <span className="elem-chip">{theme.label}</span>
     </div>
-  );
+    <p className="char-epithet">{char.epithet}</p>
+    <p className="char-role">{char.role} · {char.weaponType}</p>
+  </header>
+
+  <section className="essentials">
+    <div className="ess-row">
+      <span className="ess-label">Set</span>
+      <span className="ess-val">{char.set}</span>
+    </div>
+    {char.setAlt && (
+      <div className="ess-row faint">
+        <span className="ess-label">↳ alt</span>
+        <span className="ess-val">{char.setAlt}</span>
+      </div>
+    )}
+    <div className="ess-row">
+      <span className="ess-label">Weapon</span>
+      <span className="ess-val">{char.weapon}</span>
+    </div>
+    {char.weaponAlt && (
+      <div className="ess-row faint">
+        <span className="ess-label">↳ alt</span>
+        <span className="ess-val">{char.weaponAlt}</span>
+      </div>
+    )}
+    <div className="ess-row">
+      <span className="ess-label">Talents</span>
+      <span className="ess-val">{char.talents}</span>
+    </div>
+  </section>
+
+  <div className="divider" />
+
+  <section className="stats">
+    {char.stats.map((s) => (
+      <StatRow
+        key={s.id}
+        label={s.label}
+        target={s.target}
+        checked={!!checked[s.id]}
+        onClick={() => onToggle(char.id, s.id)}
+        disabled={!hydrated}
+      />
+    ))}
+  </section>
+
+  {char.note && (
+    <p className="note">
+      <span className="note-mark">※</span> {char.note}
+    </p>
+  )}
+
+  <footer className="card-foot">
+    <div className="prog-bar">
+      <div className="prog-fill" style={{ width: `${pct}%` }} />
+    </div>
+    <span className="prog-text">{done} / {total}</span>
+  </footer>
+</article>
+```
+
+);
 }
+
+/* ============================================================
+STAT ROW (custom checkbox)
+============================================================ */
+
+function StatRow({ label, target, checked, onClick, disabled }) {
+return (
+<button
+className={`stat ${checked ? 'on' : ''}`}
+onClick={onClick}
+disabled={disabled}
+aria-pressed={checked}
+type=“button”
+>
+<span className="box" aria-hidden="true">
+<svg viewBox="0 0 16 16" className="tick">
+<path d="M3 8.5 L6.5 12 L13 4.5" />
+</svg>
+</span>
+<span className="stat-label">{label}</span>
+<span className="stat-target">{target}</span>
+</button>
+);
+}
+
+/* ============================================================
+STYLES
+============================================================ */
+
+const styles = `
+@import url(‘https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap’);
+
+- { box-sizing: border-box; }
+
+.page {
+min-height: 100vh;
+background:
+radial-gradient(ellipse at 50% -10%, #1a1b3a 0%, #0a0b1c 45%, #050614 100%);
+color: #e8e4d6;
+font-family: ‘Manrope’, system-ui, sans-serif;
+font-weight: 400;
+letter-spacing: 0.01em;
+position: relative;
+overflow-x: hidden;
+padding: 48px 20px 80px;
+}
+
+.vignette {
+position: fixed; inset: 0; pointer-events: none;
+background: radial-gradient(ellipse at 50% 0%, transparent 0%, transparent 50%, rgba(0,0,0,0.6) 100%);
+z-index: 0;
+}
+
+.stars {
+position: fixed; inset: 0; pointer-events: none; z-index: 0;
+background-image:
+radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.4) 0%, transparent 50%),
+radial-gradient(1px 1px at 78% 32%, rgba(255,255,255,0.35) 0%, transparent 50%),
+radial-gradient(1px 1px at 45% 65%, rgba(255,255,255,0.25) 0%, transparent 50%),
+radial-gradient(1px 1px at 88% 78%, rgba(255,255,255,0.3) 0%, transparent 50%),
+radial-gradient(1px 1px at 23% 88%, rgba(255,255,255,0.35) 0%, transparent 50%),
+radial-gradient(1px 1px at 62% 12%, rgba(255,255,255,0.3) 0%, transparent 50%),
+radial-gradient(1.5px 1.5px at 8% 55%, rgba(255,255,255,0.5) 0%, transparent 50%),
+radial-gradient(1px 1px at 95% 48%, rgba(255,255,255,0.3) 0%, transparent 50%);
+background-size: 100% 100%;
+background-attachment: fixed;
+}
+
+/* ––––– header ––––– */
+
+.top {
+position: relative; z-index: 1;
+max-width: 720px;
+margin: 0 auto 56px;
+text-align: center;
+}
+
+.top-marks {
+color: #c9a86a;
+letter-spacing: 1.2em;
+font-size: 11px;
+margin-bottom: 18px;
+opacity: 0.7;
+padding-left: 1.2em;
+}
+
+.title {
+font-family: ‘Cormorant Garamond’, serif;
+font-style: italic;
+font-weight: 500;
+font-size: clamp(36px, 6vw, 56px);
+line-height: 1.1;
+margin: 0;
+color: #f3ecd6;
+background: linear-gradient(180deg, #f3ecd6 0%, #c9a86a 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}
+
+.subtitle {
+font-family: ‘Cormorant Garamond’, serif;
+font-style: italic;
+color: rgba(232, 228, 214, 0.55);
+font-size: 16px;
+margin: 8px 0 28px;
+letter-spacing: 0.04em;
+}
+
+.overall {
+max-width: 480px;
+margin: 0 auto;
+}
+
+.overall-bar {
+height: 2px;
+background: rgba(201, 168, 106, 0.15);
+position: relative;
+overflow: hidden;
+}
+
+.overall-fill {
+height: 100%;
+background: linear-gradient(90deg, #c9a86a 0%, #f3ecd6 100%);
+transition: width 400ms ease;
+box-shadow: 0 0 8px rgba(201, 168, 106, 0.6);
+}
+
+.overall-meta {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 10px;
+font-size: 11px;
+text-transform: uppercase;
+letter-spacing: 0.25em;
+color: rgba(232, 228, 214, 0.5);
+}
+
+.reset {
+background: none;
+border: 1px solid rgba(201, 168, 106, 0.3);
+color: rgba(201, 168, 106, 0.8);
+padding: 4px 12px;
+font-size: 10px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+font-family: inherit;
+cursor: pointer;
+transition: all 200ms ease;
+}
+.reset:hover:not(:disabled) {
+background: rgba(201, 168, 106, 0.1);
+border-color: rgba(201, 168, 106, 0.6);
+color: #f3ecd6;
+}
+.reset:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ––––– grid ––––– */
+
+.grid {
+position: relative; z-index: 1;
+display: grid;
+grid-template-columns: 1fr;
+gap: 28px;
+max-width: 1240px;
+margin: 0 auto;
+}
+@media (min-width: 880px) {
+.grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ––––– card ––––– */
+
+.card {
+position: relative;
+background:
+linear-gradient(180deg, rgba(20, 22, 48, 0.7) 0%, rgba(12, 14, 32, 0.85) 100%);
+border: 1px solid rgba(201, 168, 106, 0.15);
+padding: 32px 28px 24px;
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+box-shadow:
+0 1px 0 rgba(255,255,255,0.03) inset,
+0 24px 60px -20px rgba(0,0,0,0.7),
+0 0 40px -10px var(–glow);
+}
+
+.card-corner {
+position: absolute;
+width: 18px; height: 18px;
+border: 1px solid var(–accent);
+opacity: 0.55;
+pointer-events: none;
+}
+.card-corner.tl { top: 8px;    left: 8px;    border-right: none; border-bottom: none; }
+.card-corner.tr { top: 8px;    right: 8px;   border-left: none;  border-bottom: none; }
+.card-corner.bl { bottom: 8px; left: 8px;    border-right: none; border-top: none; }
+.card-corner.br { bottom: 8px; right: 8px;   border-left: none;  border-top: none; }
+
+/* card head */
+
+.card-head { margin-bottom: 18px; }
+
+.card-head-row {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+gap: 12px;
+margin-bottom: 4px;
+}
+
+.char-name {
+font-family: ‘Cormorant Garamond’, serif;
+font-weight: 500;
+font-style: italic;
+font-size: 34px;
+line-height: 1;
+margin: 0;
+color: #f3ecd6;
+}
+
+.elem-chip {
+font-size: 9px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–accent);
+padding: 4px 10px;
+border: 1px solid var(–accent);
+border-radius: 1px;
+opacity: 0.85;
+white-space: nowrap;
+}
+
+.char-epithet {
+font-family: ‘Cormorant Garamond’, serif;
+font-style: italic;
+font-size: 15px;
+color: rgba(232, 228, 214, 0.5);
+margin: 0 0 6px;
+}
+
+.char-role {
+font-size: 11px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–accent);
+margin: 0;
+opacity: 0.9;
+}
+
+/* essentials */
+
+.essentials {
+display: flex;
+flex-direction: column;
+gap: 5px;
+margin-bottom: 18px;
+}
+
+.ess-row {
+display: grid;
+grid-template-columns: 64px 1fr;
+gap: 14px;
+font-size: 13px;
+line-height: 1.5;
+align-items: baseline;
+}
+.ess-row.faint { opacity: 0.55; font-size: 12px; margin-top: -3px; }
+
+.ess-label {
+font-size: 10px;
+letter-spacing: 0.25em;
+text-transform: uppercase;
+color: rgba(232, 228, 214, 0.4);
+font-weight: 500;
+}
+
+.ess-val { color: #e8e4d6; }
+
+/* divider */
+
+.divider {
+height: 1px;
+background: linear-gradient(90deg, transparent 0%, rgba(201, 168, 106, 0.25) 50%, transparent 100%);
+margin: 4px 0 16px;
+}
+
+/* stats list */
+
+.stats {
+display: flex;
+flex-direction: column;
+gap: 2px;
+margin-bottom: 18px;
+}
+
+.stat {
+display: grid;
+grid-template-columns: 22px 1fr auto;
+gap: 12px;
+align-items: center;
+padding: 10px 8px;
+background: none;
+border: none;
+border-left: 2px solid transparent;
+color: inherit;
+font-family: inherit;
+font-size: 13px;
+text-align: left;
+cursor: pointer;
+transition: all 200ms ease;
+width: 100%;
+}
+.stat:hover:not(:disabled) {
+background: rgba(255, 255, 255, 0.02);
+border-left-color: rgba(201, 168, 106, 0.3);
+}
+.stat.on { border-left-color: var(–accent); }
+.stat.on .stat-label { color: rgba(232, 228, 214, 0.55); text-decoration: line-through; text-decoration-thickness: 1px; text-decoration-color: rgba(201, 168, 106, 0.5); }
+.stat.on .stat-target { color: var(–accent); opacity: 0.9; }
+.stat:disabled { opacity: 0.4; cursor: wait; }
+
+.box {
+width: 18px; height: 18px;
+border: 1.5px solid rgba(201, 168, 106, 0.4);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: all 200ms ease;
+position: relative;
+}
+.stat:hover:not(:disabled) .box { border-color: rgba(201, 168, 106, 0.7); }
+.stat.on .box {
+border-color: var(–accent);
+background: var(–accent);
+box-shadow: 0 0 12px var(–glow);
+}
+
+.tick {
+width: 12px; height: 12px;
+fill: none;
+stroke: #0a0b1c;
+stroke-width: 2.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+opacity: 0;
+transform: scale(0.6);
+transition: all 200ms ease;
+}
+.stat.on .tick { opacity: 1; transform: scale(1); }
+
+.stat-label {
+color: #e8e4d6;
+transition: color 200ms ease;
+}
+
+.stat-target {
+font-family: ‘Cormorant Garamond’, serif;
+font-style: italic;
+font-size: 15px;
+color: var(–accent);
+white-space: nowrap;
+letter-spacing: 0.02em;
+}
+
+/* note */
+
+.note {
+font-family: ‘Cormorant Garamond’, serif;
+font-style: italic;
+font-size: 14px;
+color: rgba(232, 228, 214, 0.6);
+line-height: 1.5;
+margin: 0 0 18px;
+padding: 12px 14px;
+background: rgba(0, 0, 0, 0.2);
+border-left: 2px solid var(–accent);
+}
+
+.note-mark {
+color: var(–accent);
+font-style: normal;
+margin-right: 6px;
+}
+
+/* card foot */
+
+.card-foot {
+display: flex;
+align-items: center;
+gap: 12px;
+padding-top: 4px;
+}
+
+.prog-bar {
+flex: 1;
+height: 2px;
+background: rgba(201, 168, 106, 0.12);
+position: relative;
+overflow: hidden;
+}
+
+.prog-fill {
+height: 100%;
+background: var(–accent);
+transition: width 400ms ease;
+box-shadow: 0 0 8px var(–glow);
+}
+
+.prog-text {
+font-size: 11px;
+letter-spacing: 0.15em;
+color: rgba(232, 228, 214, 0.5);
+font-variant-numeric: tabular-nums;
+white-space: nowrap;
+}
+
+/* footer */
+
+.bottom {
+position: relative; z-index: 1;
+max-width: 720px;
+margin: 64px auto 0;
+text-align: center;
+font-size: 11px;
+letter-spacing: 0.15em;
+color: rgba(232, 228, 214, 0.35);
+text-transform: uppercase;
+}
+.bottom p { margin: 4px 0; }
+.bottom-faint { opacity: 0.6; letter-spacing: 0.1em; }
+
+@media (max-width: 480px) {
+.page { padding: 32px 16px 60px; }
+.card { padding: 28px 20px 20px; }
+.char-name { font-size: 28px; }
+.stat { font-size: 12px; gap: 10px; grid-template-columns: 20px 1fr auto; }
+.stat-target { font-size: 13px; }
+.ess-row { grid-template-columns: 56px 1fr; font-size: 12px; }
+}
+`;
