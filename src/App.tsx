@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 
 const TIERS = [
   { id:2, label:"Tier 2", sublabel:"Short",        time:"15–35 min",      color:"#86efac", bg:"rgba(134,239,172,0.07)", border:"rgba(134,239,172,0.22)", glow:"rgba(134,239,172,0.12)", icon:"🌸" },
@@ -251,8 +250,8 @@ export default function InazumaQuestTracker() {
 
   useEffect(() => { setMounted(true); }, []);
 
-  const toggle    = (id) => setCompleted(p => ({ ...p, [id]: !p[id] }));
-  const toggleExp = (id) => setExpanded(p => p === id ? null : id);
+  const toggle = (id: number) => setCompleted((p: Record<number, boolean>) => ({ ...p, [id]: !p[id] }));
+  const toggleExp = (id: number) => setExpanded((p: number | null) => p === id ? null : id);
 
   const alreadyDone  = 29;
   const totalQuests  = 45;
