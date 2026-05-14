@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 
 const TIERS = [
   { id:2, label:"Tier 2", sublabel:"Short",        time:"15–35 min",      color:"#86efac", bg:"rgba(134,239,172,0.07)", border:"rgba(134,239,172,0.22)", glow:"rgba(134,239,172,0.12)", icon:"🌸" },
