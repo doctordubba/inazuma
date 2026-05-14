@@ -354,6 +354,24 @@ const ELEMENT_THEME = {
 };
 
 const STORAGE_KEY = "genshin-build-progress-v1";
+const COLLAPSE_KEY = "genshin-build-collapsed-v1";
+
+const ELEMENT_ORDER = (() => {
+  const seen = new Set();
+  const order = [];
+  for (const c of CHARACTERS) {
+    if (!seen.has(c.element)) {
+      seen.add(c.element);
+      order.push(c.element);
+    }
+  }
+  return order;
+})();
+
+const CHARACTERS_BY_ELEMENT = ELEMENT_ORDER.reduce((acc, elem) => {
+  acc[elem] = CHARACTERS.filter((c) => c.element === elem);
+  return acc;
+}, {});
 
 /* ============================================================
    APP
@@ -361,12 +379,19 @@ const STORAGE_KEY = "genshin-build-progress-v1";
 
 export default function App() {
   const [progress, setProgress] = useState({});
+  const [collapsed, setCollapsed] = useState({});
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) setProgress(JSON.parse(raw));
+    } catch (e) {
+      // ignore
+    }
+    try {
+      const rawCol = localStorage.getItem(COLLAPSE_KEY);
+      if (rawCol) setCollapsed(JSON.parse(rawCol));
     } catch (e) {
       // ignore
     }
@@ -388,6 +413,16 @@ export default function App() {
       ...progress,
       [charId]: { ...(progress[charId] || {}), [statId]: !current },
     });
+  };
+
+  const toggleCollapsed = (elem) => {
+    const next = { ...collapsed, [elem]: !collapsed[elem] };
+    setCollapsed(next);
+    try {
+      localStorage.setItem(COLLAPSE_KEY, JSON.stringify(next));
+    } catch (e) {
+      console.error("Failed to save:", e);
+    }
   };
 
   const resetAll = () => {
@@ -432,16 +467,57 @@ export default function App() {
           </div>
         </header>
 
-        <main className="grid">
-          {CHARACTERS.map((c) => (
-            <CharacterCard
-              key={c.id}
-              char={c}
-              checked={progress[c.id] || {}}
-              onToggle={toggle}
-              hydrated={hydrated}
-            />
-          ))}
+        <main className="elements">
+          {ELEMENT_ORDER.map((elem) => {
+            const theme = ELEMENT_THEME[elem];
+            const chars = CHARACTERS_BY_ELEMENT[elem];
+            const isOpen = !collapsed[elem];
+            const groupTotal = chars.reduce((s, c) => s + c.stats.length, 0);
+            const groupDone = chars.reduce(
+              (s, c) =>
+                s +
+                c.stats.filter((st) => progress[c.id] && progress[c.id][st.id])
+                  .length,
+              0
+            );
+            return (
+              <section
+                key={elem}
+                className="elem-section"
+                style={{ "--accent": theme.color, "--glow": theme.glow }}
+              >
+                <button
+                  className={`elem-header ${isOpen ? "open" : "closed"}`}
+                  onClick={() => toggleCollapsed(elem)}
+                  aria-expanded={isOpen}
+                  type="button"
+                >
+                  <span className="elem-caret" aria-hidden="true">
+                    <svg viewBox="0 0 10 10" className="caret-svg">
+                      <path d="M2 3 L5 7 L8 3" />
+                    </svg>
+                  </span>
+                  <h2 className="elem-title">{theme.label}</h2>
+                  <span className="elem-count">
+                    {groupDone} / {groupTotal}
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="grid">
+                    {chars.map((c) => (
+                      <CharacterCard
+                        key={c.id}
+                        char={c}
+                        checked={progress[c.id] || {}}
+                        onToggle={toggle}
+                        hydrated={hydrated}
+                      />
+                    ))}
+                  </div>
+                )}
+              </section>
+            );
+          })}
         </main>
 
         <footer className="bottom">
@@ -675,13 +751,92 @@ const styles = `
 }
 .reset:disabled { opacity: 0.3; cursor: not-allowed; }
 
-.grid {
+.elements {
   position: relative; z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.elem-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.elem-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  padding: 14px 4px;
+  border: none;
+  border-top: 1px solid rgba(201, 168, 106, 0.12);
+  border-bottom: 1px solid rgba(201, 168, 106, 0.12);
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+.elem-header:hover,
+.elem-header:active {
+  border-top-color: rgba(201, 168, 106, 0.32);
+  border-bottom-color: rgba(201, 168, 106, 0.32);
+  background: rgba(255, 255, 255, 0.015);
+}
+.elem-header:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.elem-caret {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+.caret-svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 220ms ease;
+}
+.elem-header.closed .caret-svg { transform: rotate(-90deg); }
+
+.elem-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1;
+  margin: 0;
+  flex: 1;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.elem-count {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+.grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 28px;
-  max-width: 1240px;
-  margin: 0 auto;
 }
 @media (min-width: 880px) {
   .grid { grid-template-columns: repeat(2, 1fr); }
