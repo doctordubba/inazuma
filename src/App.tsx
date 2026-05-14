@@ -494,14 +494,406 @@ const CHARACTERS_BY_ELEMENT = ELEMENT_ORDER.reduce((acc, elem) => {
 }, {});
 
 /* ============================================================
+   REACTIONS
+   Sources: Genshin Impact Wiki, Game8, KQM, Icy-Veins (cross-checked
+   May 2026). Multipliers reference base level-1 reactions.
+   ============================================================ */
+
+const REACTION_GROUPS = [
+  {
+    id: "amplifying",
+    label: "Amplifying",
+    blurb:
+      "Multiplies the base DMG of the hit that triggered the reaction. Scales on the triggering character's Elemental Mastery — not the applicator's.",
+    formula:
+      "Multiplier × ( 1 + 2.78·EM / (1400 + EM) + Reaction Bonus )",
+    reactions: [
+      {
+        id: "vaporize",
+        name: "Vaporize",
+        trigger: "Pyro + Hydro",
+        elements: ["pyro", "hydro"],
+        short: "Multiplies the triggering hit.",
+        multiplier: "×2.0 forward · ×1.5 reverse",
+        details: [
+          "Forward: Pyro hits a Hydro-applied target — ×2.0 multiplier on the triggering hit's base DMG.",
+          "Reverse: Hydro hits a Pyro-burning target — ×1.5 multiplier.",
+          "The triggering character's EM is what scales the bonus; teammate EM is irrelevant.",
+          "Pyro auras are weaker (1 unit) than Hydro auras (2 units) — Pyro will be consumed first in most rotations.",
+        ],
+        examples: [
+          { id: "arlecchino", role: "On-field Pyro DPS for forward Vape (×2.0)." },
+          { id: "neuvillette", role: "Hydro applicator that enables forward Vape, or trigger for reverse Vape." },
+        ],
+      },
+      {
+        id: "melt",
+        name: "Melt",
+        trigger: "Pyro + Cryo",
+        elements: ["pyro", "cryo"],
+        short: "Multiplies the triggering hit.",
+        multiplier: "×2.0 forward · ×1.5 reverse",
+        details: [
+          "Forward: Pyro hits a Cryo-applied target — ×2.0 multiplier.",
+          "Reverse: Cryo hits a Pyro-burning target — ×1.5 multiplier.",
+          "Melt removes the aura entirely (unlike Vape's stacking) — it is a 'one-shot' reaction per application.",
+          "Same EM formula as Vape. No Cryo characters in the current roster, so Melt teams require external pulls.",
+        ],
+        examples: [
+          { id: "arlecchino", role: "Pyro trigger for forward Melt if a Cryo applicator is added." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "transformative",
+    label: "Transformative",
+    blurb:
+      "Deals its own instance of damage based on the triggering character's level and EM. Ignores ATK%, CRIT, and the hit's DMG bonus.",
+    formula:
+      "Multiplier × LevelMult × ( 1 + 16·EM / (2000 + EM) + Reaction Bonus ) × EnemyResistance",
+    reactions: [
+      {
+        id: "overloaded",
+        name: "Overloaded",
+        trigger: "Pyro + Electro",
+        elements: ["pyro", "electro"],
+        short: "AoE Pyro burst that launches small enemies.",
+        multiplier: "×2.75",
+        details: [
+          "Deals AoE Pyro DMG centered on the reacted target.",
+          "Knocks light enemies airborne — disruptive in Spiral Abyss; never run Overload teams against enemies that fly out of melee reach unless you have anti-knockback (shielders).",
+          "Chevreusse's kit specifically rewards Overload — her burst shreds Pyro & Electro RES of enemies hit by an Overload.",
+        ],
+        examples: [
+          { id: "chevreusse", role: "Overload support — her burst keys off the reaction." },
+          { id: "arlecchino", role: "On-field Pyro DPS to trigger Overload with an off-field Electro." },
+          { id: "fischl", role: "Off-field Electro from Oz keeps the aura up for Overload triggers." },
+        ],
+      },
+      {
+        id: "superconduct",
+        name: "Superconduct",
+        trigger: "Cryo + Electro",
+        elements: ["cryo", "electro"],
+        short: "Small AoE Cryo burst that shreds Physical RES.",
+        multiplier: "×1.5 · −40% Physical RES (12s)",
+        details: [
+          "Deals AoE Cryo DMG and reduces target Physical RES by 40% for 12 seconds.",
+          "Mostly relevant to Physical DPS teams — a niche reaction in the modern reaction-DPS meta.",
+          "No Cryo characters in the current roster.",
+        ],
+        examples: [
+          { id: "fischl", role: "Electro applicator for Superconduct if a Cryo unit is added." },
+        ],
+      },
+      {
+        id: "electro-charged",
+        name: "Electro-Charged",
+        trigger: "Hydro + Electro",
+        elements: ["hydro", "electro"],
+        short: "Repeatedly ticks Electro DMG on Hydro-wet targets.",
+        multiplier: "×2 per tick (multi-target)",
+        details: [
+          "While Electro and Hydro coexist on a target, Electro DMG ticks roughly every 1s.",
+          "Cannot CRIT in its base form — Lunar-Charged is the version that can.",
+          "Hydro and Electro auras both persist after a tick; the reaction does not consume them in one go.",
+        ],
+        examples: [
+          { id: "fischl", role: "Off-field Electro source via Oz." },
+          { id: "neuvillette", role: "Continuous Hydro application from his CA keeps the reaction running." },
+          { id: "columbina", role: "Hydro applicator and the Lunar-Charged enabler — see Lunar reactions." },
+        ],
+      },
+      {
+        id: "frozen",
+        name: "Frozen",
+        trigger: "Hydro + Cryo",
+        elements: ["hydro", "cryo"],
+        short: "Locks enemies in place; enables Shatter.",
+        multiplier: "No direct DMG · Frozen duration scales with EM",
+        details: [
+          "Does no damage itself. Enables Permafreeze comps — chain Cryo + Hydro to keep enemies locked indefinitely.",
+          "Blizzard Strayer 4pc grants +40% CRIT vs Frozen targets, the math centerpiece of most Freeze DPS builds.",
+          "No Cryo characters in the current roster.",
+        ],
+        examples: [
+          { id: "neuvillette", role: "Hydro applicator for any Freeze comp." },
+        ],
+      },
+      {
+        id: "shattered",
+        name: "Shattered",
+        trigger: "Frozen + Geo / Claymore / Plunge",
+        elements: ["cryo", "hydro", "geo"],
+        short: "Breaks Frozen for instant Physical DMG.",
+        multiplier: "×3.0",
+        details: [
+          "Strikes a Frozen target with a heavy attack (Claymore, Geo, or any Plunging Attack) to deal a one-time Physical DMG instance.",
+          "Useful when a Freeze comp wants to cycle reactions instead of indefinite lockdown.",
+        ],
+        examples: [
+          { id: "varka", role: "Claymore + Plunge — natural Shatter trigger." },
+          { id: "varesa", role: "Plunging Attacks shatter on impact (any element of attack qualifies)." },
+        ],
+      },
+      {
+        id: "swirl",
+        name: "Swirl",
+        trigger: "Anemo + Pyro / Hydro / Electro / Cryo",
+        elements: ["anemo", "pyro", "hydro", "electro", "cryo"],
+        short: "Spreads the swirled element as AoE; can shred RES via VV.",
+        multiplier: "×0.6 (Anemo DMG, scales on EM)",
+        details: [
+          "Anemo damage applied to a target with another element creates a Swirl burst dealing Anemo DMG and applying the swirled element to nearby enemies.",
+          "4pc Viridescent Venerer shreds 40% of the swirled element's RES for 10s — the single biggest team-DMG modifier in the game.",
+          "Swirling Hydro/Pyro/Electro/Cryo is the standard support play; Geo and Dendro do not Swirl.",
+        ],
+        examples: [
+          { id: "chasca", role: "Multi-element bullets swirl with teammates' auras." },
+          { id: "varka", role: "Anemo Claymore Hexerei — applies Anemo on-field for repeated Swirls." },
+        ],
+      },
+      {
+        id: "crystallize",
+        name: "Crystallize",
+        trigger: "Geo + Pyro / Hydro / Electro / Cryo",
+        elements: ["geo", "pyro", "hydro", "electro", "cryo"],
+        short: "Spawns an elemental shard that grants a shield.",
+        multiplier: "Shield strength scales on Geo unit's EM",
+        details: [
+          "Geo hitting an applied target removes the aura and drops a shard. Pick it up for an elemental shield.",
+          "Lunar-Crystallize (Geo + Hydro on a Moonsign team) replaces this — see Lunar reactions.",
+          "Has no direct DMG output, but a Crystallize shield grants 250% RES bonus to its own element.",
+        ],
+        examples: [
+          { id: "zibai", role: "Lunar-Crystallize on-field DPS — Geo source." },
+          { id: "linnea", role: "Lunar-Crystallize sub-DPS / healer — Geo source." },
+          { id: "xilonen", role: "Geo support; her kit is broader than Crystallize but she enables it." },
+        ],
+      },
+      {
+        id: "burning",
+        name: "Burning",
+        trigger: "Pyro + Dendro",
+        elements: ["pyro", "dendro"],
+        short: "DoT Pyro damage on the target.",
+        multiplier: "×0.25 per tick",
+        details: [
+          "Applies Pyro repeatedly on the target. Low multiplier per tick, but reliable Pyro aura application for downstream reactions.",
+          "Often unwanted — Burning eats your Dendro aura that you want for Bloom / Quicken setups.",
+        ],
+        examples: [
+          { id: "arlecchino", role: "Pyro on-field; will Burn Dendro-applied targets if your Dendro aura is exposed." },
+          { id: "lauma", role: "Dendro applicator for intentional Burning, but more often used for Bloom or Lunar-Bloom instead." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "dendro",
+    label: "Dendro family",
+    blurb:
+      "Sumeru's reaction family. Bloom-line spawns cores you detonate; Quicken-line applies an aura that buffs follow-up hits.",
+    formula:
+      "Bloom-line ignores DEF and cannot CRIT; Aggravate/Spread add a flat bonus to the triggering hit's DMG.",
+    reactions: [
+      {
+        id: "bloom",
+        name: "Bloom",
+        trigger: "Hydro + Dendro",
+        elements: ["hydro", "dendro"],
+        short: "Spawns a Dendro Core that detonates after a delay.",
+        multiplier: "×2.0 on detonation",
+        details: [
+          "Each Bloom drops a Dendro Core that explodes for AoE Dendro DMG after ~6s.",
+          "Cores can be 'overcharged' by Electro into Hyperbloom or by Pyro into Burgeon.",
+          "Scales only on the triggering character's level and EM. Ignores DEF, cannot CRIT.",
+        ],
+        examples: [
+          { id: "nefer", role: "On-field Bloom / Lunar-Bloom DPS." },
+          { id: "lauma", role: "Bloom enabler and Lunar-Bloom buffer." },
+          { id: "neuvillette", role: "Hydro applicator strong enough to flood a Bloom comp." },
+        ],
+      },
+      {
+        id: "hyperbloom",
+        name: "Hyperbloom",
+        trigger: "Bloom Core + Electro",
+        elements: ["dendro", "hydro", "electro"],
+        short: "Bloom core becomes a homing Sprawling Shot dealing Dendro DMG.",
+        multiplier: "×3.0",
+        details: [
+          "Apply Electro to a Dendro Core to fire a homing projectile that does AoE Dendro DMG.",
+          "Best Electro triggers are off-field, fast tickers (Fischl, Raiden, Yae) — keeps the trigger character on a clean EM stat line.",
+          "Ignores DEF and RES (mostly), cannot CRIT.",
+        ],
+        examples: [
+          { id: "ororon", role: "Dedicated Hyperbloom trigger — Hydro/Dendro on team, Ororon goes pure EM." },
+          { id: "fischl", role: "Backup Electro trigger via Oz — slower than Ororon but ubiquitous." },
+        ],
+      },
+      {
+        id: "burgeon",
+        name: "Burgeon",
+        trigger: "Bloom Core + Pyro",
+        elements: ["dendro", "hydro", "pyro"],
+        short: "Pyro detonates the core for big AoE Dendro DMG.",
+        multiplier: "×3.0",
+        details: [
+          "Pyro applied to a Dendro Core causes immediate AoE Dendro DMG.",
+          "Trigger character wants pure EM. Watch self-damage: Burgeon hits the trigger too unless mitigated.",
+        ],
+        examples: [
+          { id: "durin", role: "Off-field Pyro source — can trigger Burgeon while staying on his ATK build." },
+        ],
+      },
+      {
+        id: "quicken",
+        name: "Quicken (Catalyze)",
+        trigger: "Dendro + Electro",
+        elements: ["dendro", "electro"],
+        short: "Coats the target in Quicken Aura — does no damage on its own.",
+        multiplier: "No direct DMG",
+        details: [
+          "Dendro + Electro creates a Quicken Aura on the target. Quicken itself deals no damage.",
+          "Quicken Aura enables Aggravate (Electro hit) and Spread (Dendro hit).",
+        ],
+        examples: [
+          { id: "lauma", role: "Dendro applicator that maintains Quicken Aura." },
+          { id: "fischl", role: "Electro applicator for the same." },
+        ],
+      },
+      {
+        id: "aggravate",
+        name: "Aggravate",
+        trigger: "Electro hit on Quicken Aura",
+        elements: ["dendro", "electro"],
+        short: "Adds a flat Electro DMG bonus to the triggering hit.",
+        multiplier: "+1.15× base DMG instance (scales on EM)",
+        details: [
+          "The Electro hit that triggers Aggravate adds a flat damage instance scaled by triggering character's level and EM.",
+          "Unlike Hyperbloom, Aggravate damage is part of the triggering hit — so it CAN CRIT and scales with the trigger's ATK / Electro DMG%.",
+        ],
+        examples: [
+          { id: "fischl", role: "Aggravate DPS — Oz hits + her own attacks both trigger." },
+          { id: "flins", role: "Lunar-Charged primary, but his Electro CAs also enable Aggravate when Dendro is on the team." },
+        ],
+      },
+      {
+        id: "spread",
+        name: "Spread",
+        trigger: "Dendro hit on Quicken Aura",
+        elements: ["dendro", "electro"],
+        short: "Dendro version of Aggravate — same mechanic, +1.25× instead.",
+        multiplier: "+1.25× base DMG instance (scales on EM)",
+        details: [
+          "Flat damage instance added to the triggering Dendro hit. CAN CRIT.",
+          "Better per-hit bonus than Aggravate, but Dendro DPS units are rarer than Electro ones.",
+        ],
+        examples: [
+          { id: "nefer", role: "Dendro on-field DPS — Spread layers on top of her standard rotation." },
+          { id: "lauma", role: "Dendro support / sub-trigger for Spread." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "lunar",
+    label: "Lunar",
+    blurb:
+      "Hydro-line reaction variants gated by a Moonsign Benediction character (Columbina). Unlike their base reactions, Lunar reactions can land CRIT Hits.",
+    formula:
+      "Damage from each Lunar reaction sources from every character who applied its elements during the reaction — a team-stat output, not a single-trigger output.",
+    reactions: [
+      {
+        id: "lunar-charged",
+        name: "Lunar-Charged",
+        trigger: "Electro-Charged + Moonsign",
+        elements: ["hydro", "electro"],
+        short: "Electro-Charged variant that spawns a CRIT-capable Thundercloud.",
+        multiplier: "Repeated Electro DMG; can CRIT",
+        details: [
+          "Trigger an Electro-Charged with a Moonsign Benediction character (Columbina) on the team — a Thundercloud appears that continuously deals Electro DMG to nearby Wet+Electro-afflicted enemies every ~2s for the duration.",
+          "DMG draws from all characters who applied Hydro/Electro during the reaction — both the trigger and the applicator matter.",
+          "Unlike base Electro-Charged, Lunar-Charged DMG CAN CRIT.",
+        ],
+        examples: [
+          { id: "flins", role: "Lunar-Charged on-field DPS — kit literally built around this reaction." },
+          { id: "columbina", role: "Moonsign enabler. Without her in the team there is no Lunar reaction." },
+          { id: "fischl", role: "Off-field Electro contributor — Oz adds Electro applications to the rotation." },
+        ],
+      },
+      {
+        id: "lunar-bloom",
+        name: "Lunar-Bloom",
+        trigger: "Bloom + Moonsign",
+        elements: ["hydro", "dendro"],
+        short: "Bloom variant that spawns Bountiful Cores generating Verdant Dew.",
+        multiplier: "No direct DMG · grants 1 Verdant Dew after 2.5s",
+        details: [
+          "Hydro on Dendro (or vice versa) with Columbina in the party spawns a Bountiful Core. After 2.5s it grants the party 1 Verdant Dew (VD).",
+          "VD is consumed by Lunar-Bloom characters in their kits as a resource — it does not deal direct damage on its own.",
+          "Lauma and Nefer are designed around the VD economy.",
+        ],
+        examples: [
+          { id: "lauma", role: "Lunar-Bloom support — converts VD into team buffs." },
+          { id: "nefer", role: "Lunar-Bloom on-field DPS — consumes VD for empowered hits." },
+          { id: "columbina", role: "The Moonsign enabler; her burst is what produces the Lunar variant." },
+        ],
+      },
+      {
+        id: "lunar-crystallize",
+        name: "Lunar-Crystallize",
+        trigger: "Hydro + Geo + Moonsign",
+        elements: ["hydro", "geo"],
+        short: "Crystallize variant that spawns Moondrifts and a Harmony nuke at 3 stacks.",
+        multiplier: "Moondrift Harmony Geo DMG; can CRIT",
+        details: [
+          "Geo on a Hydro-applied target with Columbina present spawns three Moondrifts nearby. Trigger the reaction three times → Moondrift Harmony fires, dealing AoE Geo DMG.",
+          "Harmony DMG draws from every character who applied elements during the reaction — a team-output stat.",
+          "Lunar-Crystallize hits CAN CRIT, unlike base Crystallize.",
+        ],
+        examples: [
+          { id: "zibai", role: "Lunar-Crystallize on-field DPS — Geo trigger." },
+          { id: "linnea", role: "Lunar-Crystallize sub-DPS / healer — alternate Geo source plus sustain." },
+          { id: "columbina", role: "Moonsign enabler; her HP scales the team Lunar-reaction bonus." },
+        ],
+      },
+    ],
+  },
+];
+
+/* ============================================================
+   ROUTING (hash-based, no library)
+   ============================================================ */
+
+const ROUTES = { characters: "characters", reactions: "reactions" };
+
+function getRouteFromHash() {
+  const raw = (typeof window !== "undefined" ? window.location.hash : "") || "";
+  const key = raw.replace(/^#\/?/, "").toLowerCase();
+  if (key === ROUTES.reactions) return ROUTES.reactions;
+  return ROUTES.characters;
+}
+
+/* ============================================================
    APP
    ============================================================ */
 
 export default function App() {
+  const [route, setRoute] = useState(getRouteFromHash);
   const [progress, setProgress] = useState({});
   const [collapsed, setCollapsed] = useState({});
   const [highlightId, setHighlightId] = useState(null);
+  const [pendingScrollId, setPendingScrollId] = useState(null);
   const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(getRouteFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
 
   useEffect(() => {
     try {
@@ -518,6 +910,21 @@ export default function App() {
     }
     setHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (route !== ROUTES.characters || !pendingScrollId) return;
+    const id = pendingScrollId;
+    setPendingScrollId(null);
+    const t = window.setTimeout(() => {
+      const el = document.getElementById(`card-${id}`);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setHighlightId(id);
+      window.setTimeout(() => {
+        setHighlightId((cur) => (cur === id ? null : cur));
+      }, 1800);
+    }, 40);
+    return () => window.clearTimeout(t);
+  }, [route, pendingScrollId]);
 
   const persist = (next) => {
     setProgress(next);
@@ -558,6 +965,11 @@ export default function App() {
         // ignore
       }
     }
+    if (route !== ROUTES.characters) {
+      setPendingScrollId(id);
+      window.location.hash = "#/characters";
+      return;
+    }
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         const el = document.getElementById(`card-${id}`);
@@ -594,84 +1006,254 @@ export default function App() {
         <div className="vignette" aria-hidden="true" />
         <div className="stars" aria-hidden="true" />
 
-        <header className="top">
-          <div className="top-marks" aria-hidden="true">{"\u2726 \u2726 \u2726"}</div>
-          <h1 className="title">Almanac of the Moonbound</h1>
-          <p className="subtitle">Ideal build targets \u2014 checked when reached.</p>
+        <NavBar route={route} />
 
-          <div className="overall">
-            <div className="overall-bar">
-              <div className="overall-fill" style={{ width: `${pct}%` }} />
-            </div>
-            <div className="overall-meta">
-              <span>{doneStats} / {totalStats} stats reached</span>
-              <button className="reset" onClick={resetAll} disabled={!doneStats}>
-                Reset
-              </button>
-            </div>
-          </div>
-        </header>
+        {route === ROUTES.reactions ? (
+          <ReactionsPage onGoToCharacter={goToCharacter} />
+        ) : (
+          <>
+            <header className="top">
+              <div className="top-marks" aria-hidden="true">{"\u2726 \u2726 \u2726"}</div>
+              <h1 className="title">Almanac of the Moonbound</h1>
+              <p className="subtitle">Ideal build targets \u2014 checked when reached.</p>
 
-        <main className="elements">
-          {ELEMENT_ORDER.map((elem) => {
-            const theme = ELEMENT_THEME[elem];
-            const chars = CHARACTERS_BY_ELEMENT[elem];
-            const isOpen = !collapsed[elem];
-            const groupTotal = chars.reduce((s, c) => s + c.stats.length, 0);
-            const groupDone = chars.reduce(
-              (s, c) =>
-                s +
-                c.stats.filter((st) => progress[c.id] && progress[c.id][st.id])
-                  .length,
-              0
-            );
-            return (
-              <section
-                key={elem}
-                className="elem-section"
-                style={{ "--accent": theme.color, "--glow": theme.glow }}
-              >
-                <button
-                  className={`elem-header ${isOpen ? "open" : "closed"}`}
-                  onClick={() => toggleCollapsed(elem)}
-                  aria-expanded={isOpen}
-                  type="button"
-                >
-                  <span className="elem-caret" aria-hidden="true">
-                    <svg viewBox="0 0 10 10" className="caret-svg">
-                      <path d="M2 3 L5 7 L8 3" />
-                    </svg>
-                  </span>
-                  <h2 className="elem-title">{theme.label}</h2>
-                  <span className="elem-count">
-                    {groupDone} / {groupTotal}
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="grid">
-                    {chars.map((c) => (
-                      <CharacterCard
-                        key={c.id}
-                        char={c}
-                        checked={progress[c.id] || {}}
-                        onToggle={toggle}
-                        hydrated={hydrated}
-                        flash={highlightId === c.id}
-                        onGoTo={goToCharacter}
-                      />
-                    ))}
-                  </div>
-                )}
-              </section>
-            );
-          })}
-        </main>
+              <div className="overall">
+                <div className="overall-bar">
+                  <div className="overall-fill" style={{ width: `${pct}%` }} />
+                </div>
+                <div className="overall-meta">
+                  <span>{doneStats} / {totalStats} stats reached</span>
+                  <button className="reset" onClick={resetAll} disabled={!doneStats}>
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </header>
 
-        <footer className="bottom">
-          <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG \u00b7 Version 6.5</p>
-          <p className="bottom-faint">Progress saved locally.</p>
-        </footer>
+            <main className="elements">
+              {ELEMENT_ORDER.map((elem) => {
+                const theme = ELEMENT_THEME[elem];
+                const chars = CHARACTERS_BY_ELEMENT[elem];
+                const isOpen = !collapsed[elem];
+                const groupTotal = chars.reduce((s, c) => s + c.stats.length, 0);
+                const groupDone = chars.reduce(
+                  (s, c) =>
+                    s +
+                    c.stats.filter((st) => progress[c.id] && progress[c.id][st.id])
+                      .length,
+                  0
+                );
+                return (
+                  <section
+                    key={elem}
+                    className="elem-section"
+                    style={{ "--accent": theme.color, "--glow": theme.glow }}
+                  >
+                    <button
+                      className={`elem-header ${isOpen ? "open" : "closed"}`}
+                      onClick={() => toggleCollapsed(elem)}
+                      aria-expanded={isOpen}
+                      type="button"
+                    >
+                      <span className="elem-caret" aria-hidden="true">
+                        <svg viewBox="0 0 10 10" className="caret-svg">
+                          <path d="M2 3 L5 7 L8 3" />
+                        </svg>
+                      </span>
+                      <h2 className="elem-title">{theme.label}</h2>
+                      <span className="elem-count">
+                        {groupDone} / {groupTotal}
+                      </span>
+                    </button>
+                    {isOpen && (
+                      <div className="grid">
+                        {chars.map((c) => (
+                          <CharacterCard
+                            key={c.id}
+                            char={c}
+                            checked={progress[c.id] || {}}
+                            onToggle={toggle}
+                            hydrated={hydrated}
+                            flash={highlightId === c.id}
+                            onGoTo={goToCharacter}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
+            </main>
+
+            <footer className="bottom">
+              <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG \u00b7 Version 6.5</p>
+              <p className="bottom-faint">Progress saved locally.</p>
+            </footer>
+          </>
+        )}
       </div>
+    </>
+  );
+}
+
+/* ============================================================
+   NAV BAR
+   ============================================================ */
+
+function NavBar({ route }) {
+  return (
+    <nav className="nav" aria-label="Primary">
+      <a className="nav-brand" href="#/characters">
+        <span className="nav-brand-mark" aria-hidden="true">\u2726</span>
+        <span className="nav-brand-text">Almanac</span>
+      </a>
+      <div className="nav-links">
+        <a
+          href="#/characters"
+          className={`nav-link ${route === ROUTES.characters ? "active" : ""}`}
+          aria-current={route === ROUTES.characters ? "page" : undefined}
+        >
+          Characters
+        </a>
+        <a
+          href="#/reactions"
+          className={`nav-link ${route === ROUTES.reactions ? "active" : ""}`}
+          aria-current={route === ROUTES.reactions ? "page" : undefined}
+        >
+          Reactions
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+/* ============================================================
+   REACTIONS PAGE
+   ============================================================ */
+
+function ReactionsPage({ onGoToCharacter }) {
+  const [openId, setOpenId] = useState(null);
+  const toggle = (id) => setOpenId((cur) => (cur === id ? null : id));
+
+  return (
+    <>
+      <header className="top">
+        <div className="top-marks" aria-hidden="true">{"\u2726 \u2726 \u2726"}</div>
+        <h1 className="title">The Reactions Compendium</h1>
+        <p className="subtitle">
+          Every elemental reaction in Genshin Impact \u2014 what triggers it,
+          how the math works, who from the roster fits.
+        </p>
+      </header>
+
+      <main className="rx-page">
+        {REACTION_GROUPS.map((group) => (
+          <section key={group.id} className="rx-group">
+            <div className="rx-group-head">
+              <h2 className="rx-group-title">{group.label} reactions</h2>
+              <p className="rx-group-blurb">{group.blurb}</p>
+              {group.formula && (
+                <p className="rx-group-formula">
+                  <span className="rx-formula-tag">formula</span> {group.formula}
+                </p>
+              )}
+            </div>
+
+            <div className="rx-list">
+              {group.reactions.map((r) => {
+                const isOpen = openId === r.id;
+                return (
+                  <article
+                    key={r.id}
+                    className={`rx-card ${isOpen ? "open" : ""}`}
+                  >
+                    <button
+                      type="button"
+                      className="rx-head"
+                      onClick={() => toggle(r.id)}
+                      aria-expanded={isOpen}
+                    >
+                      <div className="rx-head-left">
+                        <h3 className="rx-name">{r.name}</h3>
+                        <span className="rx-trigger">{r.trigger}</span>
+                      </div>
+                      <div className="rx-elems" aria-hidden="true">
+                        {r.elements.map((e) => {
+                          const t = ELEMENT_THEME[e];
+                          if (!t) return null;
+                          return (
+                            <span
+                              key={e}
+                              className="rx-elem-dot"
+                              style={{ background: t.color, boxShadow: `0 0 10px ${t.glow}` }}
+                              title={t.label}
+                            />
+                          );
+                        })}
+                      </div>
+                      <span className="rx-multiplier">{r.multiplier}</span>
+                      <span className="rx-caret" aria-hidden="true">
+                        <svg viewBox="0 0 10 10" className="caret-svg">
+                          <path d="M2 3 L5 7 L8 3" />
+                        </svg>
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div className="rx-body">
+                        <p className="rx-short">{r.short}</p>
+
+                        <ul className="rx-details">
+                          {r.details.map((d, i) => (
+                            <li key={i}>{d}</li>
+                          ))}
+                        </ul>
+
+                        {r.examples && r.examples.length > 0 && (
+                          <div className="rx-examples">
+                            <div className="rx-examples-head">From the roster</div>
+                            {r.examples.map((ex) => {
+                              const c = CHARACTERS.find((x) => x.id === ex.id);
+                              if (!c) return null;
+                              const t = ELEMENT_THEME[c.element];
+                              return (
+                                <button
+                                  key={ex.id}
+                                  type="button"
+                                  className="syn-chip"
+                                  onClick={() => onGoToCharacter && onGoToCharacter(ex.id)}
+                                  style={{
+                                    "--target-accent": t.color,
+                                    "--target-glow": t.glow,
+                                  }}
+                                >
+                                  <span className="syn-name">{c.name}</span>
+                                  <span className="syn-elem">{t.label}</span>
+                                  <span className="syn-why">{ex.role}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        ))}
+      </main>
+
+      <footer className="bottom">
+        <p>
+          Cross-checked against Genshin Impact Wiki, Game8, KQM, and Icy-Veins \u00b7
+          Version 6.5 (May 2026)
+        </p>
+        <p className="bottom-faint">
+          Reactions linked to characters in the roster only.
+        </p>
+      </footer>
     </>
   );
 }
@@ -1504,6 +2086,284 @@ const styles = `
   }
 }
 
+/* ---------- Top nav ---------- */
+
+.nav {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1240px;
+  margin: 0 auto 48px;
+  padding: 14px 8px;
+  border-top: 1px solid rgba(201, 168, 106, 0.18);
+  border-bottom: 1px solid rgba(201, 168, 106, 0.10);
+}
+
+.nav-brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  color: #f3ecd6;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+  transition: opacity 200ms ease;
+}
+.nav-brand:hover { opacity: 1; }
+.nav-brand-mark { color: #c9a86a; font-size: 13px; letter-spacing: 0.6em; }
+
+.nav-links { display: flex; gap: 4px; }
+
+.nav-link {
+  display: inline-block;
+  padding: 8px 14px;
+  color: rgba(232, 228, 214, 0.5);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: all 200ms ease;
+}
+.nav-link:hover {
+  color: #f3ecd6;
+  border-color: rgba(201, 168, 106, 0.3);
+}
+.nav-link.active {
+  color: #c9a86a;
+  border-color: rgba(201, 168, 106, 0.55);
+  background: rgba(201, 168, 106, 0.06);
+}
+
+/* ---------- Reactions page ---------- */
+
+.rx-page {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.rx-group { display: flex; flex-direction: column; gap: 18px; }
+
+.rx-group-head {
+  border-bottom: 1px dashed rgba(201, 168, 106, 0.22);
+  padding-bottom: 14px;
+}
+
+.rx-group-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 30px;
+  margin: 0 0 10px;
+  color: #f3ecd6;
+  letter-spacing: 0.02em;
+}
+
+.rx-group-blurb {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(232, 228, 214, 0.68);
+  margin: 0 0 10px;
+  line-height: 1.55;
+}
+
+.rx-group-formula {
+  font-size: 12px;
+  color: rgba(232, 228, 214, 0.55);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.rx-formula-tag {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #c9a86a;
+  border: 1px solid rgba(201, 168, 106, 0.45);
+  padding: 1px 7px;
+  margin-right: 10px;
+  vertical-align: middle;
+  font-family: 'Manrope', sans-serif;
+}
+
+.rx-list { display: flex; flex-direction: column; gap: 12px; }
+
+.rx-card {
+  background: linear-gradient(180deg, rgba(20, 22, 48, 0.6) 0%, rgba(12, 14, 32, 0.78) 100%);
+  border: 1px solid rgba(201, 168, 106, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+.rx-card.open {
+  border-color: rgba(201, 168, 106, 0.32);
+  box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.6);
+}
+
+.rx-head {
+  display: grid;
+  grid-template-columns: 1fr auto auto 18px;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.rx-head:hover { background: rgba(255,255,255,0.018); }
+
+.rx-head-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.rx-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  margin: 0;
+  line-height: 1.05;
+  color: #f3ecd6;
+}
+
+.rx-trigger {
+  font-size: 10px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.55);
+}
+
+.rx-elems {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rx-elem-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rx-multiplier {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(232, 228, 214, 0.78);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rx-caret {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #c9a86a;
+}
+.rx-card .rx-caret .caret-svg {
+  stroke: #c9a86a;
+  transition: transform 220ms ease;
+}
+.rx-card:not(.open) .rx-caret .caret-svg { transform: rotate(-90deg); }
+
+.rx-body {
+  padding: 0 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.rx-body::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201, 168, 106, 0.22) 50%, transparent 100%);
+}
+
+.rx-short {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(232, 228, 214, 0.78);
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.rx-details {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(232, 228, 214, 0.86);
+}
+.rx-details li {
+  position: relative;
+  padding-left: 16px;
+}
+.rx-details li::before {
+  content: "";
+  position: absolute;
+  top: 0.7em;
+  left: 0;
+  width: 8px;
+  height: 1px;
+  background: #c9a86a;
+  opacity: 0.55;
+}
+
+.rx-examples {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.rx-examples-head {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.5);
+  margin-bottom: 2px;
+}
+
+@media (max-width: 640px) {
+  .rx-head { grid-template-columns: 1fr auto 18px; gap: 10px; padding: 14px 14px; }
+  .rx-multiplier { display: none; }
+  .rx-name { font-size: 20px; }
+  .nav { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 8px; }
+  .nav-links { justify-content: center; }
+  .nav-brand { justify-content: center; }
+  .rx-group-title { font-size: 26px; }
+}
+
 @media (max-width: 480px) {
   .page { padding: 32px 16px 60px; }
   .card { padding: 28px 20px 20px; }
@@ -1513,5 +2373,6 @@ const styles = `
   .ess-row { grid-template-columns: 56px 1fr; font-size: 12px; }
   .deep-lore { font-size: 14px; }
   .syn-name { font-size: 16px; }
+  .rx-body { padding: 0 14px 18px; }
 }
 `;
