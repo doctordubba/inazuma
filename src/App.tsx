@@ -139,6 +139,23 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "130 \u2013 160 %" },
     ],
     note: "Healing and RES shred both scale off DEF. Burst-hungry \u2014 Favonius/Freedom-Sworn ease energy.",
+    deep: {
+      lore: "A virtuoso of the Children of Echoes \u2014 the Cobalt-Tongued title marks her tongue as a forge: it shapes the Ancient Names her hammer makes flesh. She skates on metal soles she made herself, half artisan and half guerilla, treating every battlefield as another forge \u2014 hammering at enemy resistance until it gives.",
+      kit: [
+        "Skill \u2014 Yohualtecuhtin's Cleave: stamps a Source Samples ring on the marked enemy, enters Nightsoul, gains skating mobility on field.",
+        "Burst \u2014 Ocelotlicue Point!: pulses Pyro \u203a Hydro \u203a Cryo \u203a Electro in sequence, shredding RES for each element struck.",
+        "A1: while in Nightsoul, allies' Plunging Attack DMG +30%. A4: her skill DMG and her healing both scale off DEF.",
+        "4pc Scroll of the Hero of Cinder City: each Nightsoul-active ally gains +28% of their matching-element DMG; the marked enemy keeps bleeding RES.",
+      ],
+      tips: [
+        "Burst-hungry. 130\u2013160% ER is the floor; Favonius Sword's CR procs pull double duty as energy and team buff.",
+        "DEF goblet, never Geo DMG \u2014 her A4 and Lunar-Crystallize both scale off DEF, not Geo%.",
+      ],
+      synergies: [
+        { id: "varesa", why: "Her A1 plunge buff is shaped around Varesa's Vigorous Rush loop. Textbook partner." },
+        { id: "arlecchino", why: "Universal RES shred + DEF-scaling healing keep the Bond-of-Life cycle uninterrupted." },
+      ],
+    },
   },
   {
     id: "arlecchino",
@@ -275,6 +292,23 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "120 \u2013 140 %" },
     ],
     note: "Hit 120\u2013140% ER first, then chase CRIT (1:2 ratio). Long Night's Oath rewards plunge \u2192 CA \u2192 skill loops.",
+    deep: {
+      lore: "A wandering daughter of the Capybara-kin Collective of Plenty. Raised on the high plateaus, she taught herself to fight by leaping from cliffs onto whatever needed beating. Vivid Notions focuses the static she gathers in the air, turning every fall into a thunderclap \u2014 the Rebel Heir is first to leap, last to stop swinging.",
+      kit: [
+        "Skill \u2014 Vigorous Strikes: charges Nightsoul. With enough charge she enters Vigorous Rush, supercharging her next plunge with Electro.",
+        "Burst \u2014 Last Crash: massive Electro plunge AoE; refreshes Vigorous Rush on landing.",
+        "Core loop: Plunge \u203a CA \u203a Skill \u203a repeat. 4pc Long Night's Oath rewards exactly this rhythm with +25% Plunge DMG after burst/CA.",
+        "A4: after Nightsoul use, up to 160 ATK is converted into bonus EM \u2014 only relevant in Quicken/Aggravate splice teams.",
+      ],
+      tips: [
+        "Hit 120\u2013140% ER first, then chase CRIT at a 1:2 ratio. Over-ER costs more damage than over-ATK.",
+        "Vivid Notions is a meaningful jump over alternatives; Kagura's Verity is the runner-up before any CRIT weapon.",
+      ],
+      synergies: [
+        { id: "xilonen", why: "Textbook partner \u2014 plunge buff, RES shred, DEF-scaling healing all in one slot." },
+        { id: "fischl", why: "Off-field Oz adds Electro resonance ATK and a small Aggravate window when Dendro joins the team." },
+      ],
+    },
   },
   {
     id: "ororon",
@@ -380,6 +414,7 @@ const CHARACTERS_BY_ELEMENT = ELEMENT_ORDER.reduce((acc, elem) => {
 export default function App() {
   const [progress, setProgress] = useState({});
   const [collapsed, setCollapsed] = useState({});
+  const [highlightId, setHighlightId] = useState(null);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -423,6 +458,30 @@ export default function App() {
     } catch (e) {
       console.error("Failed to save:", e);
     }
+  };
+
+  const goToCharacter = (id) => {
+    const target = CHARACTERS.find((c) => c.id === id);
+    if (!target) return;
+    if (collapsed[target.element]) {
+      const next = { ...collapsed, [target.element]: false };
+      setCollapsed(next);
+      try {
+        localStorage.setItem(COLLAPSE_KEY, JSON.stringify(next));
+      } catch (e) {
+        // ignore
+      }
+    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(`card-${id}`);
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        setHighlightId(id);
+        window.setTimeout(() => {
+          setHighlightId((cur) => (cur === id ? null : cur));
+        }, 1800);
+      });
+    });
   };
 
   const resetAll = () => {
@@ -511,6 +570,8 @@ export default function App() {
                         checked={progress[c.id] || {}}
                         onToggle={toggle}
                         hydrated={hydrated}
+                        flash={highlightId === c.id}
+                        onGoTo={goToCharacter}
                       />
                     ))}
                   </div>
@@ -529,15 +590,17 @@ export default function App() {
   );
 }
 
-function CharacterCard({ char, checked, onToggle, hydrated }) {
+function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
   const theme = ELEMENT_THEME[char.element];
   const done = char.stats.filter((s) => checked[s.id]).length;
   const total = char.stats.length;
   const pct = Math.round((done / total) * 100);
+  const [showDeep, setShowDeep] = useState(false);
 
   return (
     <article
-      className="card"
+      id={`card-${char.id}`}
+      className={`card ${flash ? "flash" : ""}`}
       style={{ "--accent": theme.color, "--glow": theme.glow }}
     >
       <div className="card-corner tl" />
@@ -600,6 +663,73 @@ function CharacterCard({ char, checked, onToggle, hydrated }) {
         <p className="note">
           <span className="note-mark">\u203b</span> {char.note}
         </p>
+      )}
+
+      {char.deep && (
+        <section className="deep">
+          <button
+            type="button"
+            className={`deep-toggle ${showDeep ? "open" : "closed"}`}
+            onClick={() => setShowDeep((v) => !v)}
+            aria-expanded={showDeep}
+          >
+            <span className="deep-caret" aria-hidden="true">
+              <svg viewBox="0 0 10 10" className="caret-svg">
+                <path d="M2 3 L5 7 L8 3" />
+              </svg>
+            </span>
+            <span>Deep dive</span>
+          </button>
+          {showDeep && (
+            <div className="deep-body">
+              <p className="deep-lore">{char.deep.lore}</p>
+
+              <ul className="deep-list">
+                {char.deep.kit.map((k, i) => (
+                  <li key={i}>{k}</li>
+                ))}
+              </ul>
+
+              {char.deep.tips && char.deep.tips.length > 0 && (
+                <ul className="deep-list tips">
+                  {char.deep.tips.map((t, i) => (
+                    <li key={i}>
+                      <span className="tip-tag">tip</span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {char.deep.synergies && char.deep.synergies.length > 0 && (
+                <div className="syn-list">
+                  <div className="syn-head">Pairs with</div>
+                  {char.deep.synergies.map((s) => {
+                    const target = CHARACTERS.find((c) => c.id === s.id);
+                    if (!target) return null;
+                    const tTheme = ELEMENT_THEME[target.element];
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        className="syn-chip"
+                        onClick={() => onGoTo && onGoTo(s.id)}
+                        style={{
+                          "--target-accent": tTheme.color,
+                          "--target-glow": tTheme.glow,
+                        }}
+                      >
+                        <span className="syn-name">{target.name}</span>
+                        <span className="syn-elem">{tTheme.label}</span>
+                        <span className="syn-why">{s.why}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </section>
       )}
 
       <footer className="card-foot">
@@ -1084,6 +1214,210 @@ const styles = `
 .bottom p { margin: 4px 0; }
 .bottom-faint { opacity: 0.6; letter-spacing: 0.08em; }
 
+/* ---------- Deep dive ---------- */
+
+.deep {
+  margin: 4px 0 18px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(201, 168, 106, 0.2);
+}
+
+.deep-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  padding: 4px 0;
+  cursor: pointer;
+  transition: opacity 200ms ease;
+}
+.deep-toggle:hover { opacity: 0.78; }
+.deep-toggle .caret-svg { transition: transform 220ms ease; }
+.deep-toggle.closed .caret-svg { transform: rotate(-90deg); }
+
+.deep-caret {
+  width: 12px; height: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--accent);
+}
+
+.deep-body {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.deep-lore {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(232, 228, 214, 0.78);
+  margin: 0;
+  padding: 0 2px;
+  border-left: 2px solid rgba(201, 168, 106, 0.18);
+  padding-left: 14px;
+}
+
+.deep-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(232, 228, 214, 0.86);
+}
+.deep-list li {
+  position: relative;
+  padding-left: 16px;
+}
+.deep-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.7em;
+  left: 0;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.65;
+}
+.deep-list.tips { gap: 6px; }
+.deep-list.tips li {
+  color: rgba(232, 228, 214, 0.7);
+  font-size: 12.5px;
+  padding-left: 0;
+}
+.deep-list.tips li::before { display: none; }
+
+.tip-tag {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 1px 7px;
+  margin-right: 10px;
+  opacity: 0.7;
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
+
+.syn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.syn-head {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.5);
+  margin-bottom: 2px;
+}
+
+.syn-chip {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  row-gap: 4px;
+  align-items: baseline;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(201, 168, 106, 0.12);
+  border-left: 2px solid var(--target-accent);
+  padding: 10px 12px;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 220ms ease;
+  width: 100%;
+}
+.syn-chip:hover,
+.syn-chip:active {
+  background: rgba(0, 0, 0, 0.36);
+  border-color: var(--target-accent);
+  box-shadow: 0 0 24px -8px var(--target-glow);
+  transform: translateY(-1px);
+}
+.syn-chip:focus-visible {
+  outline: 1px solid var(--target-accent);
+  outline-offset: 2px;
+}
+
+.syn-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--target-accent);
+}
+.syn-elem {
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--target-accent);
+  opacity: 0.75;
+  white-space: nowrap;
+}
+.syn-why {
+  grid-column: 1 / -1;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(232, 228, 214, 0.72);
+}
+
+/* ---------- Flash highlight on synergy navigation ---------- */
+
+@keyframes cardFlash {
+  0% {
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.03) inset,
+      0 24px 60px -20px rgba(0,0,0,0.7),
+      0 0 40px -10px var(--glow);
+    border-color: rgba(201, 168, 106, 0.15);
+  }
+  25%, 60% {
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 24px 60px -20px rgba(0,0,0,0.7),
+      0 0 90px 0 var(--accent);
+    border-color: var(--accent);
+  }
+  100% {
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.03) inset,
+      0 24px 60px -20px rgba(0,0,0,0.7),
+      0 0 40px -10px var(--glow);
+    border-color: rgba(201, 168, 106, 0.15);
+  }
+}
+.card.flash {
+  animation: cardFlash 1.8s ease-out 1;
+  scroll-margin-top: 24px;
+}
+.card { scroll-margin-top: 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card.flash {
+    animation: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+}
+
 @media (max-width: 480px) {
   .page { padding: 32px 16px 60px; }
   .card { padding: 28px 20px 20px; }
@@ -1091,5 +1425,7 @@ const styles = `
   .stat { font-size: 12px; gap: 10px; grid-template-columns: 20px 1fr auto; }
   .stat-target { font-size: 13px; }
   .ess-row { grid-template-columns: 56px 1fr; font-size: 12px; }
+  .deep-lore { font-size: 14px; }
+  .syn-name { font-size: 16px; }
 }
 `;
