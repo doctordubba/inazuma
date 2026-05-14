@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from ‘react’;
+import React, { useState, useEffect } from “react”;
 
 /* ============================================================
 IDEAL BUILD TARGETS
@@ -7,402 +7,353 @@ Sources: Game8, KQM, Icy-Veins, GamesGG (Version 6.5, May 2026)
 
 const CHARACTERS = [
 {
-id: ‘lauma’,
-name: ‘Lauma’,
-epithet: ‘Moonchanter of Verdant Dew’,
-element: ‘dendro’,
-role: ‘Lunar-Bloom Support’,
-weaponType: ‘Catalyst’,
+id: “lauma”,
+name: “Lauma”,
+epithet: “Moonchanter of Verdant Dew”,
+element: “dendro”,
+role: “Lunar-Bloom Support”,
+weaponType: “Catalyst”,
 set: “4pc Silken Moon’s Serenade”,
-setAlt: ‘4pc Deepwood Memories · 4pc Gilded Dreams’,
+setAlt: “4pc Deepwood Memories \u00b7 4pc Gilded Dreams”,
 weapon: “Nightweaver’s Looking Glass”,
-weaponAlt: ‘A Thousand Floating Dreams · Etherlight Spindlelute (F2P)’,
-talents: ‘Skill › Burst ›› Normal’,
+weaponAlt: “A Thousand Floating Dreams \u00b7 Etherlight Spindlelute (F2P)”,
+talents: “Skill \u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘EM’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘EM’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘EM’ },
-{ id: ‘em’, label: ‘Total Elemental Mastery’, target: ‘≥ 900’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 160 %’ },
-{ id: ‘cr’, label: ‘CRIT Rate (damage build only)’, target: ‘≥ 40 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG (damage build only)’, target: ‘≥ 100 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “EM” },
+{ id: “goblet”, label: “Goblet main stat”, target: “EM” },
+{ id: “circlet”, label: “Circlet main stat”, target: “EM” },
+{ id: “em”, label: “Total Elemental Mastery”, target: “\u2265 900” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 160 %” },
+{ id: “cr”, label: “CRIT Rate (damage build only)”, target: “\u2265 40 %” },
+{ id: “cd”, label: “CRIT DMG (damage build only)”, target: “\u2265 100 %” },
 ],
-note: ‘EM is king. CRIT only matters if she is also doing personal damage.’,
+note: “EM is king. CRIT only matters if she is also doing personal damage.”,
 },
 {
-id: ‘nefer’,
-name: ‘Nefer’,
-epithet: ‘Curator of the Seeds of Deceit’,
-element: ‘dendro’,
-role: ‘Lunar-Bloom On-Field DPS’,
-weaponType: ‘Catalyst’,
+id: “nefer”,
+name: “Nefer”,
+epithet: “Curator of the Seeds of Deceit”,
+element: “dendro”,
+role: “Lunar-Bloom On-Field DPS”,
+weaponType: “Catalyst”,
 set: “4pc Night of the Sky’s Unveiling”,
-setAlt: ‘4pc Gilded Dreams · 2pc/2pc EM hybrid’,
-weapon: ‘Reliquary of Truth’,
-weaponAlt: ‘Tome of the Eternal Flow · Dawning Frost (4★)’,
-talents: ‘Skill › Burst ›› Normal’,
+setAlt: “4pc Gilded Dreams \u00b7 2pc/2pc EM hybrid”,
+weapon: “Reliquary of Truth”,
+weaponAlt: “Tome of the Eternal Flow \u00b7 Dawning Frost (4\u2605)”,
+talents: “Skill \u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘EM’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘EM’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘em’, label: ‘Total Elemental Mastery’, target: ‘900 – 1000’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 140 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “EM” },
+{ id: “goblet”, label: “Goblet main stat”, target: “EM” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “em”, label: “Total Elemental Mastery”, target: “900 \u2013 1000” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 70 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “180 \u2013 220 %” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 140 %” },
 ],
-note: ‘NotSU 4pc grants +30% CR at Ascendant Gleam — count it toward your total.’,
+note: “NotSU 4pc grants +30% CR at Ascendant Gleam \u2014 count it toward your total.”,
 },
 {
-id: ‘zibai’,
-name: ‘Zibai’,
-epithet: ‘The Selenic Adeptus Descends’,
-element: ‘geo’,
-role: ‘Lunar-Crystallize On-Field DPS’,
-weaponType: ‘Sword’,
+id: “zibai”,
+name: “Zibai”,
+epithet: “The Selenic Adeptus Descends”,
+element: “geo”,
+role: “Lunar-Crystallize On-Field DPS”,
+weaponType: “Sword”,
 set: “4pc Night of the Sky’s Unveiling”,
-setAlt: ‘4pc Husk of Opulent Dreams’,
-weapon: ‘Lightbearing Moonshard’,
-weaponAlt: ‘Uraku Misugiri · Harbinger of Dawn (3★) · Flute of Ezpitzal (F2P)’,
-talents: ‘Skill ›› Burst ›› Normal’,
+setAlt: “4pc Husk of Opulent Dreams”,
+weapon: “Lightbearing Moonshard”,
+weaponAlt: “Uraku Misugiri \u00b7 Harbinger of Dawn (3\u2605) \u00b7 Flute of Ezpitzal (F2P)”,
+talents: “Skill \u203a\u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘DEF %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF %  ⚠ not Geo %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 3000’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (+30% from set)’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘150 – 200 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “DEF %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “DEF %  \u26a0 not Geo %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “def”, label: “Total DEF”, target: “\u2265 3000” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 70 % (+30% from set)” },
+{ id: “cd”, label: “CRIT DMG”, target: “150 \u2013 200 %” },
+{ id: “er”, label: “Energy Recharge”, target: “110 \u2013 130 %” },
 ],
-note: ‘Geo DMG goblet does NOT scale Lunar-Crystallize. Always DEF%.’,
+note: “Geo DMG goblet does NOT scale Lunar-Crystallize. Always DEF%.”,
 },
 {
-id: ‘linnea’,
-name: ‘Linnea’,
-epithet: ‘Wandering Advisor of Lumi’,
-element: ‘geo’,
-role: ‘Lunar-Crystallize Sub-DPS / Healer’,
-weaponType: ‘Bow’,
-set: ‘4pc Aubade of Morningstar and Moon’,
-setAlt: ‘4pc Husk of Opulent Dreams’,
-weapon: ‘Golden Frostbound Oath’,
-weaponAlt: ‘Aqua Simulacra · Slingshot (3★)’,
-talents: ‘Skill › Burst ›› Normal’,
+id: “linnea”,
+name: “Linnea”,
+epithet: “Wandering Advisor of Lumi”,
+element: “geo”,
+role: “Lunar-Crystallize Sub-DPS / Healer”,
+weaponType: “Bow”,
+set: “4pc Aubade of Morningstar and Moon”,
+setAlt: “4pc Husk of Opulent Dreams”,
+weapon: “Golden Frostbound Oath”,
+weaponAlt: “Aqua Simulacra \u00b7 Slingshot (3\u2605)”,
+talents: “Skill \u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘DEF %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 3000’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (24.2% ascension)’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “DEF %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “DEF %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “def”, label: “Total DEF”, target: “\u2265 3000” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 70 % (24.2% ascension)” },
+{ id: “cd”, label: “CRIT DMG”, target: “\u2265 150 %” },
+{ id: “er”, label: “Energy Recharge”, target: “110 \u2013 130 %” },
 ],
-note: ‘Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage — ER is low priority.’,
+note: “Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage \u2014 ER is low priority.”,
 },
 {
-id: ‘arlecchino’,
-name: ‘Arlecchino’,
-epithet: ‘Knave of the House of the Hearth’,
-element: ‘pyro’,
-role: ‘On-Field Main DPS’,
-weaponType: ‘Polearm’,
-set: ‘4pc Fragment of Harmonic Whimsy’,
+id: “arlecchino”,
+name: “Arlecchino”,
+epithet: “Knave of the House of the Hearth”,
+element: “pyro”,
+role: “On-Field Main DPS”,
+weaponType: “Polearm”,
+set: “4pc Fragment of Harmonic Whimsy”,
 setAlt: “4pc Gladiator’s Finale (Vape teams)”,
 weapon: “Crimson Moon’s Semblance”,
-weaponAlt: ‘Staff of Homa · Staff of the Scarlet Sands’,
-talents: ‘Normal ›› Skill › Burst’,
+weaponAlt: “Staff of Homa \u00b7 Staff of the Scarlet Sands”,
+talents: “Normal \u203a\u203a Skill \u203a Burst”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK % (or EM in Vape)’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Pyro DMG %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2400’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 130 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK % (or EM in Vape)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “Pyro DMG %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “\u2265 2400” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 80 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “180 \u2013 220 %” },
+{ id: “er”, label: “Energy Recharge”, target: “100 \u2013 130 %” },
 ],
-note: ‘Bond of Life uptime drives Whimsy stacks. Target a ~1:2 CRIT ratio.’,
+note: “Bond of Life uptime drives Whimsy stacks. Target a ~1:2 CRIT ratio.”,
 },
 {
-id: ‘durin’,
-name: ‘Durin’,
-epithet: ‘The Dragon of Twin Forms’,
-element: ‘pyro’,
-role: ‘Off-Field Sub-DPS / Hexerei’,
-weaponType: ‘Sword’,
-set: ‘4pc A Day Carved from Rising Winds’,
-setAlt: ‘4pc Emblem of Severed Fate · 4pc Noblesse Oblige’,
-weapon: ‘Athame Artis’,
-weaponAlt: ‘Freedom-Sworn · Wolf-Fang (4★)’,
-talents: ‘Burst › Skill ›› Normal’,
+id: “durin”,
+name: “Durin”,
+epithet: “The Dragon of Twin Forms”,
+element: “pyro”,
+role: “Off-Field Sub-DPS / Hexerei”,
+weaponType: “Sword”,
+set: “4pc A Day Carved from Rising Winds”,
+setAlt: “4pc Emblem of Severed Fate \u00b7 4pc Noblesse Oblige”,
+weapon: “Athame Artis”,
+weaponAlt: “Freedom-Sworn \u00b7 Wolf-Fang (4\u2605)”,
+talents: “Burst \u203a Skill \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Pyro DMG %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500 (caps A4)’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 150 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “Pyro DMG %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “\u2265 2500 (caps A4)” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 70 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “\u2265 150 %” },
+{ id: “er”, label: “Energy Recharge”, target: “100 \u2013 150 %” },
 ],
-note: ‘Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.’,
+note: “Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.”,
 },
 {
-id: ‘chevreusse’,
-name: ‘Chevreusse’,
-epithet: ‘Sergeant, Special Security Patrol’,
-element: ‘pyro’,
-role: ‘Overload Support’,
-weaponType: ‘Polearm’,
-set: ‘4pc Scroll of the Hero of Cinder City’,
-setAlt: ‘4pc Noblesse Oblige · 4pc Instructor · 4pc Tenacity of the Millelith’,
-weapon: ‘Right Hand of the Boss’,
-weaponAlt: ‘Favonius Lance · Black Tassel · Prototype Starglitter (F2P)’,
-talents: ‘Burst › Skill ›› Normal’,
+id: “chevreusse”,
+name: “Chevreusse”,
+epithet: “Sergeant, Special Security Patrol”,
+element: “pyro”,
+role: “Overload Support”,
+weaponType: “Polearm”,
+set: “4pc Scroll of the Hero of Cinder City”,
+setAlt: “4pc Noblesse Oblige \u00b7 4pc Instructor \u00b7 4pc Tenacity of the Millelith”,
+weapon: “Right Hand of the Boss”,
+weaponAlt: “Favonius Lance \u00b7 Black Tassel \u00b7 Prototype Starglitter (F2P)”,
+talents: “Burst \u203a Skill \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %  (or ER if low energy)’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP %’ },
-{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘160 – 200 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “HP %  (or ER if low energy)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “HP %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “HP %” },
+{ id: “hp”, label: “Total HP”, target: “\u2265 30 000” },
+{ id: “er”, label: “Energy Recharge”, target: “160 \u2013 200 %” },
 ],
-note: “Her team buff scales off combined Pyro + Electro HP. Pure support — no CRIT needed.”,
+note: “Team buff scales off combined Pyro + Electro HP. Pure support \u2014 no CRIT needed.”,
 },
 {
-id: ‘fischl’,
-name: ‘Fischl’,
-epithet: ‘Prinzessin der Verurteilung’,
-element: ‘electro’,
-role: ‘Off-Field Sub-DPS’,
-weaponType: ‘Bow’,
-set: ‘4pc Golden Troupe’,
-setAlt: ‘4pc Thundering Fury · 2pc ATK + 2pc Electro’,
-weapon: ‘Polar Star’,
-weaponAlt: ‘Skyward Harp · The Stringless · Mitternachts Waltz (4★) · Alley Hunter’,
-talents: ‘Skill › Burst ›› Normal’,
+id: “fischl”,
+name: “Fischl”,
+epithet: “Prinzessin der Verurteilung”,
+element: “electro”,
+role: “Off-Field Sub-DPS”,
+weaponType: “Bow”,
+set: “4pc Thundering Fury”,
+setAlt: “4pc Golden Troupe \u00b7 4pc Gilded Dreams (reactions)”,
+weapon: “Polar Star”,
+weaponAlt: “Skyward Harp \u00b7 Thundering Pulse \u00b7 The Stringless (4\u2605) \u00b7 Mitternachts Waltz (4\u2605)”,
+talents: “Skill \u203a\u203a Burst \u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Electro DMG %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2200’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 150 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘130 – 150 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK % (EM in Hyperbloom)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “Electro DMG %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “\u2265 2000” },
+{ id: “cr”, label: “CRIT Rate”, target: “\u2265 70 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “\u2265 150 %” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 160 %” },
 ],
-note: ‘Oz is the damage. C6 makes her self-sufficient on energy and lifts the personal multiplier.’,
+note: “Oz is the damage. In Hyperbloom/Aggravate teams swap to full EM build (EM Sands/Goblet/Circlet, target \u2265 800).”,
 },
 {
-id: ‘flins’,
-name: ‘Flins’,
-epithet: ‘Whispers of the Wild Hunt’,
-element: ‘electro’,
-role: ‘Lunar-Charged On-Field DPS’,
-weaponType: ‘Polearm’,
+id: “flins”,
+name: “Flins”,
+epithet: “Lightkeeper Against the Wild Hunt”,
+element: “electro”,
+role: “Lunar-Charged On-Field DPS”,
+weaponType: “Polearm”,
 set: “4pc Night of the Sky’s Unveiling”,
-setAlt: ‘4pc Marechaussee Hunter (Furina teams)’,
-weapon: ‘Bloodsoaked Ruins’,
-weaponAlt: “Staff of the Scarlet Sands · Deathmatch (4★) · Prospector’s Shovel (F2P)”,
-talents: ‘Burst › Skill ›› Normal’,
+setAlt: “4pc Thundering Fury \u00b7 4pc Gilded Dreams”,
+weapon: “Bloodsoaked Ruins”,
+weaponAlt: “Staff of the Scarlet Sands \u00b7 Engulfing Lightning \u00b7 Prospector’s Shovel (craftable)”,
+talents: “Burst \u203a Skill \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK % (or ER if low energy)’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  ⚠ not Electro %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 70 % (set adds 30%)’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 175 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘125 – 140 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK % (or ER if needed)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “ATK %  \u26a0 not Electro %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “2200 \u2013 2500” },
+{ id: “cr”, label: “CRIT Rate”, target: “50 \u2013 70 % (+30% from set)” },
+{ id: “cd”, label: “CRIT DMG”, target: “\u2265 175 %” },
+{ id: “er”, label: “Energy Recharge”, target: “120 \u2013 140 %” },
 ],
-note: ‘Electro DMG goblet does NOT scale Lunar-Charged. Always ATK%.’,
+note: “Electro DMG goblet does NOT scale Lunar-Charged. ATK% goblet. A4 converts ATK \u2192 EM up to 160.”,
 },
 {
-id: ‘varesa’,
-name: ‘Varesa’,
-epithet: ‘Rising Furious Yaca’,
-element: ‘electro’,
-role: ‘Plunge On-Field DPS’,
-weaponType: ‘Catalyst’,
+id: “varesa”,
+name: “Varesa”,
+epithet: “Rebel Heir of the Collective of Plenty”,
+element: “electro”,
+role: “Plunge Hypercarry DPS”,
+weaponType: “Catalyst”,
 set: “4pc Long Night’s Oath”,
-setAlt: ‘4pc Obsidian Codex · 4pc Thundering Fury’,
-weapon: ‘Vivid Notions’,
-weaponAlt: “Kagura’s Verity · Lost Prayer · The Widsith R5 · Flowing Purity R5 (F2P)”,
-talents: ‘Skill › Burst ›› Normal’,
+setAlt: “4pc Obsidian Codex \u00b7 4pc Thundering Fury”,
+weapon: “Vivid Notions”,
+weaponAlt: “Kagura’s Verity \u00b7 Lost Prayer to the Sacred Winds \u00b7 The Widsith (4\u2605)”,
+talents: “Burst \u203a Skill \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: “ATK % (Long Night) or Electro %” },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2400’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘≥ 70 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘120 – 140 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “Electro DMG %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “\u2265 2200” },
+{ id: “cr”, label: “CRIT Rate”, target: “60 \u2013 70 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “180 \u2013 220 %” },
+{ id: “er”, label: “Energy Recharge”, target: “120 \u2013 140 %” },
 ],
-note: ‘Plunge specialist. Best in Overload-Chevreusse-Iansan or Xianyun plunge teams.’,
+note: “Hit 120\u2013140% ER first, then chase CRIT (1:2 ratio). Long Night’s Oath rewards plunge \u2192 CA \u2192 skill loops.”,
 },
 {
-id: ‘ororon’,
-name: ‘Ororon’,
-epithet: ‘Whisperer of the Night Wind’,
-element: ‘electro’,
-role: ‘Off-Field Sub-DPS’,
-weaponType: ‘Bow’,
-set: ‘4pc Scroll of the Hero of Cinder City’,
-setAlt: ‘4pc Noblesse Oblige · 4pc Thundering Fury’,
-weapon: ‘Elegy for the End’,
-weaponAlt: ‘Aqua Simulacra · Alley Hunter · Favonius Warbow · Chain Breaker (F2P)’,
-talents: ‘Burst › Skill ›› Normal’,
+id: “ororon”,
+name: “Ororon”,
+epithet: “Whisperer of the Night Kingdom”,
+element: “electro”,
+role: “Hyperbloom / Aggravate Trigger”,
+weaponType: “Bow”,
+set: “4pc Flower of Paradise Lost”,
+setAlt: “4pc Gilded Dreams \u00b7 4pc Thundering Fury (Aggravate)”,
+weapon: “The Stringless (4\u2605)”,
+weaponAlt: “Elegy for the End \u00b7 Sacrificial Bow \u00b7 Favonius Warbow \u00b7 Prototype Crescent (F2P)”,
+talents: “Skill \u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Electro DMG %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2000’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘≥ 60 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 120 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 150 % (team-dependent)’ },
+{ id: “sands”, label: “Sands main stat”, target: “EM” },
+{ id: “goblet”, label: “Goblet main stat”, target: “EM” },
+{ id: “circlet”, label: “Circlet main stat”, target: “EM” },
+{ id: “em”, label: “Total Elemental Mastery”, target: “\u2265 800” },
+{ id: “er”, label: “Energy Recharge”, target: “180 \u2013 220 %” },
 ],
-note: ‘Locked into Electro-Charged / taser teams — needs the reaction to trigger Hypersense.’,
+note: “Pure Hyperbloom trigger \u2014 no CRIT. Burst is meaningful, so high ER matters; ER weapons help most.”,
 },
 {
-id: ‘xilonen’,
-name: ‘Xilonen’,
-epithet: ‘Cloud-Striding Heartforger’,
-element: ‘geo’,
-role: ‘RES Shred Support / Healer’,
-weaponType: ‘Sword’,
-set: ‘4pc Scroll of the Hero of Cinder City’,
-setAlt: ‘4pc Song of Days Past · 4pc Noblesse Oblige · 2pc Vourukasha + 2pc HP’,
-weapon: ‘Peak Patrol Song’,
-weaponAlt: “Freedom-Sworn · Favonius Sword · Xiphos’ Moonlight (F2P)”,
-talents: ‘Burst › Skill ›› Normal’,
+id: “xilonen”,
+name: “Xilonen”,
+epithet: “Cobalt-Tongued Smith of Ochkanatlan”,
+element: “geo”,
+role: “Universal RES-Shred Support / Healer”,
+weaponType: “Sword”,
+set: “4pc Scroll of the Hero of Cinder City”,
+setAlt: “4pc Song of Days Past \u00b7 4pc Vourukasha’s Glow”,
+weapon: “Peak Patrol Song”,
+weaponAlt: “Freedom-Sworn \u00b7 Key of Khaj-Nisut \u00b7 Favonius Sword (F2P)”,
+talents: “Skill \u203a\u203a Burst \u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ER %  (then DEF %)’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘DEF % (or Geo %)’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘Healing Bonus or DEF %’ },
-{ id: ‘def’, label: ‘Total DEF’, target: ‘≥ 2500’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘160 – 200 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “DEF % (or ER)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “DEF %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “DEF % (or CRIT for sub-DPS)” },
+{ id: “def”, label: “Total DEF”, target: “\u2265 3000” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 160 %” },
 ],
-note: ‘Heal and Source Samples scale off DEF, not HP. Pump ER first — Burst is the whole point.’,
+note: “Healing and RES shred both scale off DEF. Burst-hungry \u2014 Favonius/Freedom-Sworn ease energy.”,
 },
 {
-id: ‘chasca’,
-name: ‘Chasca’,
-epithet: ‘Soulsniper of the Flower-Feather Clan’,
-element: ‘anemo’,
-role: ‘Multi-Element On-Field DPS’,
-weaponType: ‘Bow’,
-set: ‘4pc Obsidian Codex’,
-setAlt: ‘4pc Marechaussee Hunter (Furina) · 4pc Viridescent Venerer (driver build)’,
+id: “chasca”,
+name: “Chasca”,
+epithet: “Dragoon of the Flamebound Skies”,
+element: “anemo”,
+role: “Multi-Element On-Field DPS”,
+weaponType: “Bow”,
+set: “4pc Marechaussee Hunter”,
+setAlt: “4pc Long Night’s Oath \u00b7 4pc Desert Pavilion Chronicle”,
 weapon: “Astral Vulture’s Crimson Plumage”,
-weaponAlt: ‘Aqua Simulacra · The First Great Magic · Song of Stillness (F2P)’,
-talents: ‘Skill › Burst ›› Normal’,
+weaponAlt: “Polar Star \u00b7 Aqua Simulacra \u00b7 Hunter’s Path \u00b7 The Stringless (4\u2605)”,
+talents: “Skill \u203a\u203a Burst \u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  ⚠ not Anemo %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT DMG (overcap risk on CR)’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2200’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘~100 % (Codex +40, ascension +24.2)’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘110 – 130 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “ATK % (or matching Element DMG %)” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT Rate / DMG” },
+{ id: “atk”, label: “Total ATK”, target: “\u2265 2200” },
+{ id: “cr”, label: “CRIT Rate”, target: “70 \u2013 80 %” },
+{ id: “cd”, label: “CRIT DMG”, target: “180 \u2013 220 %” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 150 %” },
 ],
-note: ‘Team needs 3 PHEC elements for full shell conversion. Burst optional every other rotation.’,
+note: “Bullets convert to Pyro/Hydro/Cryo/Electro based on teammates. ATK% goblet stays neutral across teams.”,
 },
 {
-id: ‘varka’,
-name: ‘Varka’,
-epithet: ‘Grand Master of Favonius, Knight of Boreas’,
-element: ‘anemo’,
-role: ‘PHEC Infusion On-Field DPS / Hexerei’,
-weaponType: ‘Claymore’,
-set: ‘4pc A Day Carved from Rising Winds’,
-setAlt: ‘4pc Marechaussee Hunter · 2pc ATK + 2pc Anemo’,
-weapon: ‘Gest of the Mighty Wolf’,
-weaponAlt: ‘Beacon of the Reed Sea · Serpent Spine (4★ BP) · Prototype Archaic (F2P)’,
-talents: ‘Skill ›› Burst ››› Normal’,
+id: “varka”,
+name: “Varka”,
+epithet: “Grand Master of the Knights of Favonius”,
+element: “anemo”,
+role: “Hexerei On-Field DPS”,
+weaponType: “Claymore”,
+set: “4pc A Day Carved from Rising Winds”,
+setAlt: “4pc Desert Pavilion Chronicle \u00b7 4pc Shimenawa’s Reminiscence”,
+weapon: “Gest of the Mighty Wolf”,
+weaponAlt: “A Thousand Blazing Suns \u00b7 Beacon of the Reed Sea \u00b7 Serpent Spine (4\u2605)”,
+talents: “Skill \u203a\u203a\u203a\u203a Burst \u00b7 Normal (skip both)”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘ATK %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘ATK %  (multi-element damage)’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘atk’, label: ‘Total ATK’, target: ‘≥ 2500’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 % (+20% from set, ⚠ overcap)’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘≥ 180 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 130 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “ATK %” },
+{ id: “goblet”, label: “Goblet main stat”, target: “ATK % (or Pyro DMG % in Mono-Pyro)” },
+{ id: “circlet”, label: “Circlet main stat”, target: “CRIT DMG (set gives +20% CR)” },
+{ id: “atk”, label: “Total ATK”, target: “2500 \u2013 3000” },
+{ id: “cr”, label: “CRIT Rate”, target: “\u2264 80 % \u26a0 avoid overcap” },
+{ id: “cd”, label: “CRIT DMG”, target: “\u2265 200 %” },
+{ id: “er”, label: “Energy Recharge”, target: “110 \u2013 130 %” },
 ],
-note: ‘Burst is bait — leave at lv 1. 2 Anemo + 2 same PHEC = 220 % multiplier. Mono-Pyro is BiS.’,
+note: “Burst is a damage loss \u2014 keep at Lv 1, raise character to 90/100 instead. ADCFRW + Hexerei = +20% CR; watch for overcap with sig weapon.”,
 },
 {
-id: ‘columbina’,
-name: ‘Columbina’,
-epithet: ‘Damselette of the Fatui’,
-element: ‘hydro’,
-role: ‘Lunar Reaction Enabler / Sub-DPS’,
-weaponType: ‘Catalyst’,
-set: ‘4pc Aubade of Morningstar and Moon’,
-setAlt: “4pc Silken Moon’s Serenade · 4pc Night of the Sky’s Unveiling (driver build)”,
-weapon: “Columbina’s signature catalyst”,
-weaponAlt: “Surf’s Up · Sacrificial Fragments · Prototype Amber (F2P)”,
-talents: ‘Skill › Burst ›› Normal’,
+id: “kirara”,
+name: “Kirara”,
+epithet: “Courier Cat of the Komaniya Express”,
+element: “dendro”,
+role: “Shielder / Dendro Applicator”,
+weaponType: “Sword”,
+set: “4pc Tenacity of the Millelith”,
+setAlt: “4pc Instructor \u00b7 4pc Deepwood Memories \u00b7 4pc Noblesse Oblige”,
+weapon: “Key of Khaj-Nisut”,
+weaponAlt: “Freedom-Sworn \u00b7 Favonius Sword \u00b7 Sacrificial Sword \u00b7 Xiphos’ Moonlight (F2P)”,
+talents: “Skill \u203a Burst \u203a\u203a Normal”,
 stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP % (or ER)’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP % (Hydro % if driver)’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP % or CRIT’ },
-{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 35 000 (buff cap)’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘150 – 180 %’ },
-{ id: ‘cr’, label: ‘CRIT Rate (driver only)’, target: ‘≥ 50 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG (driver only)’, target: ‘≥ 120 %’ },
+{ id: “sands”, label: “Sands main stat”, target: “HP % (or ER)” },
+{ id: “goblet”, label: “Goblet main stat”, target: “HP %” },
+{ id: “circlet”, label: “Circlet main stat”, target: “HP %” },
+{ id: “hp”, label: “Total HP”, target: “\u2265 30 000” },
+{ id: “er”, label: “Energy Recharge”, target: “130 \u2013 180 %” },
 ],
-note: ‘HP buff caps at 35k — triple HP is a trap. Drop a CRIT circlet if she drives Lunar-Bloom.’,
-},
-{
-id: ‘neuvillette’,
-name: ‘Neuvillette’,
-epithet: ‘Iudex of Fontaine’,
-element: ‘hydro’,
-role: ‘On-Field Main DPS’,
-weaponType: ‘Catalyst’,
-set: ‘4pc Marechaussee Hunter’,
-setAlt: ‘4pc Golden Troupe · 4pc Heart of Depth’,
-weapon: ‘Tome of the Eternal Flow’,
-weaponAlt: ‘Lost Prayer to the Sacred Winds · Cashflow Supervision · Prototype Amber (F2P)’,
-talents: ‘Normal ›› Skill › Burst’,
-stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘Hydro DMG %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘CRIT Rate / DMG’ },
-{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000 (40k+ ideal)’ },
-{ id: ‘cr’, label: ‘CRIT Rate’, target: ‘60 – 80 %’ },
-{ id: ‘cd’, label: ‘CRIT DMG’, target: ‘180 – 220 %’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘100 – 120 %’ },
-],
-note: ‘Charged-Attack carry. HP scaling still needs CRIT — pair with Furina for Marechaussee uptime.’,
-},
-{
-id: ‘kirara’,
-name: ‘Kirara’,
-epithet: ‘Komaneko-Yamato Courier’,
-element: ‘dendro’,
-role: ‘Shielder / Off-Field Dendro’,
-weaponType: ‘Sword’,
-set: ‘4pc Tenacity of the Millelith’,
-setAlt: ‘4pc Instructor · 4pc Deepwood Memories (if no other holder)’,
-weapon: ‘Favonius Sword’,
-weaponAlt: ‘Sacrificial Sword · Freedom-Sworn · Key of Khaj-Nisut’,
-talents: ‘Skill ›› Burst ››› Normal’,
-stats: [
-{ id: ‘sands’, label: ‘Sands main stat’, target: ‘HP %’ },
-{ id: ‘goblet’, label: ‘Goblet main stat’, target: ‘HP %’ },
-{ id: ‘circlet’, label: ‘Circlet main stat’, target: ‘HP %’ },
-{ id: ‘hp’, label: ‘Total HP’, target: ‘≥ 30 000 (40k+ for endgame shield)’ },
-{ id: ‘er’, label: ‘Energy Recharge’, target: ‘150 – 200 %’ },
-],
-note: ‘Off-element shield is 250% effective. Pure HP-stacker — no CRIT, no offensive substats.’,
+note: “Shield strength scales with HP. No CRIT, no Dendro DMG goblet. Favonius/Sacrificial swords ease energy.”,
 },
 ];
 
 const ELEMENT_THEME = {
-dendro:  { color: ‘#7fb069’, glow: ‘rgba(127, 176, 105, 0.18)’, label: ‘Dendro’ },
-geo:     { color: ‘#d4a857’, glow: ‘rgba(212, 168, 87, 0.18)’,  label: ‘Geo’ },
-pyro:    { color: ‘#d96b50’, glow: ‘rgba(217, 107, 80, 0.18)’,  label: ‘Pyro’ },
-electro: { color: ‘#b48cd9’, glow: ‘rgba(180, 140, 217, 0.18)’, label: ‘Electro’ },
-anemo:   { color: ‘#76d4b8’, glow: ‘rgba(118, 212, 184, 0.18)’, label: ‘Anemo’ },
-hydro:   { color: ‘#5db4e8’, glow: ‘rgba(93, 180, 232, 0.18)’,  label: ‘Hydro’ },
+dendro:  { color: “#7fb069”, glow: “rgba(127, 176, 105, 0.18)”, label: “Dendro” },
+geo:     { color: “#d4a857”, glow: “rgba(212, 168, 87, 0.18)”,  label: “Geo” },
+pyro:    { color: “#d96b50”, glow: “rgba(217, 107, 80, 0.18)”,  label: “Pyro” },
+electro: { color: “#b07fd1”, glow: “rgba(176, 127, 209, 0.18)”, label: “Electro” },
+anemo:   { color: “#74c2a8”, glow: “rgba(116, 194, 168, 0.18)”, label: “Anemo” },
 };
 
-const STORAGE_KEY = ‘genshin-build-progress-v1’;
+const STORAGE_KEY = “genshin-build-progress-v1”;
 
 /* ============================================================
 APP
@@ -412,51 +363,46 @@ export default function App() {
 const [progress, setProgress] = useState({});
 const [hydrated, setHydrated] = useState(false);
 
-// Load saved progress on mount
 useEffect(() => {
-let cancelled = false;
-(async () => {
 try {
-const result = await window.storage.get(STORAGE_KEY);
-if (!cancelled && result?.value) {
-setProgress(JSON.parse(result.value));
+const raw = localStorage.getItem(STORAGE_KEY);
+if (raw) setProgress(JSON.parse(raw));
+} catch (e) {
+// ignore
 }
-} catch {
-// No saved state yet — that’s fine.
-} finally {
-if (!cancelled) setHydrated(true);
-}
-})();
-return () => { cancelled = true; };
+setHydrated(true);
 }, []);
 
-const toggle = async (charId, statId) => {
-const current = progress?.[charId]?.[statId] || false;
-const next = {
-…progress,
-[charId]: { …(progress[charId] || {}), [statId]: !current },
-};
+const persist = (next) => {
 setProgress(next);
 try {
-await window.storage.set(STORAGE_KEY, JSON.stringify(next));
+localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
 } catch (e) {
-console.error(‘Failed to save progress:’, e);
+console.error(“Failed to save:”, e);
 }
 };
 
-const resetAll = async () => {
-if (!window.confirm(‘Clear all checked boxes? This cannot be undone.’)) return;
+const toggle = (charId, statId) => {
+const current = (progress[charId] && progress[charId][statId]) || false;
+persist({
+…progress,
+[charId]: { …(progress[charId] || {}), [statId]: !current },
+});
+};
+
+const resetAll = () => {
+if (!window.confirm(“Clear all checked boxes? This cannot be undone.”)) return;
 setProgress({});
 try {
-await window.storage.delete(STORAGE_KEY);
+localStorage.removeItem(STORAGE_KEY);
 } catch (e) {
-console.error(e);
+// ignore
 }
 };
 
 const totalStats = CHARACTERS.reduce((s, c) => s + c.stats.length, 0);
 const doneStats = CHARACTERS.reduce(
-(s, c) => s + c.stats.filter(st => progress?.[c.id]?.[st.id]).length,
+(s, c) => s + c.stats.filter((st) => progress[c.id] && progress[c.id][st.id]).length,
 0
 );
 const pct = totalStats ? Math.round((doneStats / totalStats) * 100) : 0;
@@ -470,9 +416,9 @@ return (
 
 ```
     <header className="top">
-      <div className="top-marks" aria-hidden="true">✦ ✦ ✦</div>
+      <div className="top-marks" aria-hidden="true">{"\u2726 \u2726 \u2726"}</div>
       <h1 className="title">Almanac of the Moonbound</h1>
-      <p className="subtitle">Ideal build targets — checked when reached.</p>
+      <p className="subtitle">Ideal build targets \u2014 checked when reached.</p>
 
       <div className="overall">
         <div className="overall-bar">
@@ -500,7 +446,7 @@ return (
     </main>
 
     <footer className="bottom">
-      <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG · Version 6.5</p>
+      <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG \u00b7 Version 6.5</p>
       <p className="bottom-faint">Progress saved locally.</p>
     </footer>
   </div>
@@ -510,18 +456,17 @@ return (
 );
 }
 
-/* ============================================================
-CHARACTER CARD
-============================================================ */
-
 function CharacterCard({ char, checked, onToggle, hydrated }) {
 const theme = ELEMENT_THEME[char.element];
-const done = char.stats.filter(s => checked[s.id]).length;
+const done = char.stats.filter((s) => checked[s.id]).length;
 const total = char.stats.length;
 const pct = Math.round((done / total) * 100);
 
 return (
-<article className=“card” style={{ ‘–accent’: theme.color, ‘–glow’: theme.glow }}>
+<article
+className=“card”
+style={{ “–accent”: theme.color, “–glow”: theme.glow }}
+>
 <div className="card-corner tl" />
 <div className="card-corner tr" />
 <div className="card-corner bl" />
@@ -534,7 +479,7 @@ return (
       <span className="elem-chip">{theme.label}</span>
     </div>
     <p className="char-epithet">{char.epithet}</p>
-    <p className="char-role">{char.role} · {char.weaponType}</p>
+    <p className="char-role">{char.role} \u00b7 {char.weaponType}</p>
   </header>
 
   <section className="essentials">
@@ -544,7 +489,7 @@ return (
     </div>
     {char.setAlt && (
       <div className="ess-row faint">
-        <span className="ess-label">↳ alt</span>
+        <span className="ess-label">\u21b3 alt</span>
         <span className="ess-val">{char.setAlt}</span>
       </div>
     )}
@@ -554,7 +499,7 @@ return (
     </div>
     {char.weaponAlt && (
       <div className="ess-row faint">
-        <span className="ess-label">↳ alt</span>
+        <span className="ess-label">\u21b3 alt</span>
         <span className="ess-val">{char.weaponAlt}</span>
       </div>
     )}
@@ -581,7 +526,7 @@ return (
 
   {char.note && (
     <p className="note">
-      <span className="note-mark">※</span> {char.note}
+      <span className="note-mark">\u203b</span> {char.note}
     </p>
   )}
 
@@ -597,14 +542,10 @@ return (
 );
 }
 
-/* ============================================================
-STAT ROW (custom checkbox)
-============================================================ */
-
 function StatRow({ label, target, checked, onClick, disabled }) {
 return (
 <button
-className={`stat ${checked ? 'on' : ''}`}
+className={`stat ${checked ? "on" : ""}`}
 onClick={onClick}
 disabled={disabled}
 aria-pressed={checked}
@@ -621,21 +562,18 @@ type=“button”
 );
 }
 
-/* ============================================================
-STYLES
-============================================================ */
-
 const styles = `
 @import url(‘https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Manrope:wght@300;400;500;600;700&display=swap’);
 
-- { box-sizing: border-box; }
+- { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 .page {
 min-height: 100vh;
+min-height: 100dvh;
 background:
 radial-gradient(ellipse at 50% -10%, #1a1b3a 0%, #0a0b1c 45%, #050614 100%);
 color: #e8e4d6;
-font-family: ‘Manrope’, system-ui, sans-serif;
+font-family: ‘Manrope’, -apple-system, system-ui, sans-serif;
 font-weight: 400;
 letter-spacing: 0.01em;
 position: relative;
@@ -664,14 +602,7 @@ background-size: 100% 100%;
 background-attachment: fixed;
 }
 
-/* ––––– header ––––– */
-
-.top {
-position: relative; z-index: 1;
-max-width: 720px;
-margin: 0 auto 56px;
-text-align: center;
-}
+.top { position: relative; z-index: 1; max-width: 720px; margin: 0 auto 56px; text-align: center; }
 
 .top-marks {
 color: #c9a86a;
@@ -686,7 +617,7 @@ padding-left: 1.2em;
 font-family: ‘Cormorant Garamond’, serif;
 font-style: italic;
 font-weight: 500;
-font-size: clamp(36px, 6vw, 56px);
+font-size: clamp(34px, 7vw, 56px);
 line-height: 1.1;
 margin: 0;
 color: #f3ecd6;
@@ -705,10 +636,7 @@ margin: 8px 0 28px;
 letter-spacing: 0.04em;
 }
 
-.overall {
-max-width: 480px;
-margin: 0 auto;
-}
+.overall { max-width: 480px; margin: 0 auto; }
 
 .overall-bar {
 height: 2px;
@@ -716,14 +644,12 @@ background: rgba(201, 168, 106, 0.15);
 position: relative;
 overflow: hidden;
 }
-
 .overall-fill {
 height: 100%;
 background: linear-gradient(90deg, #c9a86a 0%, #f3ecd6 100%);
 transition: width 400ms ease;
 box-shadow: 0 0 8px rgba(201, 168, 106, 0.6);
 }
-
 .overall-meta {
 display: flex;
 justify-content: space-between;
@@ -738,23 +664,22 @@ color: rgba(232, 228, 214, 0.5);
 .reset {
 background: none;
 border: 1px solid rgba(201, 168, 106, 0.3);
-color: rgba(201, 168, 106, 0.8);
+color: rgba(201, 168, 106, 0.85);
 padding: 4px 12px;
 font-size: 10px;
-letter-spacing: 0.25em;
+letter-spacing: 0.22em;
 text-transform: uppercase;
 font-family: inherit;
 cursor: pointer;
 transition: all 200ms ease;
 }
-.reset:hover:not(:disabled) {
+.reset:hover:not(:disabled),
+.reset:active:not(:disabled) {
 background: rgba(201, 168, 106, 0.1);
 border-color: rgba(201, 168, 106, 0.6);
 color: #f3ecd6;
 }
 .reset:disabled { opacity: 0.3; cursor: not-allowed; }
-
-/* ––––– grid ––––– */
 
 .grid {
 position: relative; z-index: 1;
@@ -768,12 +693,9 @@ margin: 0 auto;
 .grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-/* ––––– card ––––– */
-
 .card {
 position: relative;
-background:
-linear-gradient(180deg, rgba(20, 22, 48, 0.7) 0%, rgba(12, 14, 32, 0.85) 100%);
+background: linear-gradient(180deg, rgba(20, 22, 48, 0.7) 0%, rgba(12, 14, 32, 0.85) 100%);
 border: 1px solid rgba(201, 168, 106, 0.15);
 padding: 32px 28px 24px;
 backdrop-filter: blur(10px);
@@ -791,12 +713,10 @@ border: 1px solid var(–accent);
 opacity: 0.55;
 pointer-events: none;
 }
-.card-corner.tl { top: 8px;    left: 8px;    border-right: none; border-bottom: none; }
-.card-corner.tr { top: 8px;    right: 8px;   border-left: none;  border-bottom: none; }
-.card-corner.bl { bottom: 8px; left: 8px;    border-right: none; border-top: none; }
-.card-corner.br { bottom: 8px; right: 8px;   border-left: none;  border-top: none; }
-
-/* card head */
+.card-corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+.card-corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+.card-corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+.card-corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
 
 .card-head { margin-bottom: 18px; }
 
@@ -847,8 +767,6 @@ margin: 0;
 opacity: 0.9;
 }
 
-/* essentials */
-
 .essentials {
 display: flex;
 flex-direction: column;
@@ -876,15 +794,11 @@ font-weight: 500;
 
 .ess-val { color: #e8e4d6; }
 
-/* divider */
-
 .divider {
 height: 1px;
 background: linear-gradient(90deg, transparent 0%, rgba(201, 168, 106, 0.25) 50%, transparent 100%);
 margin: 4px 0 16px;
 }
-
-/* stats list */
 
 .stats {
 display: flex;
@@ -898,7 +812,7 @@ display: grid;
 grid-template-columns: 22px 1fr auto;
 gap: 12px;
 align-items: center;
-padding: 10px 8px;
+padding: 12px 8px;
 background: none;
 border: none;
 border-left: 2px solid transparent;
@@ -910,12 +824,18 @@ cursor: pointer;
 transition: all 200ms ease;
 width: 100%;
 }
-.stat:hover:not(:disabled) {
+.stat:hover:not(:disabled),
+.stat:active:not(:disabled) {
 background: rgba(255, 255, 255, 0.02);
 border-left-color: rgba(201, 168, 106, 0.3);
 }
 .stat.on { border-left-color: var(–accent); }
-.stat.on .stat-label { color: rgba(232, 228, 214, 0.55); text-decoration: line-through; text-decoration-thickness: 1px; text-decoration-color: rgba(201, 168, 106, 0.5); }
+.stat.on .stat-label {
+color: rgba(232, 228, 214, 0.55);
+text-decoration: line-through;
+text-decoration-thickness: 1px;
+text-decoration-color: rgba(201, 168, 106, 0.5);
+}
 .stat.on .stat-target { color: var(–accent); opacity: 0.9; }
 .stat:disabled { opacity: 0.4; cursor: wait; }
 
@@ -926,7 +846,6 @@ display: inline-flex;
 align-items: center;
 justify-content: center;
 transition: all 200ms ease;
-position: relative;
 }
 .stat:hover:not(:disabled) .box { border-color: rgba(201, 168, 106, 0.7); }
 .stat.on .box {
@@ -948,10 +867,7 @@ transition: all 200ms ease;
 }
 .stat.on .tick { opacity: 1; transform: scale(1); }
 
-.stat-label {
-color: #e8e4d6;
-transition: color 200ms ease;
-}
+.stat-label { color: #e8e4d6; transition: color 200ms ease; }
 
 .stat-target {
 font-family: ‘Cormorant Garamond’, serif;
@@ -961,8 +877,6 @@ color: var(–accent);
 white-space: nowrap;
 letter-spacing: 0.02em;
 }
-
-/* note */
 
 .note {
 font-family: ‘Cormorant Garamond’, serif;
@@ -976,13 +890,7 @@ background: rgba(0, 0, 0, 0.2);
 border-left: 2px solid var(–accent);
 }
 
-.note-mark {
-color: var(–accent);
-font-style: normal;
-margin-right: 6px;
-}
-
-/* card foot */
+.note-mark { color: var(–accent); font-style: normal; margin-right: 6px; }
 
 .card-foot {
 display: flex;
@@ -1014,8 +922,6 @@ font-variant-numeric: tabular-nums;
 white-space: nowrap;
 }
 
-/* footer */
-
 .bottom {
 position: relative; z-index: 1;
 max-width: 720px;
@@ -1027,7 +933,7 @@ color: rgba(232, 228, 214, 0.35);
 text-transform: uppercase;
 }
 .bottom p { margin: 4px 0; }
-.bottom-faint { opacity: 0.6; letter-spacing: 0.1em; }
+.bottom-faint { opacity: 0.6; letter-spacing: 0.08em; }
 
 @media (max-width: 480px) {
 .page { padding: 32px 16px 60px; }
