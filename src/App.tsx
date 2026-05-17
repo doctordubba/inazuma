@@ -1176,7 +1176,7 @@ export default function App() {
             <header className="top">
               <div className="top-marks" aria-hidden="true">{"\u2726 \u2726 \u2726"}</div>
               <h1 className="title">Almanac of the Moonbound</h1>
-              <p className="subtitle">Ideal build targets \u2014 checked when reached.</p>
+              <p className="subtitle">Ideal build targets — checked when reached.</p>
 
               <div className="overall">
                 <div className="overall-bar">
@@ -1247,7 +1247,7 @@ export default function App() {
             </main>
 
             <footer className="bottom">
-              <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG \u00b7 Version 6.5</p>
+              <p>Targets compiled from Game8, KQM, Icy-Veins, and GamesGG · Version 6.5</p>
               <p className="bottom-faint">Progress saved locally.</p>
             </footer>
           </>
@@ -1266,7 +1266,7 @@ function NavBar({ route }) {
   return (
     <nav className="nav" aria-label="Primary">
       <a className="nav-brand" href="#/characters">
-        <span className="nav-brand-mark" aria-hidden="true">\u2726</span>
+        <span className="nav-brand-mark" aria-hidden="true">✦</span>
         <span className="nav-brand-text">Almanac</span>
       </a>
       <div className="nav-links">
@@ -1545,7 +1545,7 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
         </div>
         {char.setAlt && (
           <div className="ess-row faint">
-            <span className="ess-label">\u21b3 alt</span>
+            <span className="ess-label">↳ alt</span>
             <span className="ess-val">{char.setAlt}</span>
           </div>
         )}
@@ -1555,7 +1555,7 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
         </div>
         {char.weaponAlt && (
           <div className="ess-row faint">
-            <span className="ess-label">\u21b3 alt</span>
+            <span className="ess-label">↳ alt</span>
             <span className="ess-val">{char.weaponAlt}</span>
           </div>
         )}
@@ -1582,7 +1582,7 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
 
       {char.note && (
         <p className="note">
-          <span className="note-mark">\u203b</span> {char.note}
+          <span className="note-mark">※</span> {char.note}
         </p>
       )}
 
