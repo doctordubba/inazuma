@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FontaineQuests from "./FontaineQuests";
 
 /* ============================================================
    IDEAL BUILD TARGETS
@@ -573,8 +574,20 @@ const ELEMENT_THEME = {
   pyro:    { color: "#d96b50", glow: "rgba(217, 107, 80, 0.18)",  label: "Pyro" },
   hydro:   { color: "#6cb1da", glow: "rgba(108, 177, 218, 0.18)", label: "Hydro" },
   electro: { color: "#b07fd1", glow: "rgba(176, 127, 209, 0.18)", label: "Electro" },
+  cryo:    { color: "#a8d6e5", glow: "rgba(168, 214, 229, 0.18)", label: "Cryo" },
   anemo:   { color: "#74c2a8", glow: "rgba(116, 194, 168, 0.18)", label: "Anemo" },
 };
+
+const REGIONS = [
+  { id: "mondstadt", name: "Mondstadt",  archon: "Barbatos · Anemo Archon",            element: "anemo",   status: "stub", summary: "The City of Freedom — Mondstadt sings under the breath of Barbatos." },
+  { id: "liyue",     name: "Liyue",      archon: "Morax / Zhongli · Geo Archon",       element: "geo",     status: "stub", summary: "Land of contracts and adepti, where stone remembers longer than men." },
+  { id: "inazuma",   name: "Inazuma",    archon: "Raiden Ei · Electro Archon",         element: "electro", status: "stub", summary: "The Eternal Shogunate of stormcloud and steel, sealed behind Tatarasuna's sky." },
+  { id: "sumeru",    name: "Sumeru",     archon: "Lesser Lord Kusanali · Dendro",      element: "dendro",  status: "stub", summary: "The rainforest court of knowledge and dream, where the Akasha listens." },
+  { id: "fontaine",  name: "Fontaine",   archon: "Focalors (Furina) · Hydro Archon",   element: "hydro",   status: "full", summary: "The Court of Hydraulics — and the Iudex who judges it. Full quest tracker available." },
+  { id: "natlan",    name: "Natlan",     archon: "Mavuika · Pyro Archon",              element: "pyro",    status: "stub", summary: "Tribes, dragons, and the fire of the Children of Echoes." },
+  { id: "nod-krai",  name: "Nod-Krai",   archon: "Frostmoon · (no Archon)",            element: "cryo",    status: "stub", summary: "Northern reach of moonlit veils and the Frostmoon Scions. Home of Columbina, Jahoda, and Lauma." },
+  { id: "snezhnaya", name: "Snezhnaya",  archon: "The Tsaritsa · Cryo Archon",         element: "cryo",    status: "stub", summary: "The frozen seat of the Cryo Archon. Not yet open to travellers." },
+];
 
 const STORAGE_KEY = "genshin-build-progress-v1";
 const COLLAPSE_KEY = "genshin-build-collapsed-v1";
@@ -973,13 +986,22 @@ const REACTION_GROUPS = [
    ROUTING (hash-based, no library)
    ============================================================ */
 
-const ROUTES = { characters: "characters", reactions: "reactions" };
+const ROUTES = {
+  characters: "characters",
+  reactions:  "reactions",
+  regions:    "regions",
+  region:     "region",
+};
 
 function getRouteFromHash() {
   const raw = (typeof window !== "undefined" ? window.location.hash : "") || "";
   const key = raw.replace(/^#\/?/, "").toLowerCase();
-  if (key === ROUTES.reactions) return ROUTES.reactions;
-  return ROUTES.characters;
+  if (key === "reactions") return { page: ROUTES.reactions };
+  if (key === "regions" || key === "regions/") return { page: ROUTES.regions };
+  if (key.startsWith("regions/")) {
+    return { page: ROUTES.region, region: key.slice("regions/".length) };
+  }
+  return { page: ROUTES.characters };
 }
 
 /* ============================================================
@@ -1017,7 +1039,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (route !== ROUTES.characters || !pendingScrollId) return;
+    if (route.page !== ROUTES.characters || !pendingScrollId) return;
     const id = pendingScrollId;
     setPendingScrollId(null);
     const t = window.setTimeout(() => {
@@ -1070,7 +1092,7 @@ export default function App() {
         // ignore
       }
     }
-    if (route !== ROUTES.characters) {
+    if (route.page !== ROUTES.characters) {
       setPendingScrollId(id);
       window.location.hash = "#/characters";
       return;
@@ -1104,6 +1126,20 @@ export default function App() {
   );
   const pct = totalStats ? Math.round((doneStats / totalStats) * 100) : 0;
 
+  const isFullBleedRegion = route.page === ROUTES.region && route.region === "fontaine";
+
+  if (isFullBleedRegion) {
+    return (
+      <>
+        <style>{styles}</style>
+        <div className="region-nav-wrap">
+          <NavBar route={route} />
+        </div>
+        <FontaineQuests />
+      </>
+    );
+  }
+
   return (
     <>
       <style>{styles}</style>
@@ -1113,8 +1149,12 @@ export default function App() {
 
         <NavBar route={route} />
 
-        {route === ROUTES.reactions ? (
+        {route.page === ROUTES.reactions ? (
           <ReactionsPage onGoToCharacter={goToCharacter} />
+        ) : route.page === ROUTES.regions ? (
+          <RegionsPage />
+        ) : route.page === ROUTES.region ? (
+          <RegionStub regionId={route.region} />
         ) : (
           <>
             <header className="top">
@@ -1206,6 +1246,7 @@ export default function App() {
    ============================================================ */
 
 function NavBar({ route }) {
+  const isRegions = route.page === ROUTES.regions || route.page === ROUTES.region;
   return (
     <nav className="nav" aria-label="Primary">
       <a className="nav-brand" href="#/characters">
@@ -1215,20 +1256,111 @@ function NavBar({ route }) {
       <div className="nav-links">
         <a
           href="#/characters"
-          className={`nav-link ${route === ROUTES.characters ? "active" : ""}`}
-          aria-current={route === ROUTES.characters ? "page" : undefined}
+          className={`nav-link ${route.page === ROUTES.characters ? "active" : ""}`}
+          aria-current={route.page === ROUTES.characters ? "page" : undefined}
         >
           Characters
         </a>
         <a
           href="#/reactions"
-          className={`nav-link ${route === ROUTES.reactions ? "active" : ""}`}
-          aria-current={route === ROUTES.reactions ? "page" : undefined}
+          className={`nav-link ${route.page === ROUTES.reactions ? "active" : ""}`}
+          aria-current={route.page === ROUTES.reactions ? "page" : undefined}
         >
           Reactions
         </a>
+        <a
+          href="#/regions"
+          className={`nav-link ${isRegions ? "active" : ""}`}
+          aria-current={isRegions ? "page" : undefined}
+        >
+          Regions
+        </a>
       </div>
     </nav>
+  );
+}
+
+/* ============================================================
+   REGIONS — overview grid + per-region stub
+   ============================================================ */
+
+function RegionsPage() {
+  return (
+    <>
+      <header className="top">
+        <div className="top-marks" aria-hidden="true">{"✦ ✦ ✦"}</div>
+        <h1 className="title">The Seven Nations</h1>
+        <p className="subtitle">
+          Each region holds its own quests, archon, and story. Pick a tile to enter.
+        </p>
+      </header>
+
+      <main className="regions-grid">
+        {REGIONS.map((r) => {
+          const theme = ELEMENT_THEME[r.element];
+          const isFull = r.status === "full";
+          return (
+            <a
+              key={r.id}
+              href={`#/regions/${r.id}`}
+              className={`region-tile ${isFull ? "full" : "stub"}`}
+              style={{ "--accent": theme.color, "--glow": theme.glow }}
+            >
+              <div className="region-tile-head">
+                <h2 className="region-name">{r.name}</h2>
+                <span className="region-element-chip">{theme.label}</span>
+              </div>
+              <p className="region-archon">{r.archon}</p>
+              <p className="region-summary">{r.summary}</p>
+              <span className="region-status">
+                {isFull ? "Quest tracker available ›" : "Coming soon"}
+              </span>
+            </a>
+          );
+        })}
+      </main>
+
+      <footer className="bottom">
+        <p>Each region links to its own quest tracker · Fontaine is live · others arriving with future updates.</p>
+      </footer>
+    </>
+  );
+}
+
+function RegionStub({ regionId }) {
+  const region = REGIONS.find((r) => r.id === regionId);
+  if (!region) {
+    return (
+      <>
+        <header className="top">
+          <h1 className="title">Unknown region</h1>
+          <p className="subtitle">No region matches that path.</p>
+        </header>
+        <div className="region-stub">
+          <a className="region-back" href="#/regions">← Back to regions</a>
+        </div>
+      </>
+    );
+  }
+  const theme = ELEMENT_THEME[region.element];
+  return (
+    <>
+      <header className="top">
+        <div className="top-marks" aria-hidden="true">{"✦ ✦ ✦"}</div>
+        <h1 className="title" style={{ background: `linear-gradient(180deg, #f3ecd6 0%, ${theme.color} 100%)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+          {region.name}
+        </h1>
+        <p className="subtitle">{region.archon}</p>
+      </header>
+
+      <div className="region-stub" style={{ "--accent": theme.color, "--glow": theme.glow }}>
+        <p className="region-stub-blurb">{region.summary}</p>
+        <p className="region-stub-text">
+          The {region.name} quest tracker is in the workshop. Check back as patches roll in.
+        </p>
+        <a className="region-back" href="#/regions">← Back to regions</a>
+      </div>
+    </>
   );
 }
 
@@ -2244,6 +2376,151 @@ const styles = `
   color: #c9a86a;
   border-color: rgba(201, 168, 106, 0.55);
   background: rgba(201, 168, 106, 0.06);
+}
+
+/* ---------- Regions ---------- */
+
+.region-nav-wrap {
+  position: relative;
+  z-index: 5;
+  background: radial-gradient(ellipse at 50% 0%, #1a1b3a 0%, #0a0b1c 80%);
+  padding: 32px 20px 0;
+}
+
+.regions-grid {
+  position: relative; z-index: 1;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 720px) {
+  .regions-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 1080px) {
+  .regions-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.region-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 24px 20px;
+  text-decoration: none;
+  color: inherit;
+  background: linear-gradient(180deg, rgba(20, 22, 48, 0.7) 0%, rgba(12, 14, 32, 0.85) 100%);
+  border: 1px solid rgba(201, 168, 106, 0.12);
+  border-left: 3px solid var(--accent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 220ms ease;
+}
+.region-tile:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px -20px rgba(0,0,0,0.7), 0 0 28px -10px var(--glow);
+}
+.region-tile.stub { opacity: 0.78; }
+
+.region-tile-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.region-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 1;
+  margin: 0;
+  color: var(--accent);
+}
+
+.region-element-chip {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 3px 9px;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+
+.region-archon {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.5);
+  margin: 0;
+}
+
+.region-summary {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(232, 228, 214, 0.75);
+  line-height: 1.55;
+  margin: 4px 0 8px;
+}
+
+.region-status {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 214, 0.45);
+  margin-top: auto;
+}
+.region-tile.full .region-status { color: var(--accent); }
+
+.region-stub {
+  position: relative; z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 16px 20px 60px;
+}
+
+.region-stub-blurb {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(232, 228, 214, 0.78);
+  line-height: 1.55;
+  margin: 0 0 28px;
+  padding: 0 16px;
+  border-left: 2px solid var(--accent);
+  text-align: left;
+}
+
+.region-stub-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(232, 228, 214, 0.6);
+  margin: 0 0 28px;
+}
+
+.region-back {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 106, 0.85);
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid rgba(201, 168, 106, 0.3);
+  transition: all 200ms ease;
+}
+.region-back:hover {
+  color: #f3ecd6;
+  border-color: rgba(201, 168, 106, 0.6);
+  background: rgba(201, 168, 106, 0.08);
 }
 
 /* ---------- Reactions page ---------- */
