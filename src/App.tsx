@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import FontaineQuests from "./FontaineQuests";
 import MondstadtQuests from "./MondstadtQuests";
 import LiyueQuests from "./LiyueQuests";
+import InazumaQuests from "./InazumaQuests";
 
 /* ============================================================
    IDEAL BUILD TARGETS
@@ -583,7 +584,7 @@ const ELEMENT_THEME = {
 const REGIONS = [
   { id: "mondstadt", name: "Mondstadt",  archon: "Barbatos · Anemo Archon",            element: "anemo",   status: "full", summary: "The City of Freedom — Mondstadt sings under the breath of Barbatos. Quest tracker available (World + Story + Hangouts)." },
   { id: "liyue",     name: "Liyue",      archon: "Morax / Zhongli · Geo Archon",       element: "geo",     status: "full", summary: "Land of contracts and adepti, where stone remembers longer than men. Quest tracker available (World + Story + Hangouts)." },
-  { id: "inazuma",   name: "Inazuma",    archon: "Raiden Ei · Electro Archon",         element: "electro", status: "stub", summary: "The Eternal Shogunate of stormcloud and steel, sealed behind Tatarasuna's sky." },
+  { id: "inazuma",   name: "Inazuma",    archon: "Raiden Ei · Electro Archon",         element: "electro", status: "full", summary: "The Eternal Shogunate of stormcloud and steel, sealed behind Tatarasuna's sky. Quest tracker available (World + Story + Hangouts)." },
   { id: "sumeru",    name: "Sumeru",     archon: "Lesser Lord Kusanali · Dendro",      element: "dendro",  status: "stub", summary: "The rainforest court of knowledge and dream, where the Akasha listens." },
   { id: "fontaine",  name: "Fontaine",   archon: "Focalors (Furina) · Hydro Archon",   element: "hydro",   status: "full", summary: "The Court of Hydraulics — and the Iudex who judges it. Full quest tracker available." },
   { id: "natlan",    name: "Natlan",     archon: "Mavuika · Pyro Archon",              element: "pyro",    status: "stub", summary: "Tribes, dragons, and the fire of the Children of Echoes." },
@@ -1132,6 +1133,7 @@ export default function App() {
     fontaine:  FontaineQuests,
     mondstadt: MondstadtQuests,
     liyue:     LiyueQuests,
+    inazuma:   InazumaQuests,
   };
   const FullBleedComponent =
     route.page === ROUTES.region ? FULL_BLEED_REGIONS[route.region] : null;
