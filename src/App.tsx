@@ -1580,7 +1580,7 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
           <span className="elem-chip">{theme.label}</span>
         </div>
         <p className="char-epithet">{char.epithet}</p>
-        <p className="char-role">{char.role} \u00b7 {char.weaponType}</p>
+        <p className="char-role">{char.role} · {char.weaponType}</p>
       </header>
 
       <section className="essentials">
