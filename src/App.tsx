@@ -250,7 +250,7 @@ const CHARACTERS = [
       { id: "atk", label: "Base ATK (weapon + character)", target: "as high as possible \u2014 drives the buff" },
       { id: "er", label: "Energy Recharge", target: "200 \u2013 260 %" },
     ],
-    note: "His Burst ATK buff scales off Bennett's BASE ATK (weapon + character), NOT total ATK \u2014 high-base weapons like Aquila Favonia matter more than substat ATK %. C6 forces Pyro infusion on the active Sword/Claymore/Polearm and ruins most reaction teams. Skip C6 unless running mono-Pyro.",
+    note: "His Burst ATK buff scales off Bennett's BASE ATK (weapon + character), NOT total ATK \u2014 high-base weapons like Aquila Favonia matter more than substat ATK %. C6's Pyro infusion has a lingering 'trap' reputation, but in 2026 almost every modern melee DPS auto-infuses (Hu Tao, Diluc, Yoimiya, Arlecchino, Mavuika \u2026), so there is nothing to override \u2014 for those teams C6 is effectively free +15 % Pyro DMG. Only skip C6 if you specifically run a melee NA DPS that needs a non-Pyro element on the swing (Physical Razor, no-skill-infusion Keqing, old Aggravate/Hyperbloom melee setups).",
     deep: {
       lore: "Mondstadt's most cheerful tragedy. Bennett was found as a baby outside the city and adopted by Benny's Adventure Team \u2014 a guild of five elderly adventurers who took turns raising him. He is so persistently unlucky that the rest of his team usually stays in town because joining one of his expeditions triples the chance of catastrophe. None of this has dimmed him: he still leads, still grins, still drags himself out of every collapsed ruin and logs it as a successful expedition. The Pyro Vision suits him \u2014 warmth, steady flame, a refusal to be put out.",
       kit: [
@@ -260,13 +260,13 @@ const CHARACTERS = [
         "A1 \u2014 Rekindle: Bennett's own Charged Attack stamina cost \u221250%. Niche.",
         "A4 \u2014 Fearnaught: inside his own Burst field, his Skill CD is reduced 50% and the Hold variant stops launching him backward.",
         "C1 \u2014 Grand Adventurer's Heart: raises the talent ceiling on the Burst's ATK buff. The first real damage power-spike.",
-        "C6 \u2014 Fire Ventures with Me: active characters in the field gain Pyro Infusion on Sword/Claymore/Polearm Normal Attacks and +15% Pyro DMG. Overwrites your DPS's element \u2014 take ONLY for mono-Pyro teams.",
+        "C6 \u2014 Fire Ventures with Me: active characters in the field gain Pyro Infusion on Sword/Claymore/Polearm Normal Attacks and +15% Pyro DMG. Overrides the NA element ONLY if the DPS doesn't already auto-infuse \u2014 a problem for Physical DPS or non-auto-infusion melee NA comps; harmless for Hu Tao, Diluc, Yoimiya, Klee, Arlecchino, Mavuika, and basically every modern Pyro DPS.",
       ],
       tips: [
         "Base ATK is the lever, not substat ATK %. Aquila Favonia is BiS specifically for its high base ATK; Mistsplitter and other high-base 5\u2605 swords work; Festering Desire R5 is the 4\u2605 alternative when accessible.",
         "Aim for ~200% ER as a baseline; 240-260% if running double Pyro or low-particle teams. Sands ER until the cap, THEN swap to ATK % \u2014 his ATK % does NOT enter the buff formula, but it makes his own hits matter if he ever attacks.",
         "4pc Noblesse Oblige is the canonical set: stacking NO on Bennett hands the whole party +20% ATK on top of his Burst buff. Instructor 4pc is a niche pick for EM-share teams (Sucrose Burgeon).",
-        "DO NOT level him to C6 unless you specifically want Pyro override. C6 ruins Hyperbloom, Aggravate, Freeze, and any non-Pyro on-field DPS. It is a trap constellation for most accounts.",
+        "C6 is widely called a 'trap' but the reputation is outdated. Its Pyro infusion only overrides melee NAs that AREN'T already auto-infused, and almost every modern on-field DPS auto-infuses on their own. KQM and community consensus in 2026: take C6 freely on most accounts — the +15 % Pyro DMG and infusion are clean upside. The legacy exceptions (Physical Razor, old Aggravate/Hyperbloom-with-melee-NA, Keqing without skill infusion) are now niche.",
         "His field is stationary. Place it where the DPS will stand; against mobile bosses, recast or kite the boss into the circle.",
       ],
       synergies: [
