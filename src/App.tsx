@@ -415,6 +415,32 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "120 \u2013 140 %" },
     ],
     note: "Electro DMG goblet does NOT scale Lunar-Charged. ATK% goblet. A4 converts ATK \u2192 EM up to 160.",
+    deep: {
+      lore: "Flins, the Lightkeeper Against the Wild Hunt \u2014 born of Nod-Krai, raised in the watchtower-cloisters that ring the Frostmoon plains. The Lightkeepers are an order older than the Scions, sworn to hold the line at moonrise when the Wild Hunt \u2014 the Frostmoon's white-eyed shades and their hungering riders \u2014 break across the northern reach. He carries an oath-polearm whose haft is bound in cold iron and whose head is etched with a Lunar Sigil; tradition says it has been re-forged in every generation but never re-named.",
+      kit: [
+        "Normal Attack \u2014 four-stage polearm chain dealing Electro DMG (auto-infused). Charged Attacks consume stamina to deliver a heavier Electro stab that builds the Lightkeeper's Vigil meter.",
+        "Skill \u2014 Sigil of the Lightkeeper: plants a stationary Lunar Sigil on the ground. The Sigil pulses Electro DMG to nearby enemies every ~1.5 s and applies Electro at a steady rate (off-field-capable Electro source). If the Sigil overlaps with a Hydro-affected enemy, his CAs trigger Electro-Charged with bonus DMG.",
+        "Burst \u2014 Eclipse Verdict: gathers Lightkeeper's Vigil into a single overhead strike that deals massive AoE Electro DMG, then drops a residual Lunar field for 8 s. Inside the field, his Normal and Charged Attacks gain a flat DMG bonus AND every Electro-Charged he triggers is upgraded into Lunar-Charged if a Moonsign Benediction character (Columbina) is in the party.",
+        "A1 \u2014 Hunt Endures: each Charged Attack that hits a Hydro-affected target restores 2 Energy to Flins and reduces his Skill CD by 1 s. The rotation engine \u2014 keeps Sigil and Burst on cooldown if Hydro uptime is high.",
+        "A4 \u2014 Cold Iron in the Heart: Flins converts a portion of his ATK above 1000 into Elemental Mastery, at a 0.16:1 ratio, capped at +160 EM. This is the formula reason ATK% double-dips on him: it lifts his hits AND his Lunar-Charged / Aggravate scaling. Stack ATK%, take the EM free.",
+        "C1 \u2014 Lightkeeper's Mark: the Sigil from his Skill marks the first enemy it pulses; that enemy takes +20 % Lunar-Charged / Electro-Charged DMG from Flins's attacks. Single-target boss melter.",
+        "C2 \u2014 White-Eye Reckoning: Burst CD \u221220 %. The breakpoint constellation \u2014 drops the rotation from 18 s to 14.4 s and almost always keeps Eclipse Verdict ready for the next Sigil cycle.",
+        "C6 \u2014 When the Hunt Returns: while inside his Burst field, his Charged Attacks fire a phantom polearm echo that deals an additional Electro DMG instance scaled on ATK + EM (the A4 cap is removed for the echo's calculation, so EM keeps scaling past 160 here).",
+      ],
+      tips: [
+        "ATK % goblet, not Electro DMG %. Lunar-Charged damage is a TEAM-output reaction (draws from every character who applied Hydro/Electro during the reaction) \u2014 Electro DMG % on Flins only buffs his own Electro hits, which are a smaller fraction of his total than the Lunar-Charged ticks. ATK % goblet feeds his hits AND the A4 EM cap AND the Lunar-Charged scaling.",
+        "A4 makes ATK % a dual-stat. Every +46.6 % ATK Sands you stack moves you closer to the +160 EM cap, which then amplifies every Lunar-Charged / Electro-Charged / (Aggravate if Dendro) tick. Target ~2400 ATK to comfortably hit the cap.",
+        "ER 120-140 % is enough at C0 because A1 self-refunds energy on Hydro-CA hits. Pure-Electro teams without a Hydro applicator need 160-180 % ER to stay on-rotation.",
+        "Hexerei: he is NOT Hexerei (Nod-Krai, not Hexenzirkel). Do not slot him into ADCFRW or Durin A1 calculations.",
+        "Aggravate fallback: if you have a Dendro core in the team and no Columbina, his Electro CAs trigger Aggravate cleanly. The build doesn't change \u2014 ATK% / A4 EM still wants the same substats \u2014 but you swap 4pc Night of the Sky's Unveiling for 4pc Thundering Fury and re-prioritise CRIT.",
+      ],
+      synergies: [
+        { id: "columbina", why: "Moonsign enabler. Without her in the party Flins is a competent Electro DPS; with her his entire Burst-field rotation upgrades to Lunar-Charged, which scales on team HP and stacks Columbina's +0.2 %/1000-HP DMG bonus on top. The textbook pairing \u2014 Flins's kit is literally built around her." },
+        { id: "neuvillette", why: "Hydro flood for Electro-Charged uptime. Neuvillette's continuous CA Hydro application keeps Flins's Sigil + A1 loop fed and turns every CA hit into an Electro-Charged tick (or Lunar-Charged with Columbina). Hydro Resonance also gives the team +25 % Max HP, scaling Columbina's Lunar contribution." },
+        { id: "mona", why: "Off-field Hydro + Omen amplifier. Mona's Skill plants Hydro on enemies for Flins's Electro-Charged base, and Omen's damage-taken debuff lifts every Lunar-Charged tick on the marked enemy. TTDS R5 transfers +48 % ATK on swap, which double-dips through A4 into +EM." },
+        { id: "fischl", why: "Off-field Electro tick from Oz keeps Electro aura up when Flins swaps out, and her Electro DMG contributes to the Lunar-Charged team-output pool. Off-field-only \u2014 Fischl never competes with Flins for field time." },
+      ],
+    },
   },
   {
     id: "varesa",
