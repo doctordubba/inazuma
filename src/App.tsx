@@ -34,7 +34,28 @@ const CHARACTERS = [
       { id: "cr", label: "CRIT Rate (damage build only)", target: "\u2265 40 %" },
       { id: "cd", label: "CRIT DMG (damage build only)", target: "\u2265 100 %" },
     ],
-    note: "EM is king. CRIT only matters if she is also doing personal damage.",
+    note: "Account-state: C2 + Nightweaver's Looking Glass. EM is king. CRIT only matters if she is also doing personal damage.",
+    deep: {
+      lore: "Lauma, the Moonchanter of Verdant Dew — a singer of Nod-Krai whose voice draws the Frostmoon's sap from the ground and weaves it into Verdant Dew. She tends the moonlit orchards that ring the northern reach, coaxing growth from frozen soil with hymns older than the Scions.",
+      kit: [
+        "Skill — plants a Verdant Dew field that pulses Dendro DMG and applies Dendro to nearby enemies, seeding Bloom cores when Hydro is present.",
+        "Burst — empowers the party's Bloom and Lunar-Bloom reactions for the duration, granting bonus EM and converting Bloom cores into Bountiful Cores when Columbina's Moonsign is active.",
+        "A1 — each Verdant Dew consumed by allies grants Lauma a stack of Moonchanter's Blessing, raising her own EM.",
+        "A4 — after Skill, party members who trigger Bloom or Lunar-Bloom gain bonus EM scaling on Lauma's total EM.",
+        "C2 — Twine Warnings and Tales From the North: Bloom reaction DMG +500% of EM. Lunar-Bloom DMG +400% of EM. At full stacks, Lunar-Bloom +40% boost. ~80-120% damage increase over C1.",
+      ],
+      tips: [
+        "EM triple-stack (Sands / Goblet / Circlet). Every point of EM feeds her personal damage, her team buff, and her C2 scaling simultaneously.",
+        "ER 130-160% is comfortable — her Skill generates particles on each pulse, and Dendro Resonance provides team EM.",
+        "BiS weapon Nightweaver's Looking Glass — Millennial Hymn passive gives +60 EM from Skill and +60 EM from Lunar-Bloom, and when both are active, party Bloom DMG +120%, Hyperbloom/Burgeon DMG +80%, Lunar-Bloom DMG +40%. Defines the Lunar-Bloom rotation: Skill first, then trigger Lunar-Bloom within 4.5s to overlap both buffs.",
+        "C2 is the breakpoint constellation — Bloom reaction DMG scales +500% of EM and Lunar-Bloom +400% of EM. At full stacks, Lunar-Bloom gets an additional +40% boost, giving ~80-120% more total damage over C1.",
+      ],
+      synergies: [
+        { id: "columbina", why: "Moonsign enabler — converts Lauma's Bloom cores into Lunar-Bloom's Bountiful Cores. Columbina's HP scaling adds the Lunar reaction DMG bonus on top of Lauma's EM scaling." },
+        { id: "nefer", why: "Lunar-Bloom DPS pair. Lauma seeds the Verdant Dew that Nefer consumes for empowered hits. Both want EM, and Dendro Resonance gives them +50 EM baseline." },
+        { id: "neuvillette", why: "Hydro flood for Bloom core generation. Neuvillette's continuous CA Hydro application keeps Lauma's Dendro field seeding cores at maximum rate." },
+      ],
+    },
   },
   {
     id: "nefer",
@@ -57,7 +78,29 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "180 \u2013 220 %" },
       { id: "er", label: "Energy Recharge", target: "130 \u2013 140 %" },
     ],
-    note: "NotSU 4pc grants +30% CR at Ascendant Gleam \u2014 count it toward your total.",
+    note: "Account-state: C2 + Reliquary of Truth. NotSU 4pc grants +30% CR at Ascendant Gleam \u2014 count it toward your total.",
+    deep: {
+      lore: "Nefer, the Curator of the Seeds of Deceit \u2014 a keeper of forbidden knowledge in Nod-Krai's northern intelligence network. She cultivates deceptions as others cultivate gardens, planting illusions that bloom into truths no one asked for. Jahoda works for her; the Frostmoon Scions fear her; even Columbina watches her from a respectful distance.",
+      kit: [
+        "Normal Attack \u2014 Dendro Catalyst strikes that build Veil of Falsehood stacks on hit.",
+        "Skill \u2014 Seeds of Deceit: plants a Dendro field that applies Dendro and generates Bloom / Lunar-Bloom cores when Hydro is present. Grants the Secret of Lies EM buff from her weapon.",
+        "Burst \u2014 Unveiling: consumes Veil of Falsehood stacks for a massive AoE Dendro nuke, then enters Ascendant Gleam state with enhanced Charged Attacks.",
+        "A1 \u2014 Veil of Falsehood stacks grant increasing EM, making her Bloom and Spread damage scale with rotation length.",
+        "A4 \u2014 during Ascendant Gleam, Charged Attacks that trigger Spread or Lunar-Bloom gain bonus DMG scaling on total EM.",
+        "C2 \u2014 increases Veil of Falsehood stacks limit and duration, buffs Charged Attack DMG, and provides valuable EM buffs. Passive Talent gets higher EM values.",
+      ],
+      tips: [
+        "EM Sands + EM Goblet + CRIT Circlet. EM double-dips on her Spread hits and her Bloom/Lunar-Bloom scaling; CRIT Circlet pushes her personal damage ceiling.",
+        "Target 900-1000 EM total. Past 1000, diminishing returns set in for Bloom/Spread \u2014 pivot to CRIT substats.",
+        "BiS weapon Reliquary of Truth \u2014 CRIT Rate +8%, Skill grants +80 EM (Secret of Lies, 12s), Lunar-Bloom hits give +24% CRIT DMG (Moon of Truth, 4s). Both active simultaneously \u2192 both effects +50% (so +120 EM and +36% CRIT DMG). Rotation: Skill \u2192 attack within 12s to stack both effects.",
+        "C2 is the damage breakpoint \u2014 higher Veil of Falsehood cap means more stacks before Burst, which means a bigger nuke and longer Ascendant Gleam window.",
+      ],
+      synergies: [
+        { id: "lauma", why: "Dendro Resonance + Lunar-Bloom pair. Lauma's Verdant Dew feeds Nefer's empowered hits; both scale on EM." },
+        { id: "jahoda", why: "Lore tie \u2014 Jahoda works for Nefer's intelligence network. VV shreds Dendro RES for Nefer's Spread hits; +100 EM heal passive stacks with Nefer's own EM scaling." },
+        { id: "columbina", why: "Moonsign enabler. Converts Nefer's Bloom cores into Lunar-Bloom, unlocking the reaction that her kit is built around." },
+      ],
+    },
   },
   {
     id: "kirara",
@@ -124,7 +167,26 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "\u2265 150 %" },
       { id: "er", label: "Energy Recharge", target: "110 \u2013 130 %" },
     ],
-    note: "Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage \u2014 ER is low priority.",
+    note: "Account-state: BiS weapon Golden Frostbound Oath. Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage \u2014 ER is low priority.",
+    deep: {
+      lore: "Linnea, the Wandering Advisor of Lumi \u2014 a Geo archer from the luminous reaches of Nod-Krai who heals allies with crystallized moonlight and strikes from the rear line. She advises the Lumi tribe on matters of defence and medicine, preferring to let her arrows and her shields speak louder than her counsel.",
+      kit: [
+        "Skill \u2014 Mooncrystal Volley: fires a spread of Geo arrows that deal Geo DMG and generate Crystallize shards on contact with elemental auras. With Columbina's Moonsign, these become Lunar-Crystallize triggers.",
+        "Burst \u2014 Lumi's Aegis: creates a healing field that restores party HP based on Linnea's DEF. Sustain tool, not a damage source \u2014 ER is low priority.",
+        "A1 \u2014 picking up Crystallize shards grants Linnea DEF% for a short duration, stacking her damage and healing simultaneously.",
+        "A4 \u2014 Lunar-Crystallize Moondrift Harmony hits gain bonus DMG scaling on Linnea's DEF above 2000.",
+        "Ascension stat: 24.2% CRIT Rate at Lv 90 \u2014 significantly reduces CRIT Rate substat requirements.",
+      ],
+      tips: [
+        "DEF% Sands + DEF% Goblet + CRIT Circlet. Her healing, her Lunar-Crystallize damage, and her A4 bonus all scale on DEF.",
+        "Aubade of Morningstar and Moon 4pc needs Ascendant Gleam to fully activate \u2014 ensure a Moonsign character (Columbina) is on the team.",
+        "BiS weapon Golden Frostbound Oath \u2014 542 Base ATK, 88.2% CRIT DMG. Frost Fae's Favor: DEF +16%, Skill or Lunar-Crystallize hits \u2192 Geo DMG +40% and Lunar-Crystallize Reaction DMG +40% for 6s. 20% party-wide Geo/Lunar-Crystallize boost from Frost Fae's Mischief.",
+      ],
+      synergies: [
+        { id: "columbina", why: "Moonsign enabler \u2014 Linnea's Geo + Columbina's Hydro creates Lunar-Crystallize. Linnea also heals, covering Columbina's sustain gap." },
+        { id: "zibai", why: "Dual Geo for Geo Resonance (+15% DMG when shielded). Both trigger Lunar-Crystallize from different angles \u2014 Zibai on-field, Linnea off-field." },
+      ],
+    },
   },
   {
     id: "xilonen",
@@ -285,7 +347,7 @@ const CHARACTERS = [
     weaponType: "Catalyst",
     set: "4pc Tenacity of the Millelith",
     setAlt: "4pc Noblesse Oblige (sole buffer) \u00b7 4pc Vourukasha's Glow (HP / shield hybrid) \u00b7 2pc Tenacity + 2pc ATK %",
-    weapon: "Arcane Projection (signature 5\u2605 \u2014 leak)",
+    weapon: "Angelos' Heptades (Seven Edicts of Dust and Light)",
     weaponAlt: "Sacrificial Jade \u00b7 Tome of the Eternal Flow \u00b7 A Thousand Floating Dreams \u00b7 Wandering Evenstar (4\u2605 EM / ATK hybrid)",
     talents: "Skill \u203a Burst \u203a\u203a Normal",
     stats: [
