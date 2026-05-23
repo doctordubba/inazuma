@@ -34,7 +34,28 @@ const CHARACTERS = [
       { id: "cr", label: "CRIT Rate (damage build only)", target: "\u2265 40 %" },
       { id: "cd", label: "CRIT DMG (damage build only)", target: "\u2265 100 %" },
     ],
-    note: "EM is king. CRIT only matters if she is also doing personal damage.",
+    note: "Account-state: C2 + Nightweaver's Looking Glass. EM is king. CRIT only matters if she is also doing personal damage.",
+    deep: {
+      lore: "Lauma, the Moonchanter of Verdant Dew — a singer of Nod-Krai whose voice draws the Frostmoon's sap from the ground and weaves it into Verdant Dew. She tends the moonlit orchards that ring the northern reach, coaxing growth from frozen soil with hymns older than the Scions.",
+      kit: [
+        "Skill — plants a Verdant Dew field that pulses Dendro DMG and applies Dendro to nearby enemies, seeding Bloom cores when Hydro is present.",
+        "Burst — empowers the party's Bloom and Lunar-Bloom reactions for the duration, granting bonus EM and converting Bloom cores into Bountiful Cores when Columbina's Moonsign is active.",
+        "A1 — each Verdant Dew consumed by allies grants Lauma a stack of Moonchanter's Blessing, raising her own EM.",
+        "A4 — after Skill, party members who trigger Bloom or Lunar-Bloom gain bonus EM scaling on Lauma's total EM.",
+        "C2 — Twine Warnings and Tales From the North: Bloom reaction DMG +500% of EM. Lunar-Bloom DMG +400% of EM. At full stacks, Lunar-Bloom +40% boost. ~80-120% damage increase over C1.",
+      ],
+      tips: [
+        "EM triple-stack (Sands / Goblet / Circlet). Every point of EM feeds her personal damage, her team buff, and her C2 scaling simultaneously.",
+        "ER 130-160% is comfortable — her Skill generates particles on each pulse, and Dendro Resonance provides team EM.",
+        "BiS weapon Nightweaver's Looking Glass — Millennial Hymn passive gives +60 EM from Skill and +60 EM from Lunar-Bloom, and when both are active, party Bloom DMG +120%, Hyperbloom/Burgeon DMG +80%, Lunar-Bloom DMG +40%. Defines the Lunar-Bloom rotation: Skill first, then trigger Lunar-Bloom within 4.5s to overlap both buffs.",
+        "C2 is the breakpoint constellation — Bloom reaction DMG scales +500% of EM and Lunar-Bloom +400% of EM. At full stacks, Lunar-Bloom gets an additional +40% boost, giving ~80-120% more total damage over C1.",
+      ],
+      synergies: [
+        { id: "columbina", why: "Moonsign enabler — converts Lauma's Bloom cores into Lunar-Bloom's Bountiful Cores. Columbina's HP scaling adds the Lunar reaction DMG bonus on top of Lauma's EM scaling." },
+        { id: "nefer", why: "Lunar-Bloom DPS pair. Lauma seeds the Verdant Dew that Nefer consumes for empowered hits. Both want EM, and Dendro Resonance gives them +50 EM baseline." },
+        { id: "neuvillette", why: "Hydro flood for Bloom core generation. Neuvillette's continuous CA Hydro application keeps Lauma's Dendro field seeding cores at maximum rate." },
+      ],
+    },
   },
   {
     id: "nefer",
@@ -57,7 +78,29 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "180 \u2013 220 %" },
       { id: "er", label: "Energy Recharge", target: "130 \u2013 140 %" },
     ],
-    note: "NotSU 4pc grants +30% CR at Ascendant Gleam \u2014 count it toward your total.",
+    note: "Account-state: C2 + Reliquary of Truth. NotSU 4pc grants +30% CR at Ascendant Gleam \u2014 count it toward your total.",
+    deep: {
+      lore: "Nefer, the Curator of the Seeds of Deceit \u2014 a keeper of forbidden knowledge in Nod-Krai's northern intelligence network. She cultivates deceptions as others cultivate gardens, planting illusions that bloom into truths no one asked for. Jahoda works for her; the Frostmoon Scions fear her; even Columbina watches her from a respectful distance.",
+      kit: [
+        "Normal Attack \u2014 Dendro Catalyst strikes that build Veil of Falsehood stacks on hit.",
+        "Skill \u2014 Seeds of Deceit: plants a Dendro field that applies Dendro and generates Bloom / Lunar-Bloom cores when Hydro is present. Grants the Secret of Lies EM buff from her weapon.",
+        "Burst \u2014 Unveiling: consumes Veil of Falsehood stacks for a massive AoE Dendro nuke, then enters Ascendant Gleam state with enhanced Charged Attacks.",
+        "A1 \u2014 Veil of Falsehood stacks grant increasing EM, making her Bloom and Spread damage scale with rotation length.",
+        "A4 \u2014 during Ascendant Gleam, Charged Attacks that trigger Spread or Lunar-Bloom gain bonus DMG scaling on total EM.",
+        "C2 \u2014 increases Veil of Falsehood stacks limit and duration, buffs Charged Attack DMG, and provides valuable EM buffs. Passive Talent gets higher EM values.",
+      ],
+      tips: [
+        "EM Sands + EM Goblet + CRIT Circlet. EM double-dips on her Spread hits and her Bloom/Lunar-Bloom scaling; CRIT Circlet pushes her personal damage ceiling.",
+        "Target 900-1000 EM total. Past 1000, diminishing returns set in for Bloom/Spread \u2014 pivot to CRIT substats.",
+        "BiS weapon Reliquary of Truth \u2014 CRIT Rate +8%, Skill grants +80 EM (Secret of Lies, 12s), Lunar-Bloom hits give +24% CRIT DMG (Moon of Truth, 4s). Both active simultaneously \u2192 both effects +50% (so +120 EM and +36% CRIT DMG). Rotation: Skill \u2192 attack within 12s to stack both effects.",
+        "C2 is the damage breakpoint \u2014 higher Veil of Falsehood cap means more stacks before Burst, which means a bigger nuke and longer Ascendant Gleam window.",
+      ],
+      synergies: [
+        { id: "lauma", why: "Dendro Resonance + Lunar-Bloom pair. Lauma's Verdant Dew feeds Nefer's empowered hits; both scale on EM." },
+        { id: "jahoda", why: "Lore tie \u2014 Jahoda works for Nefer's intelligence network. VV shreds Dendro RES for Nefer's Spread hits; +100 EM heal passive stacks with Nefer's own EM scaling." },
+        { id: "columbina", why: "Moonsign enabler. Converts Nefer's Bloom cores into Lunar-Bloom, unlocking the reaction that her kit is built around." },
+      ],
+    },
   },
   {
     id: "kirara",
@@ -124,7 +167,26 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "\u2265 150 %" },
       { id: "er", label: "Energy Recharge", target: "110 \u2013 130 %" },
     ],
-    note: "Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage \u2014 ER is low priority.",
+    note: "Account-state: BiS weapon Golden Frostbound Oath. Aubade needs Ascendant Gleam to fully proc. Her Burst is sustain, not damage \u2014 ER is low priority.",
+    deep: {
+      lore: "Linnea, the Wandering Advisor of Lumi \u2014 a Geo archer from the luminous reaches of Nod-Krai who heals allies with crystallized moonlight and strikes from the rear line. She advises the Lumi tribe on matters of defence and medicine, preferring to let her arrows and her shields speak louder than her counsel.",
+      kit: [
+        "Skill \u2014 Mooncrystal Volley: fires a spread of Geo arrows that deal Geo DMG and generate Crystallize shards on contact with elemental auras. With Columbina's Moonsign, these become Lunar-Crystallize triggers.",
+        "Burst \u2014 Lumi's Aegis: creates a healing field that restores party HP based on Linnea's DEF. Sustain tool, not a damage source \u2014 ER is low priority.",
+        "A1 \u2014 picking up Crystallize shards grants Linnea DEF% for a short duration, stacking her damage and healing simultaneously.",
+        "A4 \u2014 Lunar-Crystallize Moondrift Harmony hits gain bonus DMG scaling on Linnea's DEF above 2000.",
+        "Ascension stat: 24.2% CRIT Rate at Lv 90 \u2014 significantly reduces CRIT Rate substat requirements.",
+      ],
+      tips: [
+        "DEF% Sands + DEF% Goblet + CRIT Circlet. Her healing, her Lunar-Crystallize damage, and her A4 bonus all scale on DEF.",
+        "Aubade of Morningstar and Moon 4pc needs Ascendant Gleam to fully activate \u2014 ensure a Moonsign character (Columbina) is on the team.",
+        "BiS weapon Golden Frostbound Oath \u2014 542 Base ATK, 88.2% CRIT DMG. Frost Fae's Favor: DEF +16%, Skill or Lunar-Crystallize hits \u2192 Geo DMG +40% and Lunar-Crystallize Reaction DMG +40% for 6s. 20% party-wide Geo/Lunar-Crystallize boost from Frost Fae's Mischief.",
+      ],
+      synergies: [
+        { id: "columbina", why: "Moonsign enabler \u2014 Linnea's Geo + Columbina's Hydro creates Lunar-Crystallize. Linnea also heals, covering Columbina's sustain gap." },
+        { id: "zibai", why: "Dual Geo for Geo Resonance (+15% DMG when shielded). Both trigger Lunar-Crystallize from different angles \u2014 Zibai on-field, Linnea off-field." },
+      ],
+    },
   },
   {
     id: "xilonen",
@@ -208,7 +270,28 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "\u2265 150 %" },
       { id: "er", label: "Energy Recharge", target: "100 \u2013 150 %" },
     ],
-    note: "Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.",
+    note: "Account-state: C1 + Athame Artis. Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.",
+    deep: {
+      lore: "Durin, the Dragon of Twin Forms — born from Rhinedottir's alchemy, part dragon and part something older. He shifts between a dark draconic form and a luminous humanoid form, each carrying a different elemental weight. The Hexenzirkel watches him as both a weapon and a ward; Nicole alone among the coven sees the mind behind the eyes.",
+      kit: [
+        "Skill — Searing Breath: deals AoE Pyro DMG in a cone and applies Pyro to enemies. Generates particles and triggers Burgeon when Dendro cores are present.",
+        "Burst — Eclipse of the Twin Forms: massive AoE Pyro DMG, then Durin enters Light Form (White Durin) for the duration, gaining enhanced off-field Pyro pulses that deal continuous Pyro DMG to nearby enemies.",
+        "A1 — Rhinedottir's Legacy: Durin's off-field Pyro pulse DMG is increased by 75% when 2+ Hexerei characters are in the party. The core scaling lever — always run him with Nicole, Mona, Varka, or Prune.",
+        "A4 — Dragon's Heart: ATK above a threshold grants bonus Pyro DMG %, capping around 2500 ATK. The reason ATK% stacking is his primary build path.",
+        "C1 — Adamah's Redemption: Burst gains additional effects. Light Form (White Durin): party gains 20 stacks Cycle of Enlightenment (20s). Active characters' NA/CA/Plunge/Skill/Burst consume 1 stack to deal additional DMG equal to 60% of Durin's ATK. Also Burst DMG +40%. 30% chance per stack to not consume the stack.",
+      ],
+      tips: [
+        "ATK% Sands + Pyro Goblet + CRIT Circlet. His off-field pulses and Burst both scale on ATK, and A4 converts excess ATK into Pyro DMG%. Target ≥2500 ATK to cap the A4 bonus.",
+        "Hexerei team is mandatory for peak performance — A1's +75% pulse DMG requires 2+ Hexerei. Nicole is the natural pair (Pyro resonance + shield + ATK buff + instant Methexis).",
+        "C1 is the breakpoint — Cycle of Enlightenment stacks turn every party member's attacks into extra damage instances at 60% of Durin's ATK, and the 30% chance to preserve stacks extends the window significantly. Burst DMG +40% is the cherry on top.",
+        "BiS weapon Athame Artis — 608 Base ATK + 33.1% CRIT Rate. Day King's Splendor Solis: Burst CRIT DMG +16-32%, Burst hits grant Blade of Daylight Hours (self ATK +20-40%, party ATK +16-32%). With Hexerei: Secret Rite (2+ Hexerei in party), Blade of Daylight Hours effects +75%. The Hexerei scaling makes this weapon shine when paired with Mona/Nicole/Prune/Varka.",
+      ],
+      synergies: [
+        { id: "nicole", why: "Hexerei + Pyro sister. Two-Hexerei A1 +75% is automatic. Nicole's shield absorbs Burgeon self-damage at 250% efficiency; her ATK buff lifts Durin's off-field Pyro pulses and feeds the C1 Cycle of Enlightenment scaling." },
+        { id: "mona", why: "Hexerei tribe-mate. Omen amplifies the marked enemy's incoming DMG, and Astral Glow of Mercury fires +15% per stack onto Durin's Vape detonations. Two Hexerei in party activates his A1 +75% bonus." },
+        { id: "varka", why: "Hexerei + Anemo swirler. Varka's on-field Swirls spread Durin's Pyro for VV RES shred. ADCFRW's +20% CR triggers with two Hexerei. Durin's C1 stacks feed Varka's rapid NA chains." },
+      ],
+    },
   },
   {
     id: "chevreusse",
@@ -285,7 +368,7 @@ const CHARACTERS = [
     weaponType: "Catalyst",
     set: "4pc Tenacity of the Millelith",
     setAlt: "4pc Noblesse Oblige (sole buffer) \u00b7 4pc Vourukasha's Glow (HP / shield hybrid) \u00b7 2pc Tenacity + 2pc ATK %",
-    weapon: "Arcane Projection (signature 5\u2605 \u2014 leak)",
+    weapon: "Angelos' Heptades (Seven Edicts of Dust and Light)",
     weaponAlt: "Sacrificial Jade \u00b7 Tome of the Eternal Flow \u00b7 A Thousand Floating Dreams \u00b7 Wandering Evenstar (4\u2605 EM / ATK hybrid)",
     talents: "Skill \u203a Burst \u203a\u203a Normal",
     stats: [
@@ -297,7 +380,7 @@ const CHARACTERS = [
       { id: "cr", label: "CRIT Rate", target: "\u2265 60 %" },
       { id: "cd", label: "CRIT DMG", target: "\u2265 140 %" },
     ],
-    note: "Kit details are leak-based as of 6.6 pre-release \u2014 verify on launch. Account-state: C2 (Sacred Benediction unlocked). Grace of Kenosis is a FLAT ATK buff (same buff TYPE as Bennett, NOT a separate ATK %): the team gains flat ATK equal to 15 % of Nicole's ATK, capped at +600 flat ATK. Guidance of Theosis upgrade adds another +300 flat ATK, for a maximum of +900 flat ATK. Bennett with Aquila Favonia still delivers ~+1200 \u2014 Nicole is the smaller raw buff but adds a 250 %-Pyro shield, Coordinated Attacks, and at C2 a universal \u221220 % element RES shred. Coordinated Attack cap: 1 every 3 s, max 5 per Burst rotation, element follows active character. Build ATK on Nicole to ~4000 to cap the buff (extra ATK past that still grows the shield and her CAs). Methexis A4: after Skill she watches the active character for 20 s; the buff upgrades from Grace to Guidance after 3 s on field \u2014 INSTANT if the watched character is Hexerei (Mona / Durin / Varka / Prune).",
+    note: "Kit details are leak-based as of 6.6 pre-release \u2014 verify on launch. Account-state: C2 + Angelos' Heptades (Sacred Benediction unlocked). Grace of Kenosis is a FLAT ATK buff (same buff TYPE as Bennett, NOT a separate ATK %): the team gains flat ATK equal to 15 % of Nicole's ATK, capped at +600 flat ATK. Guidance of Theosis upgrade adds another +300 flat ATK, for a maximum of +900 flat ATK. Bennett with Aquila Favonia still delivers ~+1200 \u2014 Nicole is the smaller raw buff but adds a 250 %-Pyro shield, Coordinated Attacks, and at C2 a universal \u221220 % element RES shred. Coordinated Attack cap: 1 every 3 s, max 5 per Burst rotation, element follows active character. Build ATK on Nicole to ~4000 to cap the buff (extra ATK past that still grows the shield and her CAs). Methexis A4: after Skill she watches the active character for 20 s; the buff upgrades from Grace to Guidance after 3 s on field \u2014 INSTANT if the watched character is Hexerei (Mona / Durin / Varka / Prune).",
     deep: {
       lore: "Nicole Reeyn, the voiceless angel. Member of the Hexenzirkel coven alongside Mona, Alice, and Rhinedottir. Codename 'N'. Speaks only through Arcane Projection \u2014 silent illusions she sends in her place. Her story is tangled with Durin's: the leaked Story Quest implies she was present when Rhinedottir's dragon-child was made, and she alone among the coven tried to save what was left of his mind.",
       kit: [
@@ -317,6 +400,7 @@ const CHARACTERS = [
         "Burst energy cost is leaked at 70. Comfortable ER target is 140-180 %. Sacrificial Jade lets her drop ER substats entirely.",
         "Shield absorbs Pyro at 250 %. She is the cleanest Burgeon shielder in the game \u2014 Nahida / Yelan / Thoma \u2192 Nahida / Yelan / Nicole upgrades the shield AND adds a team ATK buff AND adds free Coordinated Attacks on the DPS.",
         "Bennett comparison: same buff TYPE (flat ATK), but Bennett delivers ~+1200 with Aquila Favonia vs Nicole's max +900. Nicole's tradeoffs: no Pyro-infusion downside, universal across reaction comps, AND adds a 250 %-Pyro shield + Coordinated Attacks. Cost: NO healing \u2014 pair her with a healer or Furina if the team can't sustain on shield alone.",
+        "BiS weapon Angelos' Heptades (Seven Edicts of Dust and Light) \u2014 741 Base ATK, 16.5% ATK substat. Crown of the Final Scion: ATK +12-24%, Shield creation grants Pathfinder's Light (20s) buffing active party DMG by +10-22% per 1000 ATK Nicole has (max +26-58%). Also restores Energy on hit. The weapon directly amplifies her ATK-scaling buff formula and solves ER.",
       ],
       synergies: [
         { id: "mona", why: "Coven sisters and the design pair. Mona triggers instant Methexis on Nicole and vice versa. Mona's Omen amplifies Nicole's Coordinated Attacks on the marked enemy; Nicole's Pyro Skill residue reacts with Mona's Hydro Phantom for Vape. TTDS Mona + Tenacity Nicole double-buffs any ATK-scaling DPS." },
@@ -415,7 +499,7 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "\u2265 175 %" },
       { id: "er", label: "Energy Recharge", target: "120 \u2013 140 %" },
     ],
-    note: "Electro DMG goblet does NOT scale Lunar-Charged. ATK% goblet. A4 converts ATK \u2192 EM up to 160.",
+    note: "Account-state: C2 + Bloodsoaked Ruins. Electro DMG goblet does NOT scale Lunar-Charged. ATK% goblet. A4 converts ATK \u2192 EM up to 160.",
     deep: {
       lore: "Flins, the Lightkeeper Against the Wild Hunt \u2014 born of Nod-Krai, raised in the watchtower-cloisters that ring the Frostmoon plains. The Lightkeepers are an order older than the Scions, sworn to hold the line at moonrise when the Wild Hunt \u2014 the Frostmoon's white-eyed shades and their hungering riders \u2014 break across the northern reach. He carries an oath-polearm whose haft is bound in cold iron and whose head is etched with a Lunar Sigil; tradition says it has been re-forged in every generation but never re-named.",
       kit: [
@@ -434,6 +518,7 @@ const CHARACTERS = [
         "ER 120-140 % is enough at C0 because A1 self-refunds energy on Hydro-CA hits. Pure-Electro teams without a Hydro applicator need 160-180 % ER to stay on-rotation.",
         "Hexerei: he is NOT Hexerei (Nod-Krai, not Hexenzirkel). Do not slot him into ADCFRW or Durin A1 calculations.",
         "Aggravate fallback: if you have a Dendro core in the team and no Columbina, his Electro CAs trigger Aggravate cleanly. The build doesn't change \u2014 ATK% / A4 EM still wants the same substats \u2014 but you swap 4pc Night of the Sky's Unveiling for 4pc Thundering Fury and re-prioritise CRIT.",
+        "BiS weapon Bloodsoaked Ruins \u2014 674 Base ATK + 22.1% CRIT Rate. Mournful Tribute: 3.5s after Burst, Lunar-Charged DMG +36-84%. Triggering Lunar-Charged \u2192 Requiem of Ruin: CRIT DMG +28-56% for 6s, plus +12 Energy (1/14s). Defines the Burst-first rotation: Burst \u2192 CAs within 3.5s to catch the Lunar-Charged window.",
       ],
       synergies: [
         { id: "columbina", why: "Moonsign enabler. Without her in the party Flins is a competent Electro DPS; with her his entire Burst-field rotation upgrades to Lunar-Charged, which scales on team HP and stacks Columbina's +0.2 %/1000-HP DMG bonus on top. The textbook pairing \u2014 Flins's kit is literally built around her." },
@@ -812,7 +897,7 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "1 : 2 ratio with CR" },
       { id: "er", label: "Energy Recharge", target: "160 % (ER weapon) \u00b7 180 % (otherwise)" },
     ],
-    note: "Her Lunar-Reaction buffs cap at 35 000 Max HP. Energy-hungry \u2014 burst is everything. Substat priority: ER > CRIT > HP %.",
+    note: "Account-state: BiS weapon Nocturne's Curtain Call. Her Lunar-Reaction buffs cap at 35 000 Max HP. Energy-hungry \u2014 burst is everything. Substat priority: ER > CRIT > HP %.",
     deep: {
       lore: "Columbina Hyposelenia. Moon Goddess of Nod-Krai, known to the Frostmoon Scions as Kuutar, and formerly the Damselette \u2014 Third of the Fatui Harbingers. Born into an unkind world and cast into solitude from the moment of her creation; her colleagues called her gentleness Innocence, the Tsaritsa's records called it a weapon.",
       kit: [
@@ -825,6 +910,7 @@ const CHARACTERS = [
         "Build HP, not damage. She is a buffer first; her own Skill damage is gravy.",
         "Hit \u2248160 % ER with an ER weapon (Favonius Codex / Prototype Amber), or \u2248180 % without. Burst uptime is the entire kit.",
         "4pc Aubade buffs her personal damage; 4pc Silken Moon's Serenade buffs the team. Pick whichever the team isn't already running.",
+        "BiS weapon Nocturne's Curtain Call — 88.2% CRIT DMG substat. Max HP +10% passive. Lunar reactions trigger Bountiful Sea's Sacred Wine (12s): +14% more Max HP (total +24%), Lunar Reaction CRIT DMG +60%, +14 Energy (off-field, 1/18s). The ER recovery and HP scaling solve both her sustain and her energy problems in one weapon.",
       ],
       synergies: [
         { id: "flins", why: "Flins triggers Electro-Charged on her Hydro; her burst upgrades it to Lunar-Charged with the +0.2%/1000-HP DMG bonus stacked on top." },
@@ -1437,12 +1523,133 @@ const REACTION_GROUPS = [
 ];
 
 /* ============================================================
+   WEAPONS — BiS signature weapons for the roster
+   Sources: Game8, Icy-Veins, KQM, GameWith (Version 6.6, May 2026)
+   ============================================================ */
+
+const WEAPONS = [
+  {
+    id: "nightweavers-looking-glass",
+    name: "Nightweaver's Looking Glass",
+    type: "Catalyst",
+    rarity: 5,
+    baseAtk: "542",
+    substat: "EM",
+    passive: "Millennial Hymn",
+    passiveDesc: [
+      "Skill deals Hydro/Dendro DMG → Prayer of the Far North: +60 EM for 4.5s.",
+      "Party triggers Lunar-Bloom → New Moon Verse: +60 EM for 10s.",
+      "Both active simultaneously → all party members: Bloom DMG +120%, Hyperbloom/Burgeon DMG +80%, Lunar-Bloom DMG +40%.",
+    ],
+    bestFor: "lauma",
+    alts: ["A Thousand Floating Dreams", "Etherlight Spindlelute (F2P)"],
+  },
+  {
+    id: "reliquary-of-truth",
+    name: "Reliquary of Truth",
+    type: "Catalyst",
+    rarity: 5,
+    baseAtk: "542",
+    substat: "CRIT Rate (implicit +8% from passive)",
+    passive: "Secret of Lies",
+    passiveDesc: [
+      "Skill → Secret of Lies: +80 EM for 12s.",
+      "Lunar-Bloom DMG → Moon of Truth: CRIT DMG +24% for 4s.",
+      "Both active simultaneously → both effects increased by 50% (so +120 EM, +36% CRIT DMG).",
+    ],
+    bestFor: "nefer",
+    alts: ["Tome of the Eternal Flow", "Dawning Frost (4★)"],
+  },
+  {
+    id: "golden-frostbound-oath",
+    name: "Golden Frostbound Oath",
+    type: "Bow",
+    rarity: 5,
+    baseAtk: "542",
+    substat: "88.2% CRIT DMG",
+    passive: "Frost Fae's Favor",
+    passiveDesc: [
+      "DEF +16%.",
+      "Skill or Lunar-Crystallize hits → 6s effect: Geo DMG +40%, Lunar-Crystallize Reaction DMG +40%.",
+      "Frost Fae's Mischief: 20% party-wide buff for Geo DMG and Lunar-Crystallize DMG.",
+    ],
+    bestFor: "linnea",
+    alts: ["Aqua Simulacra", "Slingshot (3★)"],
+  },
+  {
+    id: "athame-artis",
+    name: "Athame Artis",
+    type: "Sword",
+    rarity: 5,
+    baseAtk: "608",
+    substat: "33.1% CRIT Rate",
+    passive: "Day King's Splendor Solis",
+    passiveDesc: [
+      "Burst CRIT DMG +16-32%.",
+      "Burst hits → Blade of Daylight Hours: self ATK +20-40%, party members ATK +16-32%.",
+      "With Hexerei: Secret Rite (2+ Hexerei in party), Blade of Daylight Hours effects +75%.",
+    ],
+    bestFor: "durin",
+    alts: ["Freedom-Sworn", "Wolf-Fang (4★)"],
+  },
+  {
+    id: "bloodsoaked-ruins",
+    name: "Bloodsoaked Ruins",
+    type: "Polearm",
+    rarity: 5,
+    baseAtk: "674",
+    substat: "22.1% CRIT Rate",
+    passive: "Mournful Tribute",
+    passiveDesc: [
+      "3.5s after Burst, Lunar-Charged DMG +36-84%.",
+      "Lunar-Charged triggers → Requiem of Ruin: CRIT DMG +28-56% for 6s.",
+      "+12 Energy on Lunar-Charged trigger (once per 14s).",
+    ],
+    bestFor: "flins",
+    alts: ["Staff of the Scarlet Sands", "Engulfing Lightning", "Prospector's Shovel (craftable)"],
+  },
+  {
+    id: "nocturnes-curtain-call",
+    name: "Nocturne's Curtain Call",
+    type: "Catalyst",
+    rarity: 5,
+    baseAtk: "542",
+    substat: "88.2% CRIT DMG",
+    passive: "Bountiful Sea's Sacred Wine",
+    passiveDesc: [
+      "Max HP +10%.",
+      "Lunar reactions → Bountiful Sea's Sacred Wine (12s): Max HP +14% more (total +24%), Lunar Reaction CRIT DMG +60%.",
+      "+14 Energy on Lunar reaction trigger (once per 18s, works off-field).",
+    ],
+    bestFor: "columbina",
+    alts: ["Surf's Up", "Tome of the Eternal Flow", "Sacrificial Jade (4★)", "Prototype Amber (F2P)"],
+  },
+  {
+    id: "angelos-heptades",
+    name: "Angelos' Heptades",
+    type: "Catalyst",
+    rarity: 5,
+    baseAtk: "741",
+    substat: "16.5% ATK",
+    passive: "Crown of the Final Scion",
+    passiveDesc: [
+      "ATK +12-24%.",
+      "After Shield creation → Pathfinder's Light (20s): active party member DMG +10-22% per 1000 ATK equipping character has, max +26-58%.",
+      "During Pathfinder's Light, hitting enemy → Guide's Contentment: +14-18 Energy to equipping character.",
+    ],
+    bestFor: "nicole",
+    alts: ["Sacrificial Jade", "Tome of the Eternal Flow", "A Thousand Floating Dreams", "Wandering Evenstar (4★)"],
+  },
+];
+
+/* ============================================================
    ROUTING (hash-based, no library)
    ============================================================ */
 
 const ROUTES = {
   characters: "characters",
   reactions:  "reactions",
+  weapons:    "weapons",
   regions:    "regions",
   region:     "region",
 };
@@ -1451,6 +1658,7 @@ function getRouteFromHash() {
   const raw = (typeof window !== "undefined" ? window.location.hash : "") || "";
   const key = raw.replace(/^#\/?/, "").toLowerCase();
   if (key === "reactions") return { page: ROUTES.reactions };
+  if (key === "weapons") return { page: ROUTES.weapons };
   if (key === "regions" || key === "regions/") return { page: ROUTES.regions };
   if (key.startsWith("regions/")) {
     return { page: ROUTES.region, region: key.slice("regions/".length) };
@@ -1615,6 +1823,8 @@ export default function App() {
 
         {route.page === ROUTES.reactions ? (
           <ReactionsPage onGoToCharacter={goToCharacter} />
+        ) : route.page === ROUTES.weapons ? (
+          <WeaponsPage onGoToCharacter={goToCharacter} />
         ) : route.page === ROUTES.regions ? (
           <RegionsPage />
         ) : route.page === ROUTES.region ? (
@@ -1731,6 +1941,13 @@ function NavBar({ route }) {
           aria-current={route.page === ROUTES.reactions ? "page" : undefined}
         >
           Reactions
+        </a>
+        <a
+          href="#/weapons"
+          className={`nav-link ${route.page === ROUTES.weapons ? "active" : ""}`}
+          aria-current={route.page === ROUTES.weapons ? "page" : undefined}
+        >
+          Weapons
         </a>
         <a
           href="#/regions"
@@ -1954,6 +2171,141 @@ function ReactionsPage({ onGoToCharacter }) {
         </p>
         <p className="bottom-faint">
           Reactions linked to characters in the roster only.
+        </p>
+      </footer>
+    </>
+  );
+}
+
+/* ============================================================
+   WEAPONS PAGE
+   ============================================================ */
+
+function WeaponsPage({ onGoToCharacter }) {
+  const [openId, setOpenId] = useState(null);
+  const toggle = (id) => setOpenId((cur) => (cur === id ? null : id));
+
+  const WEAPON_TYPE_THEME = {
+    Catalyst: { color: "#b07fd1", label: "Catalyst" },
+    Sword:    { color: "#6cb1da", label: "Sword" },
+    Polearm:  { color: "#d96b50", label: "Polearm" },
+    Bow:      { color: "#74c2a8", label: "Bow" },
+    Claymore: { color: "#d4a857", label: "Claymore" },
+  };
+
+  return (
+    <>
+      <header className="top">
+        <div className="top-marks" aria-hidden="true">{"✦ ✦ ✦"}</div>
+        <h1 className="title">The Armoury</h1>
+        <p className="subtitle">
+          Best-in-slot signature weapons for the roster — passive breakdowns,
+          base stats, and alternative picks for every character.
+        </p>
+      </header>
+
+      <main className="rx-page">
+        <section className="rx-group">
+          <div className="rx-group-head">
+            <h2 className="rx-group-title">Signature weapons</h2>
+            <p className="rx-group-blurb">
+              Each weapon below is the verified best-in-slot for its paired character.
+              Tap a card to expand passive details, best-for links, and F2P alternatives.
+            </p>
+          </div>
+
+          <div className="rx-list">
+            {WEAPONS.map((w) => {
+              const isOpen = openId === w.id;
+              const typeTheme = WEAPON_TYPE_THEME[w.type] || { color: "#c9a86a", label: w.type };
+              const bestChar = CHARACTERS.find((c) => c.id === w.bestFor);
+              const bestCharTheme = bestChar ? ELEMENT_THEME[bestChar.element] : null;
+              const stars = "★".repeat(w.rarity);
+              return (
+                <article
+                  key={w.id}
+                  className={`rx-card ${isOpen ? "open" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className="rx-head"
+                    onClick={() => toggle(w.id)}
+                    aria-expanded={isOpen}
+                  >
+                    <div className="rx-head-left">
+                      <h3 className="rx-name">{w.name}</h3>
+                      <span className="rx-trigger">
+                        {w.type} {stars}
+                      </span>
+                    </div>
+                    <div className="rx-elems" aria-hidden="true">
+                      <span
+                        className="rx-elem-dot"
+                        style={{ background: typeTheme.color, boxShadow: `0 0 10px ${typeTheme.color}44` }}
+                        title={typeTheme.label}
+                      />
+                    </div>
+                    <span className="rx-multiplier">{w.baseAtk} ATK · {w.substat}</span>
+                    <span className="rx-caret" aria-hidden="true">
+                      <svg viewBox="0 0 10 10" className="caret-svg">
+                        <path d="M2 3 L5 7 L8 3" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="rx-body">
+                      <p className="rx-short">
+                        Passive: <strong>{w.passive}</strong>
+                      </p>
+
+                      <ul className="rx-details">
+                        {w.passiveDesc.map((d, i) => (
+                          <li key={i}>{d}</li>
+                        ))}
+                      </ul>
+
+                      {bestChar && (
+                        <div className="rx-examples">
+                          <div className="rx-examples-head">Best for</div>
+                          <button
+                            type="button"
+                            className="syn-chip"
+                            onClick={() => onGoToCharacter && onGoToCharacter(bestChar.id)}
+                            style={{
+                              "--target-accent": bestCharTheme.color,
+                              "--target-glow": bestCharTheme.glow,
+                            }}
+                          >
+                            <span className="syn-name">{bestChar.name}</span>
+                            <span className="syn-elem">{bestCharTheme.label}</span>
+                            <span className="syn-why">{bestChar.role}</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {w.alts && w.alts.length > 0 && (
+                        <div className="rx-examples">
+                          <div className="rx-examples-head">Alternatives</div>
+                          <ul className="rx-details">
+                            {w.alts.map((a, i) => (
+                              <li key={i}>{a}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </main>
+
+      <footer className="bottom">
+        <p>
+          Weapon data cross-checked against Game8, Icy-Veins, KQM, and GameWith · Version 6.6 (May 2026)
         </p>
       </footer>
     </>
