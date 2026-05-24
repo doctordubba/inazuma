@@ -233,6 +233,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + Story Keys (2 per attempt)",
     notes:"Five endings. Replays via the menu let you keep prior choices, so you can branch from previous saves. Bring Hydro food / time for repeat attempts.",
     rewards:"60 Primogems (all 5 endings) + 30 Primogems (3 achievements: 1× 20-primo + 2× 5-primo) = ≈ 90 Primogems total · Special Dish · Adv EXP · Hero's Wit · Barbara ascension materials",
+    heroWit: 4,
     fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Barbara",
   },
   {
@@ -244,6 +245,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + Story Keys",
     notes:"Noelle wants to make Acting Grand Master. Multiple endings; replay to collect them all. Easier than Barbara's branching tree — most endings flow from clear dialogue forks.",
     rewards:"≈ 90 Primogems (endings + achievements) · Special Dish · Adv EXP · Hero's Wit",
+    heroWit: 4,
     fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Noelle/Act_I",
   },
   {
@@ -255,6 +257,7 @@ const quests = [
     prereqs:"Noelle Hangout Act I completed + Story Keys",
     notes:"Second Hangout chapter. Noelle preparing for her Knight examination; multiple endings, replays via menu.",
     rewards:"≈ 90 Primogems (endings + achievements) · Special Dish · Adv EXP · Hero's Wit",
+    heroWit: 4,
     game8:"https://game8.co/games/Genshin-Impact/archives/328782",
   },
   {
@@ -266,6 +269,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + Story Keys",
     notes:"Adventure Team Benny's Adventure Team gets bigger. Multiple endings; the comedy threads are some of the game's best.",
     rewards:"≈ 90 Primogems (endings + achievements) · Special Dish · Adv EXP · Hero's Wit",
+    heroWit: 4,
     fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Bennett",
   },
   {
@@ -277,6 +281,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + Story Keys",
     notes:"Released v3.8 — the first 4★ Hangout added to the original launch roster. Five endings. Kaeya being Kaeya, which means the comedy has teeth.",
     rewards:"60 Primogems (5 endings) + 30 Primogems (achievements: 20 + 5 + 5) = 90 Primogems total · Special Dish · Adv EXP · Hero's Wit",
+    heroWit: 4,
     fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Kaeya",
   },
 ];
