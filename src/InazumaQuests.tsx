@@ -21,6 +21,7 @@ const chainTags = {
   mists:      { label:"Through the Mists", color:"#a78bfa" },
   orobashi:   { label:"Orobashi's Legacy", color:"#10b981" },
   enkanomiya: { label:"Enkanomiya",        color:"#0ea5e9" },
+  tatara:     { label:"Tatara Tales",      color:"#f59e0b" },
   standalone: { label:"Standalone",        color:"#64748b" },
 };
 
@@ -52,6 +53,7 @@ const quests = [
   { id:22, tier:4, chain:"hangout", name:"Thoma — A Housekeeper's Daily Chores", time:"60-90 min (all endings)", region:"Inazuma City — Kamisato Estate", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Thoma at Kamisato Estate.", prereqs:"AR 26 + Prologue Ch III + Story Keys", notes:"Released v2.2 alongside Sayu. Multi-ending; comedy + slice-of-life Kamisato Estate vignettes.", rewards:"~90 Primogems total · Special Dish · Adv EXP · Hero's Wit · Thoma ascension materials", heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Thoma" },
   { id:23, tier:4, chain:"hangout", name:"Gorou — The Canine General's Special Operations", time:"60-90 min (all endings)", region:"Watatsumi Island — Sangonomiya Shrine area", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Gorou near Sangonomiya Shrine.", prereqs:"AR 26 + Prologue Ch III + AQ Ch II Act II (Stillness, the Sublimation of Shadow) + Story Keys", notes:"Released v2.3. Multi-ending; Watatsumi reconstruction logistics framed as a Gorou sortie.", rewards:"~90 Primogems total · Special Dish · Adv EXP · Hero's Wit · Gorou ascension materials", heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Gorou" },
   { id:24, tier:4, chain:"hangout", name:"Shikanoin Heizou — Trap 'Em by Storm", time:"60-90 min (all endings)", region:"Inazuma City — Tenryou Commission HQ", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Heizou near the Tenryou Commission building.", prereqs:"AR 26 + Prologue Ch III + Story Keys (Heizou released v2.8)", notes:"Released v2.8. Six endings; detective mystery framing — Heizou investigates a string of petty crimes that turn out connected.", rewards:"~90 Primogems total · Special Dish · Adv EXP · Hero's Wit · Heizou ascension materials", heroWit: 4, game8:"https://game8.co/games/Genshin-Impact/archives/381345" },
+  { id:25, tier:4, chain:"tatara", name:"Tatara Tales (Full Chain)", time:"2-3 hours (real-time gated across multiple days)", region:"Tatarasuna — Mikage Furnace", activate:"Talk to Xavier at the Mikage Furnace camp in Tatarasuna.", prereqs:"Inazuma accessible · Yashiori Island reachable", notes:"Multi-day real-time-gated chain (must wait 24 hours between some steps). Clears Tatarasuna's Balethunder zone permanently. The 225k Mora total makes this the single highest Mora-per-quest in Inazuma — but the real-time gating means you should START it early and let it progress over days.", rewards:"225,000 Mora · 7 Hero's Wit · Blueprint: Square Yumemiru Stool · Adv EXP", mora: 225000, heroWit: 7, fandom:"https://genshin-impact.fandom.com/wiki/Tatara_Tales" },
 ];
 
 const orderNote = [
@@ -66,7 +68,7 @@ const orderNote = [
 
 const config = {
   title: "Inazuma World Quests",
-  subtitleLabel: "World Quests · Story Quests · Hangouts — primogem-bearing",
+  subtitleLabel: "World Quests · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "⛩",
   completeEmoji: "⛩✨",
   completeTitle: "ALL INAZUMA QUESTS COMPLETE",

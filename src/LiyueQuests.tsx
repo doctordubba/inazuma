@@ -19,6 +19,7 @@ const chainTags = {
   hangout:     { label:"Hangout Event",     color:"#ec4899" },
   chasm:       { label:"The Chasm",         color:"#a78bfa" },
   chenyu:      { label:"Chenyu Vale",       color:"#10b981" },
+  chasm_deep:  { label:"Chasm (Underground)", color:"#7c3aed" },
   standalone:  { label:"Standalone",        color:"#64748b" },
 };
 
@@ -51,6 +52,9 @@ const quests = [
   { id:19, tier:4, chain:"story", name:"Yelan — Calculated Gambit", time:"60-90 min", region:"Liyue Harbor → Yilong Wharf → Chasm surface", activate:"Story Quest menu. Spend 1 Story Key. Yelan finds you at Yilong Wharf.", prereqs:"AR 40 + Ganyu's 'Sea of Clouds, Sea of People' + AQ Interlude 'Perilous Trail' (2.7) + 1 Story Key", notes:"Umbrabilis Orchis Chapter — Act I. A heist with the Ministry of Civil Affairs' best ghost. Heavily gated by other content — clear the prereq chain first.", rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Yelan ascension materials", mora: 26925, heroWit: 3, game8:"https://game8.co/games/Genshin-Impact/archives/377476" },
   { id:20, tier:4, chain:"hangout", name:"Chongyun — Signs of Evil (Act I)", time:"60-90 min (all 6 endings)", region:"Liyue Harbor — Wangsheng / Bubu Pharmacy area", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Chongyun near Bubu Pharmacy.", prereqs:"AR 26 + Prologue Ch III + Story Keys", notes:"First Liyue Hangout released (v1.4). Six endings; multiple playthroughs needed for full primogem haul. Yin/yang gimmick runs through every branch.", rewards:"~90 Primogems total (60 from endings + 30 from achievements) · Special Dish · Adv EXP · Hero's Wit · Chongyun ascension materials", heroWit: 4, game8:"https://game8.co/games/Genshin-Impact/archives/323219" },
   { id:21, tier:4, chain:"hangout", name:"Yun Jin — A Song That Knows Grace (Act I)", time:"60-90 min (all endings)", region:"Liyue Harbor — Heyu Tea House", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Yun Jin at Heyu Tea House.", prereqs:"AR 26 + Prologue Ch III + Story Keys", notes:"Added in v2.3. Liyue opera framing; you help Yun Jin work on the next show. Multiple endings, replays via the menu.", rewards:"~90 Primogems total (endings + achievements) · Special Dish · Adv EXP · Hero's Wit", heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Yun_Jin" },
+  { id:22, tier:2, chain:"chasm", name:"Surreptitious Seven-Star Seal Sundering", time:"20-30 min", region:"The Chasm — surface / Lumenstone waypoints", activate:"Follow the Chasm Delvers chain after Chasm Spelunkers.", prereqs:"Chasm Spelunkers completed", notes:"Break the seven seals blocking Chasm Underground access. Each seal is a puzzle involving Geo constructs + Lumenstone Adjuvant. High Mora payout for medium effort.", rewards:"40 Primogems · 40,000 Mora · 3 Hero's Wit · Lumenstone Adjuvant upgrade", mora: 40000, heroWit: 3, game8:"https://game8.co/games/Genshin-Impact/archives/372649" },
+  { id:23, tier:2, chain:"chasm", name:"A Cliff-Side Hero's Past", time:"20-30 min", region:"The Chasm — surface cliffs", activate:"Find the adventurer's journal on the cliff ledge near the Chasm surface camp.", prereqs:"The Chasm region accessible", notes:"Short investigation quest with a combat finale. Good Mora/time ratio for the Chasm area.", rewards:"30 Primogems · 30,000 Mora · 3 Hero's Wit · Adv EXP", mora: 30000, heroWit: 3, fandom:"https://genshin-impact.fandom.com/wiki/A_Cliff-Side_Hero%27s_Past" },
+  { id:24, tier:3, chain:"chasm_deep", name:"The Millennial Mountains", time:"30-45 min", region:"The Chasm — underground", activate:"Progress through the Chasm Underground exploration. Quest triggers from the underground NPCs.", prereqs:"Chasm Underground accessible · Lumenstone Adjuvant obtained", notes:"Underground exploration chain with decent Hero's Wit rewards. Pairs well with chest hunting in the underground.", rewards:"30 Primogems · 30,000 Mora · 3 Hero's Wit · Adv EXP · Mystic Enhancement Ore", mora: 30000, heroWit: 3, fandom:"https://genshin-impact.fandom.com/wiki/The_Millennial_Mountains" },
 ];
 
 const orderNote = [
@@ -65,7 +69,7 @@ const orderNote = [
 
 const config = {
   title: "Liyue World Quests",
-  subtitleLabel: "World Quests · Story Quests · Hangouts — primogem-bearing",
+  subtitleLabel: "World Quests · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "🏮",
   completeEmoji: "🏮✨",
   completeTitle: "ALL LIYUE QUESTS COMPLETE",

@@ -298,7 +298,7 @@ const orderNote = [
 
 const config = {
   title: "Mondstadt World Quests",
-  subtitleLabel: "World Quests · Story Quests · Hangouts — primogem-bearing",
+  subtitleLabel: "World Quests · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "🍃",
   completeEmoji: "🍃✨",
   completeTitle: "ALL MONDSTADT QUESTS COMPLETE",

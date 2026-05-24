@@ -22,6 +22,7 @@ const chainTags = {
   golden:     { label:"Golden Slumber line", color:"#fbbf24" },
   desert:     { label:"Desert (Bilqis)",     color:"#f59e0b" },
   khvarena:   { label:"Khvarena",            color:"#a78bfa" },
+  vimana:     { label:"Vimana Agama",        color:"#f97316" },
   standalone: { label:"Standalone",          color:"#64748b" },
 };
 
@@ -46,6 +47,8 @@ const quests = [
   { id:15, tier:4, chain:"khvarena", name:"Khvarena of Good and Evil — Full Chain", time:"3-4 hours (full series)", region:"Sumeru Desert (Girdle of the Sands, 3.6 expansion)", activate:"After Tunigi Hollow entry, follow Sorush through the chain (Light Realm Pilgrimage → Asipattravana → A Forerunner Sent from Light → Vanishing in the Sand-Sea → and more).", prereqs:"Khvarena entry chain done + 3.6+ Sumeru Desert expansion", notes:"Marks the Sand-Sea's pivot from puzzles to lore. Multiple sub-chains; the Sorush companion is unlocked here and used throughout.", rewards:"Primogems (chain-total significant) · Adv EXP · Mora · Hero's Wit · Sorush as permanent gadget · 3.6 Wonders of the World achievements", fandom:"https://genshin-impact.fandom.com/wiki/Khvarena_of_Good_and_Evil" },
   { id:16, tier:4, chain:"hangout", name:"Faruzan — A Recipe for Innovation", time:"60-90 min (all endings)", region:"Sumeru City → Pardis Dhyai", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Faruzan at the Akademiya.", prereqs:"AR 26 + Prologue Ch III + Story Keys (Faruzan released v3.3)", notes:"Multi-ending; Faruzan's archaeological-research framing with Tighnari and Cyno cameos. Replays via menu.", rewards:"~90 Primogems total (60 endings + 30 achievements) · Special Dish · Adv EXP · Hero's Wit · Faruzan ascension materials", heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Faruzan" },
   { id:17, tier:4, chain:"hangout", name:"Layla — Dream of the Lone Star", time:"60-90 min (all 6 endings)", region:"Sumeru City — Akademiya / dorm area", activate:"Hangout menu. Spend 2 Story Keys per playthrough. Find Layla at the Akademiya.", prereqs:"AR 26 + Prologue Ch III + Story Keys (Layla released v3.2)", notes:"Six endings. The two Laylas — sleep-deprived scholar and confident dream-Layla — drive the comedy. Confirmed 90 primo total via the linked sources.", rewards:"~90 Primogems total · Special Dish · Adv EXP · Hero's Wit · Layla ascension materials", heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hangout_Event/Layla" },
+  { id:18, tier:4, chain:"vimana", name:"Vimana Agama (Full Chain)", time:"2-3 hours", region:"Devantaka Mountain — Ruin Golem", activate:"Progress Aranyaka Part II, then investigate the Ruin Golem at Devantaka Mountain.", prereqs:"Aranyaka Part II (Dream Nursery) progress", notes:"Multi-chapter chain involving the massive Ruin Golem. Activating the Golem is one of Sumeru's most memorable set-pieces. High Hero's Wit reward for mid-game players.", rewards:"~150,000 Mora · ~14 Hero's Wit · Adv EXP · Mystic Enhancement Ore", mora: 150000, heroWit: 14, fandom:"https://genshin-impact.fandom.com/wiki/Vimana_Agama" },
+  { id:19, tier:3, chain:"aranyaka", name:"Varuna Gatha (Full Chain)", time:"45-60 min", region:"Apam Woods — Varunastra mechanism", activate:"Progress Aranyaka Part II, then investigate the Varunastra Contraption in Apam Woods.", prereqs:"Aranyaka Part II progress", notes:"Varunastra Contraption chain. Required for Children of the Forest quest progression. Good Mora and HW for the time investment.", rewards:"~100,000 Mora · ~10 Hero's Wit · Adv EXP · Mystic Enhancement Ore", mora: 100000, heroWit: 10, fandom:"https://genshin-impact.fandom.com/wiki/Varuna_Gatha" },
 ];
 
 const orderNote = [
@@ -60,7 +63,7 @@ const orderNote = [
 
 const config = {
   title: "Sumeru World Quests",
-  subtitleLabel: "World Quests · Story Quests · Hangouts — primogem-bearing",
+  subtitleLabel: "World Quests · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "🌳",
   completeEmoji: "🌳✨",
   completeTitle: "ALL SUMERU QUESTS COMPLETE",

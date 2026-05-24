@@ -45,6 +45,8 @@ const quests = [
   { id:17, tier:4, chain:"standalone", name:"Revelations from the Past", time:"60-90 min", region:"Stadium of Sacred Flame + ancient ruins", activate:"Late AQ progression auto-triggers this chain.", prereqs:"AQ Ch V late progression", notes:"Long lore-heavy chain about pre-Cataclysm Natlan. Several boss-tier encounters.", rewards:"Primogems · Adv EXP · Mora · Hero's Wit · major lore unlocks", fandom:"https://genshin-impact.fandom.com/wiki/Revelations_from_the_Past" },
   { id:18, tier:4, chain:"standalone", name:"Pilgrimage of the Return of the Sacred Flame", time:"60-90 min", region:"Stadium of Sacred Flame", activate:"Late AQ progression auto-triggers this.", prereqs:"Natlan AQ Act IV+ progression", notes:"Ceremonial chain. Cinematic, dialogue-driven, sets up later character / story content.", rewards:"Primogems · Adv EXP · Mora · Hero's Wit · ceremonial unlocks", fandom:"https://genshin-impact.fandom.com/wiki/Pilgrimage_of_the_Return_of_the_Sacred_Flame_(Quest)" },
   { id:19, tier:4, chain:"standalone", name:"Natlan World Quests — Full Region", time:"15-25 hours (full ~48-quest set)", region:"All of Natlan", activate:"Natural progression as you explore. World quests pop on the map as you approach NPCs.", prereqs:"AR 30+ · Natlan unlocked · Statues of the Seven cycled", notes:"Natlan ships with ~48 permanent world quests per Game8 — this entry summarises the rest beyond what's individually listed above. Estimated 1,500-2,000 primogems for full clear.", rewards:"~1,500-2,000 Primogems · ~150,000+ Mora · Hero's Wit · MEO · Saurian companion gadgets · achievements", mora: 150000, heroWit: 20, game8:"https://game8.co/games/Genshin-Impact/archives/470500" },
+  { id:20, tier:2, chain:"saurian", name:"Between Promise and Oblivion", time:"20-30 min", region:"Children of Echoes territory", activate:"Find the baby Tepetlisaur in the Children of Echoes area.", prereqs:"Children of Echoes territory accessible", notes:"Baby Tepetlisaurus caretaking chain. Quick completion with solid Mora reward for a Tier 2 quest.", rewards:"~32,000 Mora · 4 Hero's Wit · Adv EXP · Saurian companion lore", mora: 32000, heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Between_Promise_and_Oblivion" },
+  { id:21, tier:2, chain:"tribal", name:"Hoarse Echoes", time:"20-30 min", region:"Children of Echoes territory", activate:"Talk to the tribal NPC in the Children of Echoes area after progressing tribal reputation.", prereqs:"Children of Echoes Tribal Chronicle started", notes:"Children of Echoes tribal quest with one of the higher per-quest Mora payouts in Natlan.", rewards:"32,625 Mora · 4 Hero's Wit · Adv EXP · Tribe Reputation EXP", mora: 32625, heroWit: 4, fandom:"https://genshin-impact.fandom.com/wiki/Hoarse_Echoes" },
 ];
 
 const orderNote = [
@@ -58,7 +60,7 @@ const orderNote = [
 
 const config = {
   title: "Natlan World Quests",
-  subtitleLabel: "Tribal Chronicles · Story Quests · Hangouts — primogem-bearing",
+  subtitleLabel: "Tribal Chronicles · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "🌋",
   completeEmoji: "🌋✨",
   completeTitle: "ALL NATLAN QUESTS COMPLETE",

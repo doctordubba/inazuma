@@ -45,6 +45,7 @@ const quests = [
   { id:15, tier:4, chain:"selenic", name:"Selenic Chronicles — Silvermoon Hall (Columbina)", time:"2-3 hours (multi-act, time-gated)", region:"Silvermoon Hall (Hiisi Isle)", activate:"Unlocked via the AQ 'Song of the Welkin Moon Act II — Elegy of Dust and Lamplight'. Acts are time-gated across patches (Luna II onward).", prereqs:"AQ Ch VI 'Song of the Welkin Moon Act II' completed", notes:"Columbina's personal reputation chronicles. Released in waves: The 1st Moon · The Artist By the Moon's Side · Moonlight Sonata: Lingering Resonance · The 4th Moon. All acts may not be unlocked depending on current patch.", rewards:"~250+ Primogems (50 per chronicle) · Sanctifying Unction · Silvermoon Hall reputation", fandom:"https://genshin-impact.fandom.com/wiki/Silvermoon_Hall:_Selenic_Chronicles" },
   { id:16, tier:4, chain:"standalone", name:"Meeting Point Upgrades (3 hubs)", time:"1-2 hours per hub (5 upgrade tiers each)", region:"Clink-Clank (Lempo) · Frostmoon Enclave (Hiisi) · Final Night Cemetery (Paha)", activate:"Progress reputation at each Meeting Point through the unlock conditions (donating materials, completing chronicles).", prereqs:"Nod-Krai reputation grind", notes:"Each Meeting Point has 5 upgrade tiers; each tier rewards primogems + Acquaint Fate + crafting blueprints. 250 primo per Meeting Point at full upgrade.", rewards:"750 Primogems total across 3 Meeting Points · Acquaint Fates · Crown of Insight · faction blueprints", game8:"https://game8.co/games/Genshin-Impact/archives/492722" },
   { id:17, tier:4, chain:"standalone", name:"Nod-Krai — Full Region Sweep", time:"10-15 hours (full ~18-20 quest set + chest exploration)", region:"All of Nod-Krai (Lempo, Hiisi, Paha)", activate:"Natural progression. World quests pop on the map as you explore.", prereqs:"AR 30+ · Nod-Krai unlocked", notes:"Aggregate entry for what isn't enumerated individually. Includes remaining standalone world quests, ~293+ chests, Valiant Chronicles. Total chest payout ~2,400-3,000 primogems.", rewards:"~2,400-3,000 Primogems from chests · Adv EXP · Mora · Hero's Wit · 180 primo from Valiant Chronicles", mora: 200000, heroWit: 25 },
+  { id:18, tier:3, chain:"selenic", name:"Echoes of an Unfinished Past", time:"45-60 min", region:"Frostmoon Enclave (Hiisi Isle)", activate:"Complete earlier Selenic Chronicles (Frostmoon Enclave set) to unlock this finale.", prereqs:"Selenic Chronicles — Frostmoon Enclave progress", notes:"Finale of the Frostmoon Selenic Chronicles. Rewards the Moonweaver's Dawn weapon. Highest single-quest Mora + HW payout in Nod-Krai.", rewards:"50,000 Mora · 5 Hero's Wit · 4 Mystic Enhancement Ore · Moonweaver's Dawn weapon", mora: 50000, heroWit: 5, fandom:"https://genshin-impact.fandom.com/wiki/Echoes_of_an_Unfinished_Past" },
 ];
 
 const orderNote = [
@@ -60,7 +61,7 @@ const orderNote = [
 
 const config = {
   title: "Nod-Krai World Quests",
-  subtitleLabel: "World Quests · Story Quests · Hangouts — Frostmoon-bearing",
+  subtitleLabel: "World Quests · Story Quests · Hangouts — primogems, Mora & Hero's Wit",
   logoEmoji: "🌙",
   completeEmoji: "🌙✨",
   completeTitle: "ALL NOD-KRAI QUESTS COMPLETE",
