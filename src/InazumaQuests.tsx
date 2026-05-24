@@ -23,6 +23,9 @@ const chainTags = {
   enkanomiya: { label:"Enkanomiya",        color:"#0ea5e9" },
   tatara:     { label:"Tatara Tales",      color:"#f59e0b" },
   standalone: { label:"Standalone",        color:"#64748b" },
+  gourmet:    { label:"Gourmet Supremos",  color:"#f97316" },
+  commission: { label:"Commission-Locked", color:"#94a3b8" },
+  seirai:     { label:"Seirai Island",     color:"#0ea5e9" },
 };
 
 const quests = [
