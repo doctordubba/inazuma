@@ -80,6 +80,7 @@ const QUESTS = [
     prereqs:"None",
     notes:"Comedic deduction quest. Investigate 4 clues (chicken, shovel, broken machine, Turner & Hunter), then submit conclusions. Sequel 'Still Mouthwatering!' needs all 7 Mysterious Cores. Hidden achievement on completing the full chain.",
     rewards:"~17,000 Mora · Adv EXP · 30 Primogems",
+    mora: 17000,
     game8:"https://game8.co/games/Genshin-Impact/archives/421886",
   },
   {
@@ -387,6 +388,8 @@ const QUESTS = [
     prereqs:"Caterpillar's Story: Prologue + Narzissenkreuz Adventure chain quests",
     notes:"🌟 The MASSIVE 4.2 finale of the Narzissenkreuz Adventure. Unlocks Morte Region. Help Ann, Seymour, Caterpillar defeat Narzissenkreuz. Includes 'Search in the Algae Sea' (Mary-Ann brainstorming sessions) and unlocks Tower of Gestalt by clearing 4 seals.",
     rewards:"Primogems x60+ · Hero's Wit x10+ · Mora · Unlocks Tower of Gestalt + Through the Looking Glass",
+    mora: 195000,
+    heroWit: 17,
     isSpecial:true,
     game8:"https://game8.co/games/Genshin-Impact/archives/432256",
   },
@@ -399,6 +402,7 @@ const QUESTS = [
     prereqs:"Petrichor / Nostoi Region accessible (4.6 content)",
     notes:"🌟 The 4.6 MEGA-CHAIN. Help Cassiodor save Remurian citizens, foil Beothius. Multiple sub-quests including Underwater Nocturne, Gradus ad Capitolium, Fortune Plango Vulnera. Collect all 6 Ancient Autoharmonic Music Box Scores for the Echoes of the Grand Symphony achievement. Don't miss: give 3 A Ridiculously Common Branch to Giovanni BEFORE completing the chain.",
     rewards:"Primogems x100+ · Hero's Wit x15+ · Mora · 6 Music Scores · Major Remuria achievements",
+    heroWit: 15,
     isSpecial:true,
     game8:"https://game8.co/games/Genshin-Impact/archives/451839",
   },
@@ -433,6 +437,32 @@ const QUESTS = [
     prereqs:"Our Purpose Is in Another Canal + FRI chain progress",
     notes:"Capstone-style FRI quest with lore-heavy reveals. Story finalization for the institute arc.",
     rewards:"Adv EXP · Mora · Hero's Wit · Primogems",
+  },
+  {
+    id:38, tier:4, chain:"narzissen",
+    name:"Ann of the Narzissenkreuz",
+    time:"2-3 hours",
+    region:"Fontaine — multiple locations",
+    activate:"Complete 'Unfinished Comedy' to unlock. Major Narzissenkreuz Ordo chain.",
+    prereqs:"Unfinished Comedy completed · Fontaine Archon Quest progress",
+    notes:"Core Narzissenkreuz Ordo chain. Heavy lore, multi-act structure. One of the highest Mora + HW payouts in Fontaine.",
+    rewards:"170,000 Mora · 17 Hero's Wit · Adv EXP · Primogems",
+    mora: 170000,
+    heroWit: 17,
+    fandom:"https://genshin-impact.fandom.com/wiki/Ann_of_the_Narzissenkreuz",
+  },
+  {
+    id:39, tier:3, chain:"fri",
+    name:"Fontaine Research Institute of Kinetic Energy",
+    time:"45-60 min",
+    region:"Fontaine Research Institute ruins",
+    activate:"Rescue Desnos from Meka enemies at the Fontaine Research Institute area.",
+    prereqs:"Fontaine Research Institute area accessible",
+    notes:"Multi-part investigation chain. Solid Mora + HW for medium time investment.",
+    rewards:"110,000 Mora · 5 Hero's Wit · Adv EXP · Primogems",
+    mora: 110000,
+    heroWit: 5,
+    fandom:"https://genshin-impact.fandom.com/wiki/Fontaine_Research_Institute_of_Kinetic_Energy_Engineering",
   },
 ];
 
@@ -523,7 +553,7 @@ export default function FontaineQuests() {
           </h1>
         </div>
         <p style={{ fontSize:12, letterSpacing:"0.22em", color:"rgba(125,211,252,0.5)", textTransform:"uppercase", marginBottom:24 }}>
-          Quest Completion Tracker · 9/45 Completed · 36 Remaining
+          Quest Completion Tracker — primogems, Mora & Hero's Wit · 9/45 Completed · 36 Remaining
         </p>
 
         {/* Progress bar */}
