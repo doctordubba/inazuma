@@ -32,6 +32,8 @@ const quests = [
     prereqs:"Complete Prologue Chapter I — Act III: Song of the Dragon and Freedom",
     notes:"Mostly dialogue, a brief escort and a Q&A with Dainsleif (answer the lore questions honestly for the full primogem reward). Serves as prologue to AQ Chapter I Act IV — We Will Be Reunited.",
     rewards:"60 Primogems · 800 AR EXP · 38,100 Mora · Hero's Wit · Mystic Enhancement Ore · Talent books (Resistance / Freedom / Ballad)",
+    mora: 38100,
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/317323",
   },
   {
@@ -43,6 +45,7 @@ const quests = [
     prereqs:"Adventure Rank 26 + Prologue: Act III completed + 1 Story Key",
     notes:"Lepus Chapter — Act I. The intro Story Quest of the game; basic Glider tutorial framing with Amber. Quick.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Character ascension materials",
+    heroWit: 1,
     fandom:"https://genshin-impact.fandom.com/wiki/Lepus_Chapter",
   },
 
@@ -56,6 +59,8 @@ const quests = [
     prereqs:"Dragonspine region accessible (AR 20+ and 'The Outlander Who Caught the Wind' completed)",
     notes:"The Dragonspine intro quest. Iris asks you to investigate three Stone Tablets across the mountain — needs a Scarlet Quartz-empowered hit to break the hard ice over each. Required to unlock Peak of Vindagnyr Domain.",
     rewards:"60 Primogems · 30,000 Mora · 3 Hero's Wit · 3 Mystic Enhancement Ore",
+    mora: 30000,
+    heroWit: 3,
     game8:"https://game8.co/games/Genshin-Impact/archives/314752",
   },
   {
@@ -67,6 +72,8 @@ const quests = [
     prereqs:"Dragonspine accessible (typically alongside 'In the Mountains')",
     notes:"Help Joel locate his missing father, who never came back from a Dragonspine expedition. Four-part chain. The follow-up 'Snow-Covered Path' has a quietly devastating ending — keep emotional defences up.",
     rewards:"40 Primogems · 30,000 Mora · 300 AR EXP · 2 Hero's Wit · 4 Mystic Enhancement Ore",
+    mora: 30000,
+    heroWit: 2,
     game8:"https://game8.co/games/Genshin-Impact/archives/314756",
   },
   {
@@ -78,6 +85,7 @@ const quests = [
     prereqs:"Dragonspine accessible",
     notes:"Hunt down the Great Snowboar King for unsoured meat. Tip: use Pyro to thaw Chilled Meat into regular Meat (or carry food that does the same).",
     rewards:"40 Primogems · 300 AR EXP · 4 Hero's Wit · 6 Mystic Enhancement Ore · Goulash recipe · 5 Delicious Goulash",
+    heroWit: 4,
     game8:"https://game8.co/games/Genshin-Impact/archives/314757",
   },
   {
@@ -100,6 +108,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key",
     notes:"Tempus Fugit Chapter — Act I. Lisa wants the books that overdue Mondstadt readers haven't returned. Lots of dialogue, mild combat, brief detective work across the city.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Lisa-flavoured ascension materials",
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/297596",
   },
   {
@@ -111,6 +120,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key",
     notes:"Trifolium Chapter — Act I. Klee is on probation again; help her with a 'treasure hunt' in the Whispering Woods. Mostly comedic, light combat against slimes and hilichurls.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit",
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/305718",
   },
 
@@ -124,6 +134,8 @@ const quests = [
     prereqs:"None mechanically, but you need to reach the island (Cryo + Hydro freeze across the water, or full stamina + glide from Starsnatch Cliff with Amber/Venti).",
     notes:"Multi-step puzzle. After examining the sundial, find the Ragged Notebook under breakable stones at the south campsite, then use Elemental Sight between 02:00-05:00 in-game to spot wind clusters. The trail leads you to the Thousand Winds Temple on the mainland for the Thick Notebook + the boss fight against an Eye of the Storm.",
     rewards:"60 Primogems · 500 AR EXP · 4 Hero's Wit · 6 Mystic Enhancement Ore · 60,000 Mora · 'Nothing to Lose But Time' achievement",
+    mora: 60000,
+    heroWit: 4,
     fandom:"https://genshin-impact.fandom.com/wiki/Time_and_the_Wind",
   },
   {
@@ -135,6 +147,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key",
     notes:"Pavo Ocellus Chapter — Act I. Kaeya, treasure, the inevitable Treasure Hoarder ambushes, and a few brotherly hints. Sets up a lot of Kaeya's later lore.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit",
+    heroWit: 1,
     fandom:"https://genshin-impact.fandom.com/wiki/Pavo_Ocellus_Chapter",
   },
   {
@@ -146,6 +159,7 @@ const quests = [
     prereqs:"AR 21 + Prologue: Act III + Amber's Lepus Chapter Act I + 1 Story Key",
     notes:"Lupus Minor Chapter — Act I. The Meaning of Lupical → Fate's Chosen Lupical. Bring Pyro and Electro for the slime / hilichurl scuffles. Razor's lore + the Wolfhook he is searching for.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Razor ascension materials",
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/311384",
   },
   {
@@ -157,6 +171,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key",
     notes:"Leo Minor Chapter — Act I. Force-march Jean into actually taking a day off; she keeps finding reasons not to. Multi-NPC dialogue with light combat in Springvale's outskirts.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit",
+    heroWit: 1,
     fandom:"https://genshin-impact.fandom.com/wiki/Leo_Minor_Chapter",
   },
   {
@@ -168,6 +183,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key. Prerequisite for Mona's quest.",
     notes:"Noctua Chapter — Act I. Investigate a Fatui-linked mystery alongside Diluc; multiple stops between Angel's Share, the Cathedral, and Dawn Winery.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Diluc ascension materials",
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/304984",
   },
   {
@@ -179,6 +195,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + Diluc's Story Quest (Darknight Hero's Alibi) + 1 Story Key",
     notes:"Astrolabos Chapter — Act I. Track an astrology puzzle, fight an Abyss Mage at the climax, and earn Mona's grudging cooperation.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Mona ascension materials",
+    heroWit: 1,
     game8:"https://game8.co/games/Genshin-Impact/archives/305641",
   },
   {
@@ -190,6 +207,7 @@ const quests = [
     prereqs:"AR 28 + Dragonspine accessible + 1 Story Key. Followed up in the Festering Desire event quest line (originally a 1.2 event, now permanent).",
     notes:"Princeps Cretaceus Chapter — Act I. Investigate Geo-aligned ancient ruins with Albedo. The follow-up Festering Desire chain unlocks the craftable sword of the same name (when its drops are farmed in Dragonspine).",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Albedo ascension materials",
+    heroWit: 1,
     fandom:"https://genshin-impact.fandom.com/wiki/Princeps_Cretaceus_Chapter",
   },
 
@@ -203,6 +221,7 @@ const quests = [
     prereqs:"AR 26 + Prologue: Act III + 1 Story Key",
     notes:"Carmen Dei Chapter — Act I. Venti's biggest story beat as a playable character: a journey through Mondstadt's history with two boss-tier confrontations. Long, dialogue-heavy, plays like a mini Archon Quest. Do this AFTER the others in this tier.",
     rewards:"60 Primogems · Adv EXP · Mora · Hero's Wit · Venti ascension materials",
+    heroWit: 1,
     fandom:"https://genshin-impact.fandom.com/wiki/Carmen_Dei_Chapter",
   },
   {
