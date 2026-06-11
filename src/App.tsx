@@ -962,6 +962,52 @@ const CHARACTERS = [
       ],
     },
   },
+  {
+    id: "lohen",
+    name: "Lohen",
+    epithet: "The Sharpened Arrowhead",
+    element: "cryo",
+    role: "On-Field Cryo DPS (Hexerei)",
+    weaponType: "Polearm",
+    set: "4pc A Day Carved from Rising Winds",
+    setAlt: "4pc Blizzard Strayer (Freeze) · 4pc Marechaussee Hunter (CRIT) · 2pc Gladiator + 2pc Blizzard",
+    weapon: "Disaster and Remorse",
+    weaponAlt: "Staff of the Scarlet Sands · Missive Windspear (4★ craftable) · Calamity Queller",
+    talents: "Skill ›› Burst › Normal",
+    stats: [
+      { id: "sands", label: "Sands main stat", target: "ATK %" },
+      { id: "goblet", label: "Goblet main stat", target: "Cryo DMG %" },
+      { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+      { id: "atk", label: "Total ATK", target: "≥ 2000" },
+      { id: "cr", label: "CRIT Rate", target: "≥ 70 %" },
+      { id: "cd", label: "CRIT DMG", target: "≥ 160 %" },
+      { id: "er", label: "Energy Recharge", target: "120 – 140 %" },
+    ],
+    note: "Account-state: Kit and weapon are leak-based as of 6.6 pre-release — verify on launch. All damage routes through Masterstroke state (Skill) and the Etched Into Bone and Soul nuke (consumes Joy stacks). Party members generate Will to Win on hit, scaling the nuke's DMG — Hexerei partners (Durin, Varka, Nicole) are mandatory for max value.",
+    deep: {
+      lore: "An aging swordsman from the northern reaches who carries his lord's last command as a sealed wound. He fights with the patience of someone who has already decided how he will die — every strike a verdict, every breath a count down. The Sharpened Arrowhead pierces because it remembers what it was loosed to find.",
+      kit: [
+        "Skill — Masterstroke: enters a Cryo-infused state for ~10s. Normal/Charged Attacks generate Joy stacks (max 5). All meaningful DPS routes through this window.",
+        "Burst — Manifest Judgment: large AoE Cryo strikes; refreshes Masterstroke and grants instant Joy stacks. Used as the rotation opener.",
+        "Etched Into Bone and Soul: at 5 Joy stacks, the next CA becomes a high-multiplier Cryo nuke. Will to Win stacks (generated when party members hit enemies) further amplify its DMG.",
+        "A1: when nearby allies are Hexerei, Will to Win generation is doubled — the nuke ceiling roughly doubles in Hexerei comps.",
+        "A4: Lohen converts up to 25% of his ATK above 1800 into CRIT Rate (capped at +24%) — incentivises stacking ATK first, then CRIT DMG circlet.",
+      ],
+      tips: [
+        "Level Skill to 10 first — Masterstroke multipliers and Joy-stack damage scale with it. Burst is second (AoE + Joy generation). Normal Attack talent contributes little, leave it last.",
+        "Rotation: Burst (Joy ×3 instant) › Skill › NAs to 5 Joy › CA (Etched Into Bone and Soul nuke) › repeat. The full loop is ~12s; partners need to be hitting during it to feed Will to Win.",
+        "BiS weapon Disaster and Remorse — high base ATK + CRIT DMG substat, passive grants Cryo DMG on Skill use and doubles its bonus while Hexerei: Secret Rite is active (2+ Hexerei in party).",
+        "A Day Carved from Rising Winds is the same Hexerei set Durin uses — running it on both stacks the team-wide ATK buff cleanly.",
+        "C2 'In Flight, I Strike Whatever Flies' is his best stopping point: roughly +40-50% to the Etched nuke. C0 is fully functional; C1 is filler.",
+      ],
+      synergies: [
+        { id: "durin", why: "Best partner. Both run 4pc A Day Carved from Rising Winds for stacked team ATK buffs; Durin's C1 Cycle of Enlightenment stacks each consumed by Lohen's hits adds +60% of Durin's ATK per hit. Hexerei: Secret Rite double-procs his weapon passive." },
+        { id: "nicole", why: "Hexerei buffer + universal RES shred. Her A1 ATK conversion to flat ATK directly scales Lohen's nuke, and her shield keeps him in Masterstroke uninterrupted." },
+        { id: "varka", why: "Hexerei trigger that adds Pyro for Melt setups. Will to Win generation from Varka's off-field hits is meaningful when his on-field windows are short." },
+        { id: "xilonen", why: "Universal RES shred + healing. Outside of Hexerei comps, Xilonen is the next-best partner — Cryo DMG goblet stacks cleanly with her party-wide elemental shred." },
+      ],
+    },
+  },
 ];
 
 const ELEMENT_THEME = {
