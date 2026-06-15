@@ -1,4 +1,6 @@
+import { useState } from "react";
 import RegionQuestTracker from "./RegionQuestTracker";
+import NodKraiIntel from "./NodKraiIntel";
 
 /* ============================================================
    NOD-KRAI QUEST DATA
@@ -104,6 +106,90 @@ const config = {
   },
 };
 
+const TABS = [
+  { id:"quests",  label:"World Quests", icon:"⚔" },
+  { id:"intel",   label:"Intel Dossier", icon:"☾" },
+  { id:"selenic", label:"Selenic Chronicles", icon:"✦" },
+];
+
+const TAB_STORAGE = "nodkrai-tab-v1";
+
 export default function NodKraiQuests() {
-  return <RegionQuestTracker config={config} />;
+  const [tab, setTab] = useState(() => {
+    try {
+      const saved = localStorage.getItem(TAB_STORAGE);
+      return saved && TABS.some(t => t.id === saved) ? saved : "quests";
+    } catch (e) {
+      return "quests";
+    }
+  });
+
+  const switchTab = (id) => {
+    setTab(id);
+    try { localStorage.setItem(TAB_STORAGE, id); } catch (e) { /* ignore */ }
+  };
+
+  return (
+    <div style={{ minHeight:"100vh", background:config.theme.pageBg, color:config.theme.textPrimary, fontFamily:"Georgia, serif" }}>
+      {/* Tab bar */}
+      <div style={{
+        position:"sticky", top:0, zIndex:5,
+        background:"rgba(2,6,23,0.92)",
+        borderBottom:"1px solid rgba(165,243,252,0.18)",
+        backdropFilter:"blur(8px)",
+        padding:"10px 16px",
+      }}>
+        <div style={{
+          maxWidth:880, margin:"0 auto", display:"flex",
+          gap:6, flexWrap:"wrap", justifyContent:"center",
+        }}>
+          {TABS.map(t => {
+            const active = tab === t.id;
+            return (
+              <button key={t.id} onClick={() => switchTab(t.id)}
+                style={{
+                  padding:"7px 16px", borderRadius:6, cursor:"pointer",
+                  fontSize:12, fontFamily:"Georgia, serif",
+                  letterSpacing:"0.14em", textTransform:"uppercase",
+                  fontWeight: active ? 600 : 400,
+                  background: active ? "rgba(165,243,252,0.12)" : "rgba(255,255,255,0.02)",
+                  color: active ? "#a5f3fc" : "rgba(236,254,255,0.45)",
+                  border: `1px solid ${active ? "rgba(165,243,252,0.55)" : "rgba(255,255,255,0.08)"}`,
+                  display:"inline-flex", alignItems:"center", gap:8,
+                }}>
+                <span style={{ fontSize:13 }}>{t.icon}</span>
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {tab === "quests"  && <RegionQuestTracker config={config} />}
+      {tab === "intel"   && <NodKraiIntel />}
+      {tab === "selenic" && <SelenicChroniclesStub />}
+    </div>
+  );
+}
+
+function SelenicChroniclesStub() {
+  return (
+    <div style={{
+      maxWidth:720, margin:"0 auto", padding:"80px 24px",
+      textAlign:"center", fontFamily:"Georgia, serif", color:"#ecfeff",
+    }}>
+      <div style={{ fontSize:48, marginBottom:16, color:"#a5f3fc", opacity:0.8 }}>✦</div>
+      <h2 style={{
+        fontSize:"clamp(20px,3vw,28px)", fontWeight:600, margin:"0 0 12px 0",
+        background:"linear-gradient(135deg,#f0f9ff 0%,#a5f3fc 50%,#0c4a6e 100%)",
+        WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
+        backgroundClip:"text", letterSpacing:"0.06em",
+      }}>
+        Selenic Chronicles
+      </h2>
+      <p style={{ fontSize:13, color:"rgba(236,254,255,0.55)", fontStyle:"italic", maxWidth:520, margin:"0 auto", lineHeight:1.6 }}>
+        Frostmoon Enclave · Final Night Cemetery · Silvermoon Hall — the per-faction reputation chronicles will live here. Tracker arriving with the next pass.
+      </p>
+    </div>
+  );
 }
