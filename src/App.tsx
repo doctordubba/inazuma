@@ -271,6 +271,29 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "100 \u2013 150 %" },
     ],
     note: "Account-state: C1 + Athame Artis. Two Hexerei in party boosts A1 by 75 %. Vape/Melt teams want some EM substats.",
+    altBuilds: [
+      {
+        id: "vape-melt",
+        label: "Vape / Melt",
+        role: "Off-Field Vape / Melt Sub-DPS",
+        set: "4pc Marechaussee Hunter",
+        setAlt: "4pc Crimson Witch of Flames · 2pc Crimson + 2pc Gilded Dreams",
+        weapon: "Athame Artis",
+        weaponAlt: "Mistsplitter Reforged · Freedom-Sworn · The Black Sword (4★) · Festering Desire (4★ event)",
+        talents: "Burst › Skill › Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "ATK % (EM if 4pc Gilded Dreams)" },
+          { id: "goblet", label: "Goblet main stat", target: "Pyro DMG %" },
+          { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+          { id: "atk", label: "Total ATK", target: "≥ 2000" },
+          { id: "cr", label: "CRIT Rate", target: "≥ 60 %" },
+          { id: "cd", label: "CRIT DMG", target: "≥ 130 %" },
+          { id: "em", label: "Elemental Mastery", target: "120 – 200 (substats)" },
+          { id: "er", label: "Energy Recharge", target: "150 – 170 %" },
+        ],
+        note: "Without Hexerei partners the Athame Artis Hexerei bonus does not fire — drop the Hexerei set and chase reaction damage. Vape teams (Mona / Jahoda / Furina) want Crimson Witch + Pyro Goblet; Melt teams (Ganyu / Ayaka) prefer a 2pc/2pc mix to hold Pyro DMG and EM at once.",
+      },
+    ],
     deep: {
       lore: "Durin, the Dragon of Twin Forms — born from Rhinedottir's alchemy, part dragon and part something older. He shifts between a dark draconic form and a luminous humanoid form, each carrying a different elemental weight. The Hexenzirkel watches him as both a weapon and a ward; Nicole alone among the coven sees the mind behind the eyes.",
       kit: [
@@ -334,6 +357,28 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "200 \u2013 260 %" },
     ],
     note: "His Burst ATK buff scales off Bennett's BASE ATK (weapon + character), NOT total ATK \u2014 high-base weapons like Aquila Favonia matter more than substat ATK %. C6's Pyro infusion has a lingering 'trap' reputation, but in 2026 almost every modern melee DPS auto-infuses (Hu Tao, Diluc, Yoimiya, Arlecchino, Mavuika \u2026), so there is nothing to override \u2014 for those teams C6 is effectively free +15 % Pyro DMG. Only skip C6 if you specifically run a melee NA DPS that needs a non-Pyro element on the swing (Physical Razor, no-skill-infusion Keqing, old Aggravate/Hyperbloom melee setups).",
+    altBuilds: [
+      {
+        id: "sub-dps",
+        label: "Sub-DPS",
+        role: "Sub-DPS / Personal Damage",
+        set: "4pc Crimson Witch of Flames",
+        setAlt: "4pc Marechaussee Hunter \u00b7 4pc Lavawalker (Vape / Melt)",
+        weapon: "Mistsplitter Reforged",
+        weaponAlt: "Aquila Favonia \u00b7 The Black Sword \u00b7 Festering Desire (4\u2605 event) \u00b7 Sapwood Blade (4\u2605)",
+        talents: "Skill \u203a Burst \u203a Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "ATK %" },
+          { id: "goblet", label: "Goblet main stat", target: "Pyro DMG %" },
+          { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+          { id: "atk", label: "Total ATK", target: "\u2265 2200" },
+          { id: "cr", label: "CRIT Rate", target: "60 \u2013 70 %" },
+          { id: "cd", label: "CRIT DMG", target: "\u2265 140 %" },
+          { id: "er", label: "Energy Recharge", target: "140 \u2013 160 %" },
+        ],
+        note: "When Bennett gets actual on-field windows (Vape/Melt rotations, Mavuika's roster, quick-swap teams), build him for personal damage. Pyro Goblet + Crimson Witch make his Skill into real DPS \u2014 he still drops Burst for the team buff, but the Skill / NA between casts now matters.",
+      },
+    ],
     deep: {
       lore: "Mondstadt's most cheerful tragedy. Bennett was found as a baby outside the city and adopted by Benny's Adventure Team \u2014 a guild of five elderly adventurers who took turns raising him. He is so persistently unlucky that the rest of his team usually stays in town because joining one of his expeditions triples the chance of catastrophe. None of this has dimmed him: he still leads, still grins, still drags himself out of every collapsed ruin and logs it as a successful expedition. The Pyro Vision suits him \u2014 warmth, steady flame, a refusal to be put out.",
       kit: [
@@ -477,6 +522,29 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "110 – 130 %" },
     ],
     note: "All damage comes from her Skill (Night Vigil pistolet state) — Normal Attack talent is irrelevant. Bond of Life fluctuations drive 4pc Harmonic Whimsy stacks (+18% DMG each, max 3). In Aggravate teams swap Sands to EM and target ≥ 200 EM.",
+    altBuilds: [
+      {
+        id: "aggravate",
+        label: "Aggravate",
+        role: "Aggravate Hypercarry DPS",
+        set: "4pc Thundering Fury",
+        setAlt: "4pc Fragment of Harmonic Whimsy (if EM lines also roll) · 2pc Thundering Fury + 2pc Gilded Dreams",
+        weapon: "Absolution",
+        weaponAlt: "Mistsplitter Reforged · Light of Foliar Incision · Iron Sting (4★) · Toukabou Shigure (4★)",
+        talents: "Skill ›› Burst › Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "EM" },
+          { id: "goblet", label: "Goblet main stat", target: "Electro DMG %" },
+          { id: "circlet", label: "Circlet main stat", target: "CRIT DMG" },
+          { id: "em", label: "Elemental Mastery", target: "≥ 200" },
+          { id: "atk", label: "Total ATK", target: "≥ 1800" },
+          { id: "cr", label: "CRIT Rate", target: "≥ 70 %" },
+          { id: "cd", label: "CRIT DMG", target: "≥ 200 %" },
+          { id: "er", label: "Energy Recharge", target: "110 – 130 %" },
+        ],
+        note: "With Nahida + a Dendro keeper, every pistolet hit procs Aggravate independently — EM Sands outscales ATK %. Thundering Fury also cuts her Skill cooldown by 1 s per Aggravate trigger, extending the Night Vigil window mid-burst.",
+      },
+    ],
     deep: {
       lore: "Fontaine’s undefeated Champion Duelist, arbiter of divine justice through trial by combat. She wields rapier and pistolet in tandem — every duel she fights is, in her eyes, a prayer answered by the Hydro Archon’s justice.",
       kit: [
@@ -520,6 +588,26 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "130 \u2013 160 %" },
     ],
     note: "Oz is the damage. In Hyperbloom/Aggravate teams swap to full EM build (EM Sands/Goblet/Circlet, target \u2265 800).",
+    altBuilds: [
+      {
+        id: "hyperbloom",
+        label: "Hyperbloom Trigger",
+        role: "Hyperbloom Trigger (EM)",
+        set: "4pc Flower of Paradise Lost",
+        setAlt: "4pc Gilded Dreams \u00b7 4pc Thundering Fury (Aggravate)",
+        weapon: "Sacrificial Bow (4\u2605)",
+        weaponAlt: "Polar Star \u00b7 Favonius Warbow \u00b7 The Stringless (4\u2605 EM) \u00b7 Prototype Crescent (F2P)",
+        talents: "Skill \u203a\u203a Burst \u203a Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "EM" },
+          { id: "goblet", label: "Goblet main stat", target: "EM" },
+          { id: "circlet", label: "Circlet main stat", target: "EM" },
+          { id: "em", label: "Elemental Mastery", target: "\u2265 800" },
+          { id: "er", label: "Energy Recharge", target: "130 \u2013 160 %" },
+        ],
+        note: "In Bloom teams (Nahida + Furina + Yelan / Xingqiu), Oz becomes a Hyperbloom factory \u2014 drop ATK and CRIT, every EM point converts directly into Hyperbloom DMG. 4pc Flower of Paradise Lost amplifies Hyperbloom by +40 % per stack (max 4) once she triggers a Dendro/Bloom reaction.",
+      },
+    ],
   },
   {
     id: "flins",
@@ -631,6 +719,28 @@ const CHARACTERS = [
       { id: "er", label: "Energy Recharge", target: "160 \u2013 200 %" },
     ],
     note: "Pure EM \u2014 no CRIT. His burst is what unlocks his support: Scroll of Cinder City grants the team +28% matching-element DMG while he's in Nightsoul.",
+    altBuilds: [
+      {
+        id: "sub-dps",
+        label: "Sub-DPS (CRIT)",
+        role: "Personal-Damage Sub-DPS",
+        set: "4pc Thundering Fury",
+        setAlt: "4pc Golden Troupe \u00b7 4pc Scroll of the Hero of Cinder City (if no other Natlan unit holds it)",
+        weapon: "Elegy for the End",
+        weaponAlt: "Polar Star \u00b7 Aqua Simulacra \u00b7 Favonius Warbow \u00b7 The Stringless (4\u2605) \u00b7 Prototype Crescent (F2P)",
+        talents: "Skill \u203a\u203a Burst \u203a Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "ATK %" },
+          { id: "goblet", label: "Goblet main stat", target: "Electro DMG %" },
+          { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+          { id: "atk", label: "Total ATK", target: "\u2265 2000" },
+          { id: "cr", label: "CRIT Rate", target: "\u2265 60 %" },
+          { id: "cd", label: "CRIT DMG", target: "\u2265 130 %" },
+          { id: "er", label: "Energy Recharge", target: "125 \u2013 150 %" },
+        ],
+        note: "In Electro / Overload / no-Dendro teams there is no Hyperbloom to trigger, so the EM build is dead weight. Build him as a standard sub-DPS \u2014 the team-DMG buff from 4pc Scroll still fires on any Electro reaction, and his Spirit Orb and Supersonic Oculus deal real damage with CRIT substats. Game8 and KQM both list this as his recommended build in non-Dendro comps.",
+      },
+    ],
     deep: {
       lore: "Bidii \u2014 \"Devotion\" \u2014 in the Ancient Names of Sanhaj Kompore. Ororon is a Master of the Night-Wind, the fifth of Natlan's heroes to be recognised, and the only one to escape the ritual that the hero's name normally demands. Born with an incomplete soul, he keeps to himself outside the tribal grounds \u2014 tending vegetables, raising Phlogiston Aphids, and speaking with the dead who drift past the curtain of the Night Kingdom. The hero's name was given to him. The devotion was always his.",
       kit: [
@@ -802,6 +912,28 @@ const CHARACTERS = [
       { id: "em", label: "Elemental Mastery", target: "Optional substat — only if running for personal Swirl DMG" },
     ],
     note: "Kit details are leak-based as of 6.6 pre-release — verify on launch. Account-state: C6 (Bell-Bound Oath unlocked). The double-buffer profile: Ringing Inspiration grants the team a DMG % bonus scaling on Prune's ATK over 1000 (0.01 % per excess ATK, capped at +35 % at 4500 ATK) — lives in the DMG_Bonus term and stacks MULTIPLICATIVELY with Bennett / Nicole's flat ATK, with NO / Tenacity / Pyro Resonance ATK %, and with Furina's Fanfare. C6 layers a flat +350 ATK on top of that DMG % bonus, putting her into Bennett-tier flat-ATK output AND keeping the +35 % DMG %. At C6 she is BiS team-buffer in any reaction comp without a Bennett slot.",
+    altBuilds: [
+      {
+        id: "swirl-sub",
+        label: "Swirl Sub-DPS",
+        role: "Anemo Swirl Sub-DPS",
+        set: "4pc Viridescent Venerer",
+        setAlt: "4pc Desert Pavilion Chronicle · 4pc Marechaussee Hunter (if she gets on-field NA windows)",
+        weapon: "Jadefall's Splendor",
+        weaponAlt: "Lost Prayer to the Sacred Winds · Kagura's Verity · Tome of the Eternal Flow · The Widsith (4★)",
+        talents: "Skill ›› Burst › Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "EM (ATK % alt)" },
+          { id: "goblet", label: "Goblet main stat", target: "Anemo DMG %" },
+          { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+          { id: "em", label: "Elemental Mastery", target: "300 – 500" },
+          { id: "cr", label: "CRIT Rate", target: "≥ 50 %" },
+          { id: "cd", label: "CRIT DMG", target: "≥ 130 %" },
+          { id: "er", label: "Energy Recharge", target: "140 – 160 %" },
+        ],
+        note: "Without Bennett or Nicole loading flat ATK into the team, the Ringing Inspiration buff caps lower — running Prune as her own Swirl sub-DPS with VV + Anemo Goblet gives more out of her slot. EM amplifies Swirl reaction damage and her A4 Anemo DMG component scales off Anemo DMG %.",
+      },
+    ],
     deep: {
       lore: "Prune of the Hunting Oath — youngest of the Hexenzirkel and the only member sworn to the coven's defence rather than its studies. She carries the Hunting Oath Hammer, a witch-iron piece forged for striking the Lure Witch Bell that her predecessors hung at the borders of every Hexenzirkel sanctum; the Bell rings when something unmade tries to step inside. Where Mona reads the future and Rhinedottir shaped the past, Prune patrols the present.",
       kit: [
@@ -892,6 +1024,26 @@ const CHARACTERS = [
       { id: "cd", label: "CRIT DMG", target: "≥ 140 %  (DPS build only)" },
     ],
     note: "Her Burst applies Omen — a debuff that increases the marked enemy's DMG TAKEN from all sources (~42 % at talent 6, ~60 % at talent 13). One of the largest party-wide amplifiers in the game while it's up; window is short (~4-5 s), so plant it at the start of the DPS's burst cycle. After completing Witch's Homework: Of Untested Insight (6.2 quest), Mona becomes a Hexerei character and gains Astral Glow of Mercury: her NAs/CAs grant 1 stack (max 3, 8 s duration); when another party member triggers a Vaporize, all stacks are consumed and that Vape gains +15 % per stack (max +45 %). Thrilling Tales of Dragon Slayers (free 3★) is unironically BiS for SUPPORT Mona — its passive transfers +48 % ATK to the next on-field character on swap.",
+    altBuilds: [
+      {
+        id: "omen",
+        label: "Omen Support",
+        role: "Pure Omen Buff Support",
+        set: "4pc Noblesse Oblige",
+        setAlt: "4pc Tenacity of the Millelith · 2pc Wanderer's Troupe + 2pc Heart of Depth",
+        weapon: "Thrilling Tales of Dragon Slayers (3★)",
+        weaponAlt: "Sacrificial Fragments · Prototype Amber (F2P) · Favonius Codex (4★) · Tome of the Eternal Flow",
+        talents: "Burst › Skill › Normal",
+        stats: [
+          { id: "sands", label: "Sands main stat", target: "ER % (HP % in HP teams)" },
+          { id: "goblet", label: "Goblet main stat", target: "Hydro DMG % (or HP %)" },
+          { id: "circlet", label: "Circlet main stat", target: "ATK % or HP %" },
+          { id: "atk", label: "Total ATK", target: "not critical" },
+          { id: "er", label: "Energy Recharge", target: "160 – 200 %" },
+        ],
+        note: "Without 2 + Hexerei in the party (or pre-6.2 quest), drop the Hexerei build entirely. TTDS swaps in +48 % ATK to the next on-field character every Skill press, and Noblesse gives the team a Burst-window +20 % ATK. Omen alone is ~+42 % DMG TAKEN at talent 6 — it amplifies everything regardless of her own stats.",
+      },
+    ],
     deep: {
       lore: "Mona Megistus, last apprentice of the original Astrologist and one of the publicly-named members of the Hexenzirkel — a centuries-old coven of witches whose other members include Alice (Klee's mother), Rhinedottir (origin of Albedo and Durin), the Dornman bard, and 'N' (Nicole). Famously, catastrophically broke; her food-and-rent budget is the running joke of Mondstadt. Her trade is divination, and the Omen on her enemies is, in lore, an actual celestial verdict — not just an elemental application.",
       kit: [
@@ -2401,10 +2553,59 @@ function WeaponsPage({ onGoToCharacter }) {
   );
 }
 
+const BUILD_TAB_KEY = "genshin-build-tab-v1";
+
+function loadBuildTabs() {
+  try {
+    const raw = localStorage.getItem(BUILD_TAB_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
 function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
   const theme = ELEMENT_THEME[char.element];
-  const done = char.stats.filter((s) => checked[s.id]).length;
-  const total = char.stats.length;
+  const hasAltBuilds = Array.isArray(char.altBuilds) && char.altBuilds.length > 0;
+
+  const [activeBuildId, setActiveBuildId] = useState(() => {
+    if (!hasAltBuilds) return "primary";
+    const saved = loadBuildTabs()[char.id];
+    if (saved === "primary") return "primary";
+    if (saved && char.altBuilds.some((b) => b.id === saved)) return saved;
+    return "primary";
+  });
+
+  const switchBuild = (id) => {
+    setActiveBuildId(id);
+    try {
+      const next = loadBuildTabs();
+      next[char.id] = id;
+      localStorage.setItem(BUILD_TAB_KEY, JSON.stringify(next));
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const activeAlt = hasAltBuilds && activeBuildId !== "primary"
+    ? char.altBuilds.find((b) => b.id === activeBuildId)
+    : null;
+
+  const resolved = activeAlt
+    ? {
+        role:      activeAlt.role      ?? char.role,
+        set:       activeAlt.set       ?? char.set,
+        setAlt:    activeAlt.setAlt    ?? char.setAlt,
+        weapon:    activeAlt.weapon    ?? char.weapon,
+        weaponAlt: activeAlt.weaponAlt ?? char.weaponAlt,
+        talents:   activeAlt.talents   ?? char.talents,
+        stats:     activeAlt.stats     ?? char.stats,
+        note:      activeAlt.note      ?? char.note,
+      }
+    : char;
+
+  const done = resolved.stats.filter((s) => checked[s.id]).length;
+  const total = resolved.stats.length;
   const pct = Math.round((done / total) * 100);
   const [showDeep, setShowDeep] = useState(false);
 
@@ -2425,40 +2626,66 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
           <span className="elem-chip">{theme.label}</span>
         </div>
         <p className="char-epithet">{char.epithet}</p>
-        <p className="char-role">{char.role} · {char.weaponType}</p>
+        <p className="char-role">{resolved.role} · {char.weaponType}</p>
       </header>
+
+      {hasAltBuilds && (
+        <div className="build-tabs" role="tablist" aria-label="Build variants">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeBuildId === "primary"}
+            className={`build-tab ${activeBuildId === "primary" ? "active" : ""}`}
+            onClick={() => switchBuild("primary")}
+          >
+            {char.buildLabel || char.role.split(" · ")[0].split(" / ")[0]}
+          </button>
+          {char.altBuilds.map((b) => (
+            <button
+              key={b.id}
+              type="button"
+              role="tab"
+              aria-selected={activeBuildId === b.id}
+              className={`build-tab ${activeBuildId === b.id ? "active" : ""}`}
+              onClick={() => switchBuild(b.id)}
+            >
+              {b.label}
+            </button>
+          ))}
+        </div>
+      )}
 
       <section className="essentials">
         <div className="ess-row">
           <span className="ess-label">Set</span>
-          <span className="ess-val">{char.set}</span>
+          <span className="ess-val">{resolved.set}</span>
         </div>
-        {char.setAlt && (
+        {resolved.setAlt && (
           <div className="ess-row faint">
             <span className="ess-label">↳ alt</span>
-            <span className="ess-val">{char.setAlt}</span>
+            <span className="ess-val">{resolved.setAlt}</span>
           </div>
         )}
         <div className="ess-row">
           <span className="ess-label">Weapon</span>
-          <span className="ess-val">{char.weapon}</span>
+          <span className="ess-val">{resolved.weapon}</span>
         </div>
-        {char.weaponAlt && (
+        {resolved.weaponAlt && (
           <div className="ess-row faint">
             <span className="ess-label">↳ alt</span>
-            <span className="ess-val">{char.weaponAlt}</span>
+            <span className="ess-val">{resolved.weaponAlt}</span>
           </div>
         )}
         <div className="ess-row">
           <span className="ess-label">Talents</span>
-          <span className="ess-val">{char.talents}</span>
+          <span className="ess-val">{resolved.talents}</span>
         </div>
       </section>
 
       <div className="divider" />
 
       <section className="stats">
-        {char.stats.map((s) => (
+        {resolved.stats.map((s) => (
           <StatRow
             key={s.id}
             label={s.label}
@@ -2470,9 +2697,9 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo }) {
         ))}
       </section>
 
-      {char.note && (
+      {resolved.note && (
         <p className="note">
-          <span className="note-mark">※</span> {char.note}
+          <span className="note-mark">※</span> {resolved.note}
         </p>
       )}
 
@@ -2855,6 +3082,40 @@ const styles = `
   color: var(--accent);
   margin: 0;
   opacity: 0.9;
+}
+
+.build-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(201, 168, 106, 0.18);
+}
+.build-tab {
+  padding: 5px 11px;
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(232, 228, 214, 0.45);
+  border: 1px solid rgba(232, 228, 214, 0.12);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-weight: 500;
+}
+.build-tab:hover {
+  color: rgba(232, 228, 214, 0.75);
+  border-color: rgba(232, 228, 214, 0.25);
+}
+.build-tab.active {
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+  font-weight: 600;
+  box-shadow: 0 0 12px color-mix(in oklab, var(--glow) 70%, transparent);
 }
 
 .essentials {
