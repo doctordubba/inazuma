@@ -725,7 +725,7 @@ const CHARACTERS = [
         label: "Sub-DPS (CRIT)",
         role: "Personal-Damage Sub-DPS",
         set: "4pc Thundering Fury",
-        setAlt: "4pc Golden Troupe \u00b7 4pc Scroll of the Hero of Cinder City (if no other Natlan unit holds it)",
+        setAlt: "4pc Golden Troupe \u00b7 4pc Scroll of the Hero of Cinder City (if no other Natlan unit holds it) \u00b7 4pc Noblesse Oblige (no-buffer teams)",
         weapon: "Elegy for the End",
         weaponAlt: "Polar Star \u00b7 Aqua Simulacra \u00b7 Favonius Warbow \u00b7 The Stringless (4\u2605) \u00b7 Prototype Crescent (F2P)",
         talents: "Skill \u203a\u203a Burst \u203a Normal",
@@ -738,7 +738,7 @@ const CHARACTERS = [
           { id: "cd", label: "CRIT DMG", target: "\u2265 130 %" },
           { id: "er", label: "Energy Recharge", target: "125 \u2013 150 %" },
         ],
-        note: "In Electro / Overload / no-Dendro teams there is no Hyperbloom to trigger, so the EM build is dead weight. Build him as a standard sub-DPS \u2014 the team-DMG buff from 4pc Scroll still fires on any Electro reaction, and his Spirit Orb and Supersonic Oculus deal real damage with CRIT substats. Game8 and KQM both list this as his recommended build in non-Dendro comps.",
+        note: "In Electro / Overload / no-Dendro teams there is no Hyperbloom to trigger, so the EM build is dead weight. Build him as a standard sub-DPS \u2014 the team-DMG buff from 4pc Scroll still fires on any Electro reaction, and his Spirit Orb and Supersonic Oculus deal real damage with CRIT substats. Game8 and KQM both list this as his recommended build in non-Dendro comps. If the team lacks a buffer (no Bennett / Yun Jin / Faruzan), swap to 4pc Noblesse Oblige \u2014 the team +20 % ATK on Burst is more global value than the personal +40 % Electro DMG.",
       },
     ],
     deep: {
