@@ -882,6 +882,51 @@ export const RESONATORS = [
       ],
     },
   },
+  {
+    id: "encore",
+    name: "Encore",
+    epithet: "Woolies' Dearest Friend of the Black Shores",
+    element: "fusion",
+    role: "On-Field Fusion Main DPS (Basic Attack)",
+    weaponType: "Rectifier",
+    set: "5pc Molten Rift · Inferno Rider main",
+    setAlt: "2pc Molten Rift + 2pc Lingering Tunes (transitional)",
+    weapon: "Stringmaster",
+    weaponAlt: "Cosmic Ripples (standard 5★) · Augment (4★ Battle Pass) · Rectifier of Voyager (early-game stopgap)",
+    talents: "Basic Attack = Liberation > Forte Circuit > Skill > Intro",
+    stats: [
+      { id: "main-4c", label: "4-cost main stat", target: "CRIT Rate (CRIT DMG with Stringmaster's CR line)" },
+      { id: "main-3c", label: "3-cost main stats (x2)", target: "Fusion DMG %" },
+      { id: "main-1c", label: "1-cost main stats (x2)", target: "ATK %" },
+      { id: "crit-rate", label: "CRIT Rate", target: "65-70%+" },
+      { id: "crit-dmg", label: "CRIT DMG", target: "230-250% combined crit value (keep ~1:2 ratio)" },
+      { id: "total-atk", label: "Total ATK", target: "2,000+" },
+      { id: "energy-regen", label: "Energy Regen", target: "100-120% (Basic Woolies Attack and Skill each restore 10 Resonance Energy — she largely batteries herself)" },
+      { id: "substat-prio", label: "Substat priority", target: "CRIT Rate / CRIT DMG > ATK% > Energy Regen" },
+    ],
+    note: "Nearly 70% of her damage is Basic Attacks inside Cosmos Rave — level Basic Attack alongside Liberation and do NOT build her around the Skill or Forte Circuit. Keep her HP above 70%: her Inherent Skill adds +10% DMG in Rave only while healthy, which quietly makes a healer part of her damage profile.",
+    deep: {
+      lore: "A Black Shores prodigy who looks like a child and negotiates like a senior operative, never seen without her sheep companions Cosmos and Abby. Her Fusion power runs on unfiltered emotion — when she loses patience mid-fight, the Woolies do too, and the resulting tantrum is measured in explosions.",
+      kit: [
+        "Resonance Liberation — Cosmos Rave: her core state. Basic Attacks transform into empowered Cosmos attacks and account for roughly 70% of her total output; the entire build serves this window.",
+        "Lost Lamb stacks: during Cosmos Rave every hit grants +5% ATK for 10s, stacking to 6 — she ramps to +30% ATK inside her own burst window.",
+        "Resonance Skill — Energetic Welcome: quick Fusion poke that restores 10 Resonance Energy; a rotation filler, not a damage centerpiece.",
+        "Forte Circuit: spend the gauge on her enhanced Heavy Attack between Rave windows; secondary damage at best.",
+        "Outro — Thermal Field: Fusion DMG Amplify for the incoming Resonator, letting her double as a buffer in double-Fusion teams.",
+        "Inherent: +10% DMG during Cosmos Rave while above 70% HP — sustain indirectly buys damage.",
+      ],
+      tips: [
+        "Rotation shape: build Concerto and energy with Skill + basics, take the buffer's Outro, cast Liberation, then stay on-field and burn the entire Cosmos Rave with basics — swapping early throws away her damage window.",
+        "5pc Molten Rift wants the Skill cast BEFORE Liberation so the 15s Fusion DMG buff covers the whole Rave window.",
+        "Stringmaster is her real BiS despite being Yinlin's signature — the CR line fixes her crit budget and the DMG% clause ramps during setup. Cosmic Ripples is the best standard-banner option.",
+      ],
+      synergies: [
+        { id: "sanhua", why: "Her canonical partner: the 38% Basic Attack Deepen Outro lands on exactly the ~70% of Encore's damage that is Basic Attacks, and Sanhua's ~5s field time barely interrupts the Rave loop." },
+        { id: "verina", why: "The classic third slot: healing keeps Encore above the 70% HP threshold for her +10% Rave bonus, and Verina's +20% team ATK plus universal Amplify stack on top." },
+        { id: "shorekeeper", why: "Premium alternative to Verina — bigger universal amplification and crit support from the Stellarealm, with the same keep-her-healthy insurance for the Inherent Skill bonus." },
+      ],
+    },
+  },
 ];
 
 export const ATTRIBUTE_ORDER = ["glacio", "fusion", "electro", "aero", "spectro", "havoc"];
