@@ -3122,6 +3122,9 @@ const styles = `
 
 .card {
   position: relative;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
   background: linear-gradient(180deg, rgba(20, 22, 48, 0.7) 0%, rgba(12, 14, 32, 0.85) 100%);
   border: 1px solid rgba(201, 168, 106, 0.15);
   padding: 32px 28px 24px;
@@ -3253,7 +3256,7 @@ const styles = `
   font-weight: 500;
 }
 
-.ess-val { color: #e8e4d6; }
+.ess-val { color: #e8e4d6; min-width: 0; overflow-wrap: break-word; }
 
 .divider {
   height: 1px;
@@ -3335,7 +3338,10 @@ const styles = `
   font-style: italic;
   font-size: 15px;
   color: var(--accent);
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: right;
+  min-width: 0;
   letter-spacing: 0.02em;
 }
 
@@ -4024,11 +4030,11 @@ const styles = `
 }
 
 @media (max-width: 480px) {
-  .page { padding: 32px 16px 60px; }
-  .card { padding: 28px 20px 20px; }
+  .page { padding: 32px 12px 60px; }
+  .card { padding: 24px 16px 18px; }
   .char-name { font-size: 28px; }
-  .stat { font-size: 12px; gap: 10px; grid-template-columns: 20px 1fr auto; }
-  .stat-target { font-size: 13px; }
+  .stat { font-size: 12px; gap: 8px; grid-template-columns: 20px minmax(0, 1fr) minmax(0, auto); padding: 12px 4px; }
+  .stat-target { font-size: 13px; overflow-wrap: anywhere; }
   .ess-row { grid-template-columns: 56px 1fr; font-size: 12px; }
   .deep-lore { font-size: 14px; }
   .syn-name { font-size: 16px; }
