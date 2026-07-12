@@ -2665,22 +2665,22 @@ function WeaponsPage({ onGoToCharacter }) {
 
 const BUILD_TAB_KEY = "genshin-build-tab-v1";
 
-function loadBuildTabs() {
+function loadBuildTabs(key = BUILD_TAB_KEY) {
   try {
-    const raw = localStorage.getItem(BUILD_TAB_KEY);
+    const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : {};
   } catch (e) {
     return {};
   }
 }
 
-function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roster = CHARACTERS, themeMap = ELEMENT_THEME }) {
+function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roster = CHARACTERS, themeMap = ELEMENT_THEME, tabStorageKey = BUILD_TAB_KEY }) {
   const theme = themeMap[char.element];
   const hasAltBuilds = Array.isArray(char.altBuilds) && char.altBuilds.length > 0;
 
   const [activeBuildId, setActiveBuildId] = useState(() => {
     if (!hasAltBuilds) return "primary";
-    const saved = loadBuildTabs()[char.id];
+    const saved = loadBuildTabs(tabStorageKey)[char.id];
     if (saved === "primary") return "primary";
     if (saved && char.altBuilds.some((b) => b.id === saved)) return saved;
     return "primary";
@@ -2689,9 +2689,9 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roste
   const switchBuild = (id) => {
     setActiveBuildId(id);
     try {
-      const next = loadBuildTabs();
+      const next = loadBuildTabs(tabStorageKey);
       next[char.id] = id;
-      localStorage.setItem(BUILD_TAB_KEY, JSON.stringify(next));
+      localStorage.setItem(tabStorageKey, JSON.stringify(next));
     } catch (e) {
       // ignore
     }
