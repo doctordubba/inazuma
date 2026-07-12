@@ -64,8 +64,9 @@ function GameHub() {
             <span className="hub-game">Wuthering Waves</span>
             <h2 className="hub-card-title">Almanac of the Resonant Tides</h2>
             <p className="hub-tagline">
-              Ideal builds for twelve Resonators of the v3.5 meta — Echo sets,
-              signature weapons, forte priorities, and stat targets.
+              Ideal builds across the v3.5 Resonator roster — Echo sets,
+              signature weapons, forte priorities, the Echo Compendium,
+              and the Field Manual.
             </p>
             <div className="hub-badges">
               <span className="hub-badge">Resonators</span>
