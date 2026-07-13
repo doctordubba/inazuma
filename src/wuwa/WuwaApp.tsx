@@ -3,6 +3,7 @@ import { CharacterCard, almanacStyles } from "../GenshinApp";
 import { RESONATORS, ATTRIBUTE_THEME, ATTRIBUTE_ORDER, WUWA_VERSION } from "./wuwaData";
 import EchoCompendium from "./EchoCompendium";
 import FieldManual from "./FieldManual";
+import TiersTeams from "./TiersTeams";
 
 const WUWA_STORAGE_KEY = "wuwa-build-progress-v1";
 const WUWA_COLLAPSE_KEY = "wuwa-build-collapsed-v1";
@@ -15,6 +16,7 @@ const RESONATORS_BY_ATTRIBUTE = ATTRIBUTE_ORDER.reduce((acc, attr) => {
 
 const PAGES = {
   resonators: "resonators",
+  tiers: "tiers",
   echoes: "echoes",
   guides: "guides",
 };
@@ -23,6 +25,7 @@ function getPageFromHash() {
   const hash = (typeof window !== "undefined" ? window.location.hash : "") || "";
   const seg = hash.replace(/^#\/?/, "").toLowerCase();
   const sub = seg.replace(/^wuwa\/?/, "").replace(/\/+$/, "");
+  if (sub === "tiers") return PAGES.tiers;
   if (sub === "echoes") return PAGES.echoes;
   if (sub === "guides") return PAGES.guides;
   return PAGES.resonators;
@@ -56,6 +59,13 @@ export default function WuwaApp() {
                 Resonators
               </a>
               <a
+                href="#/wuwa/tiers"
+                className={`nav-link ${page === PAGES.tiers ? "active" : ""}`}
+                aria-current={page === PAGES.tiers ? "page" : undefined}
+              >
+                Tiers &amp; Teams
+              </a>
+              <a
                 href="#/wuwa/echoes"
                 className={`nav-link ${page === PAGES.echoes ? "active" : ""}`}
                 aria-current={page === PAGES.echoes ? "page" : undefined}
@@ -78,7 +88,9 @@ export default function WuwaApp() {
             </div>
           </nav>
 
-          {page === PAGES.echoes ? (
+          {page === PAGES.tiers ? (
+            <TiersTeams />
+          ) : page === PAGES.echoes ? (
             <EchoCompendium />
           ) : page === PAGES.guides ? (
             <FieldManual />
