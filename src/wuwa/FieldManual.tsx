@@ -275,7 +275,7 @@ const PROGRESSION_SECTIONS = [
           "Match the hybrid's Outro to the DPS's damage type (Basic/Heavy/Skill/Liberation), not their element.",
         details: [
           "Outro amplifications are typed: Sanhua Deepens Basic Attack DMG (38%), Mortefi Deepens Heavy Attack DMG, others Deepen Skill or Liberation damage. A Glacio Sanhua fully buffs a Havoc Basic-Attack carry; a same-element hybrid with the wrong Deepen type buffs almost nothing.",
-          "Check where your DPS's damage actually comes from in their forte breakdown, then pick the buffer for that line. Example from the current patch: Xuanling is a Heavy-Attack-centric Glacio carry, so her best partners are Heavy Attack amplifiers (Iuno, Mortefi) regardless of their own element.",
+          "Check where your DPS's damage actually comes from in their forte breakdown, then pick the buffer for that line. Example from the current patch: Yangyang: Xuanling is a Heavy-Attack-centric Havoc carry, so her best partners are Heavy Attack amplifiers (Iuno, Mortefi) regardless of their own element.",
           "Element only becomes the organizing principle in debuff archetypes — Aero Erosion, Spectro Frazzle, Havoc Bane teams — where the DPS scales off stacks that only same-mechanic teammates can apply. In those comps, recruit for the debuff, then still check the Deepen type.",
           "Practical test: if you cannot name what your third slot's Outro does for your DPS, the slot is wrong.",
         ],

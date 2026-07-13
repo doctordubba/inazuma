@@ -3273,7 +3273,7 @@ const styles = `
 
 .stat {
   display: grid;
-  grid-template-columns: 22px 1fr auto;
+  grid-template-columns: 22px 1fr 1.5fr;
   gap: 12px;
   align-items: center;
   padding: 12px 8px;
@@ -4033,9 +4033,10 @@ const styles = `
   .page { padding: 32px 12px 60px; }
   .card { padding: 24px 16px 18px; }
   .char-name { font-size: 28px; }
-  .stat { font-size: 12px; gap: 8px; grid-template-columns: 20px minmax(0, 1fr) minmax(0, auto); padding: 12px 4px; }
+  .stat { font-size: 12px; gap: 8px; grid-template-columns: 20px 1fr 1.35fr; padding: 12px 4px; }
   .stat-target { font-size: 13px; overflow-wrap: anywhere; }
-  .ess-row { grid-template-columns: 56px 1fr; font-size: 12px; }
+  .ess-row { grid-template-columns: 62px 1fr; font-size: 12px; }
+  .ess-label { letter-spacing: 0.18em; }
   .deep-lore { font-size: 14px; }
   .syn-name { font-size: 16px; }
   .rx-body { padding: 0 14px 18px; }
