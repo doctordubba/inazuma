@@ -2674,7 +2674,7 @@ function loadBuildTabs(key = BUILD_TAB_KEY) {
   }
 }
 
-function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roster = CHARACTERS, themeMap = ELEMENT_THEME, tabStorageKey = BUILD_TAB_KEY }) {
+function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roster = CHARACTERS, themeMap = ELEMENT_THEME, tabStorageKey = BUILD_TAB_KEY, badge }) {
   const theme = themeMap[char.element];
   const hasAltBuilds = Array.isArray(char.altBuilds) && char.altBuilds.length > 0;
 
@@ -2734,6 +2734,7 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roste
         <div className="card-head-row">
           <h2 className="char-name">{char.name}</h2>
           <span className="elem-chip">{theme.label}</span>
+          {badge && <span className="elem-chip">{badge}</span>}
         </div>
         <p className="char-epithet">{char.epithet}</p>
         <p className="char-role">{resolved.role} · {char.weaponType}</p>

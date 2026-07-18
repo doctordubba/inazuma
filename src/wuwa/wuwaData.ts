@@ -15,6 +15,18 @@ export const ATTRIBUTE_THEME = {
   havoc:   { color: "#d17a9e", glow: "rgba(209,122,158,0.18)", label: "Havoc" },
 };
 
+/* teamMeta drives the Team Lab generator: NEW resonators MUST include a
+   teamMeta field to automatically join team generation.
+   - tier: overall power band ("S" | "A" | "B" | "C")
+   - roleType: team slot the unit fills (main-dps | sub-dps | amplifier | healer-amp | shielder | battery)
+   - dmgTags: damage types the unit itself deals meaningfully (basic/heavy/skill/liberation/coordinated/hack); [] for pure supports
+   - outro: outro buff — kind (deepen/amp-all/heal/energy/stagger/none), tags (damage-type and/or element tags for deepen), strength (1-3), untilSwap (buff drops when the recipient swaps out)
+   - sustain: provides real healing or shields
+   - needsSustain: depends on a sustainer (e.g. HP drain or HP-gated damage)
+   - quickSwap: delivers value in short field windows
+   - fieldHungry: wants long uninterrupted field time
+   - coordinated: provides off-field coordinated attacks
+   - pairBonus (optional): curated compounding loops with specific roster ids */
 export const RESONATORS = [
   {
     id: "xuanling",
@@ -28,6 +40,21 @@ export const RESONATORS = [
     weapon: "Azure Oath",
     weaponAlt: "Emerald Sentence · Red Spring · Emerald of Genesis · Lumingloss",
     talents: "Forte Circuit >> Liberation > Normal > Skill = Intro",
+    teamMeta: {
+      tier: "S",
+      roleType: "main-dps",
+      dmgTags: ["heavy", "liberation"],
+      outro: { kind: "deepen", tags: ["havoc"], strength: 1, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: false,
+      fieldHungry: true,
+      coordinated: false,
+      pairBonus: [
+        { with: "mortefi", why: "Her whole kit snapshots as Heavy Attack DMG, so his 38% Heavy Deepen multiplies everything she does" },
+        { with: "rebecca", why: "Best non-collab recipient of Rebecca's ~50% All+Heavy ramp amp; her long Melody windows soak the full stack" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT DMG (her set + signature already stack CRIT Rate)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Havoc DMG% x2" },
@@ -73,6 +100,20 @@ export const RESONATORS = [
     weapon: "Daybreaker's Spine",
     weaponAlt: "Pulsation Bracer · Abyss Surges · Blazing Justice · Celestial Spiral (4★)",
     talents: "Skill >> Liberation > Forte Circuit > Basic Attack > Intro",
+    teamMeta: {
+      tier: "A",
+      roleType: "main-dps",
+      dmgTags: ["basic", "liberation"],
+      outro: { kind: "amp-all", tags: [], strength: 1, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: false,
+      fieldHungry: true,
+      coordinated: false,
+      pairBonus: [
+        { with: "lynae", why: "Tune Strain core: her stack generation and amps raise his Tune Break ceiling — the pairing both kits were tuned around" },
+      ],
+    },
     stats: [
       { id: "cost4-main", label: "4-Cost Main Stat", target: "CRIT Rate (or CRIT DMG — keep the 1:2 ratio)" },
       { id: "cost3-main", label: "3-Cost Main Stats", target: "Spectro DMG% x2" },
@@ -118,6 +159,20 @@ export const RESONATORS = [
     weapon: "Spectrum Blaster",
     weaponAlt: "Phasic Homogenizer · Static Mist · Relativistic Jet · Solar Flame",
     talents: "Forte >> Liberation > Normal > Skill > Intro",
+    teamMeta: {
+      tier: "A",
+      roleType: "amplifier",
+      dmgTags: ["basic", "liberation"],
+      outro: { kind: "amp-all", tags: ["liberation"], strength: 2, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "luuk-herssen", why: "Tune Strain stack generation and Tune Break amps cross-feed his Aureole loop" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-Cost Main Stat", target: "CRIT Rate (or CRIT DMG)" },
       { id: "main-3c", label: "3-Cost Main Stats", target: "Spectro DMG% x2 (one ER% if rotations feel tight)" },
@@ -187,6 +242,17 @@ export const RESONATORS = [
     weapon: "Stellar Symphony",
     weaponAlt: "Call of the Abyss (F2P craftable) · Variation (gacha 4★)",
     talents: "Skill = Intro > Liberation > Forte >> Basic",
+    teamMeta: {
+      tier: "S",
+      roleType: "healer-amp",
+      dmgTags: [],
+      outro: { kind: "amp-all", tags: [], strength: 2, untilSwap: false },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+    },
     stats: [
       { id: "main-4c", label: "4-Cost Main Stat", target: "HP% (her own Crit does nothing — skip CRIT mains)" },
       { id: "main-3c", label: "3-Cost Main Stats", target: "Energy Regen% ×2 (swap one to HP% if ER-capped via Stellar Symphony)" },
@@ -231,6 +297,20 @@ export const RESONATORS = [
     weapon: "Spectral Trigger",
     weaponAlt: "The Last Dance · Phasic Homogenizer · Static Mist · Relativistic Jet",
     talents: "Liberation >> Normal Attack > Forte > Skill (Intro last)",
+    teamMeta: {
+      tier: "S",
+      roleType: "main-dps",
+      dmgTags: ["heavy", "liberation", "hack"],
+      outro: { kind: "deepen", tags: ["basic"], strength: 2, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: false,
+      fieldHungry: true,
+      coordinated: false,
+      pairBonus: [
+        { with: "rebecca", why: "Collab-exclusive Hack-Shifting loop: Rebecca preps Hack states and Heavy amp that Lucy spends; Lucy's Intro overloads Rebecca's turret" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-cost main stat", target: "CRIT Rate (CRIT DMG if ratio is already high)" },
       { id: "main-3c", label: "3-cost main stats", target: "Spectro DMG % x2" },
@@ -276,6 +356,21 @@ export const RESONATORS = [
     weapon: "Skull Thrasher (signature)",
     weaponAlt: "Static Mist · Solar Flame (BP, best 4★) · Thunderbolt (budget)",
     talents: "Liberation >> Forte Circuit > Normal Attack > Skill > Intro",
+    teamMeta: {
+      tier: "A",
+      roleType: "sub-dps",
+      dmgTags: ["basic", "liberation"],
+      outro: { kind: "amp-all", tags: ["heavy"], strength: 3, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "lucy", why: "Hack-Shifting cross-buff: her ~50% All+Heavy amp lands on Lucy's Heavy burst while Lucy upgrades her turret" },
+        { with: "xuanling", why: "Top in-roster Heavy hypercarry — best non-collab consumer of her ramping Heavy amp" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate or CRIT DMG (Adam Smasher already grants +15% CRIT Rate — balance around it)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Electro DMG% x2 (one Energy Regen% if Liberation isn't up every rotation)" },
@@ -341,6 +436,21 @@ export const RESONATORS = [
     weapon: "Stellar Symphony",
     weaponAlt: "Variation · Call of the Abyss · Rectifier of Voyager · Rectifier#25",
     talents: "Forte Circuit = Liberation >> Skill > Intro > Normal Attack",
+    teamMeta: {
+      tier: "A",
+      roleType: "healer-amp",
+      dmgTags: [],
+      outro: { kind: "amp-all", tags: [], strength: 2, untilSwap: false },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "encore", why: "Her healing holds Encore over the 70% HP damage gate while the 30s team Deepen covers a whole Cosmos Rave" },
+        { with: "danjin", why: "Off-field Photosynthesis healing plus cheat-death lets Danjin drain HP freely" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-Cost main stat", target: "Healing Bonus (never CRIT — nothing she does needs to crit)" },
       { id: "main-3c", label: "3-Cost main stats", target: "Energy Regen × 2 (ATK% only after ER goal is met)" },
@@ -404,6 +514,21 @@ export const RESONATORS = [
     weapon: "Emerald of Genesis",
     weaponAlt: "Sword#18 · Commando of Conviction · Sword of Voyager (craftable F2P) · Lunar Cutter",
     talents: "Forte Circuit > Liberation > Normal Attack > Skill > Intro",
+    teamMeta: {
+      tier: "C",
+      roleType: "battery",
+      dmgTags: [],
+      outro: { kind: "energy", tags: [], strength: 2, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "xuanling", why: "Whispering Breeze's 20-energy feed patches Xuanling's ER-hungry Liberation loop and her vortex sets up the Melody nuke" },
+        { with: "changli", why: "Free fully-quickswap duo: 20 energy per Outro accelerates Changli's Liberation cycling and the vortex groups enemies for True Sight dumps" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate (or CRIT DMG — on a pure battery a spare crit piece is fine)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Energy Regen% + Aero DMG% (run double ER% until the ~150% goal is met)" },
@@ -448,6 +573,21 @@ export const RESONATORS = [
     weapon: "Emerald of Genesis",
     weaponAlt: "Overture (free 4★, solves her ER needs — best F2P pick) · Commando of Conviction · Lunar Cutter · Sword of Voyager (early-game ER stopgap)",
     talents: "Forte Circuit = Liberation > Skill >> Intro/Basic",
+    teamMeta: {
+      tier: "A",
+      roleType: "amplifier",
+      dmgTags: ["heavy", "liberation", "skill"],
+      outro: { kind: "deepen", tags: ["basic"], strength: 3, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "encore", why: "38% Basic Deepen lands on the ~70% of Encore's damage that is Rave basics, off a ~5s concerto" },
+        { with: "rebecca", why: "Basic-Attack-scaling pistol carry directly converts the 38% Basic Deepen and Heron/Moonlit hand-off" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-cost main stat", target: "CRIT Rate (CRIT DMG if weapon/substats skew CR)" },
       { id: "main-3c", label: "3-cost main stats (x2)", target: "Glacio DMG %" },
@@ -513,6 +653,21 @@ export const RESONATORS = [
     weapon: "Stringmaster",
     weaponAlt: "Cosmic Ripples (standard 5★) · Augment (4★ Battle Pass) · Rectifier of Voyager (early-game stopgap)",
     talents: "Basic Attack = Liberation > Forte Circuit > Skill > Intro",
+    teamMeta: {
+      tier: "B",
+      roleType: "main-dps",
+      dmgTags: ["basic", "liberation"],
+      outro: { kind: "none", tags: [], strength: 1, untilSwap: false },
+      sustain: false,
+      needsSustain: true,
+      quickSwap: false,
+      fieldHungry: true,
+      coordinated: false,
+      pairBonus: [
+        { with: "changli", why: "One-way Fusion loop: Changli's 20% Fusion + 25% Liberation Deepen feeds Cosmos Rave (spend it before swapping); Encore's Thermal Field returns burn damage, not a buff" },
+        { with: "sanhua", why: "Canonical partner: 38% Basic Deepen on her Rave basics with minimal interruption of the Rave window" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-cost main stat", target: "CRIT Rate (CRIT DMG with Stringmaster's CR line)" },
       { id: "main-3c", label: "3-cost main stats (x2)", target: "Fusion DMG %" },
@@ -558,6 +713,20 @@ export const RESONATORS = [
     weapon: "Stellar Symphony",
     weaponAlt: "Variation (4★ ER) · Comet Flare (4★ ER) · Rectifier of Voyager (free 3★)",
     talents: "Liberation > Skill > Forte Circuit > Intro >> Basic",
+    teamMeta: {
+      tier: "B",
+      roleType: "healer-amp",
+      dmgTags: [],
+      outro: { kind: "amp-all", tags: [], strength: 1, untilSwap: false },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "danjin", why: "Her 30s Outro heal-over-time patches Danjin's constant HP self-drain" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "Healing Bonus (HP% acceptable)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Energy Regen% x2 (swap to HP% once the ER target is met)" },
@@ -599,6 +768,21 @@ export const RESONATORS = [
     weapon: "Marcato (4★ ER + Concerto passive — practical BiS)",
     weaponAlt: "Abyss Surges · Amity Accord (4★ BP) · Gauntlets of Voyager (free 3★)",
     talents: "Forte Circuit > Skill > Liberation > Intro >> Basic",
+    teamMeta: {
+      tier: "B",
+      roleType: "healer-amp",
+      dmgTags: [],
+      outro: { kind: "deepen", tags: ["coordinated"], strength: 3, untilSwap: false },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "yuanwu", why: "Her 100% Coordinated Amplify directly doubles Thunder Wedge chip damage — the all-4-star coordinated core" },
+        { with: "mortefi", why: "Marcato volleys are coordinated attacks and gain the full 100% Amplification, upgrading him from buffer to sub-DPS" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "Healing Bonus" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Energy Regen% x2" },
@@ -638,6 +822,21 @@ export const RESONATORS = [
     weapon: "Discord (4★ ER — fastest Outro cycling)",
     weaponAlt: "Dauntless Evernight (4★ DEF — biggest shields/sub-DPS) · Broadblade of Voyager (free 3★)",
     talents: "Skill > Liberation > Forte Circuit > Intro >> Basic",
+    teamMeta: {
+      tier: "C",
+      roleType: "shielder",
+      dmgTags: [],
+      outro: { kind: "deepen", tags: ["skill"], strength: 3, untilSwap: true },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "danjin", why: "Persistent shields offset her HP drain while the 38% Skill Deepen lands on her skill-spam — the classic budget enabler pairing" },
+        { with: "chixia", why: "The gatling counts as Resonance Skill DMG, so the 38% Skill Deepen buffs it directly" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "DEF% (CRIT Rate only for the sub-DPS build)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "DEF% x2 (or 1x ER% if below the ER target)" },
@@ -678,6 +877,21 @@ export const RESONATORS = [
     weapon: "Amity Accord (4★ — highest DEF gauntlet, Liberation DMG)",
     weaponAlt: "Stonard (4★ CR) · Marcato (4★ ER) · Gauntlets of Voyager (free 3★)",
     talents: "Skill > Forte Circuit > Liberation > Intro >> Basic",
+    teamMeta: {
+      tier: "C",
+      roleType: "sub-dps",
+      dmgTags: ["coordinated"],
+      outro: { kind: "stagger", tags: [], strength: 2, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: true,
+      pairBonus: [
+        { with: "youhu", why: "Her 100% Coordinated Amplify exists almost tailor-made for Thunder Wedge hits" },
+        { with: "rebecca", why: "Fast-attacking on-field Electro carry triggers constant coordinated hits inside the Thunder Field" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "DEF%" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "DEF% x2" },
@@ -718,6 +932,22 @@ export const RESONATORS = [
     weapon: "Static Mist",
     weaponAlt: "Cadenza (4★ ER/Concerto) · Thunderbolt (4★ coordinated-ATK passive) · Pistols of Voyager (free 3★)",
     talents: "Forte Circuit > Liberation > Skill > Intro >> Basic",
+    teamMeta: {
+      tier: "A",
+      roleType: "sub-dps",
+      dmgTags: ["coordinated", "skill"],
+      outro: { kind: "deepen", tags: ["heavy"], strength: 3, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: true,
+      pairBonus: [
+        { with: "xuanling", why: "38% Heavy Deepen on a fully Heavy-tagged kit; his Marcato volleys add passive damage during her strings" },
+        { with: "youhu", why: "Her 100% Coordinated Amplify doubles his Violent Finale volleys" },
+        { with: "lucy", why: "Best non-collab Lucy enabler: 38% Heavy Deepen on her Multi-threading Heavy burst plus coordinated volleys through her field windows" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate (or CRIT DMG)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Fusion DMG% x2 (or 1x ER% until the ER target is met)" },
@@ -758,6 +988,20 @@ export const RESONATORS = [
     weapon: "Static Mist",
     weaponAlt: "Cadenza (4★ ER/Concerto) · Novaburst (4★) · Pistols of Voyager (free 3★)",
     talents: "Skill > Liberation > Forte Circuit > Intro >> Basic (light investment — he's an Outro bot in most teams)",
+    teamMeta: {
+      tier: "C",
+      roleType: "sub-dps",
+      dmgTags: ["basic", "heavy"],
+      outro: { kind: "deepen", tags: ["aero"], strength: 1, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "yangyang", why: "The roster's only Aero pairing: his Aero Deepen boosts her damage and both cycle Concerto extremely fast" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Aero DMG% x2 (or 1x ER% for support consistency)" },
@@ -796,6 +1040,21 @@ export const RESONATORS = [
     weapon: "Ages of Harvest (best personal damage)",
     weaponAlt: "Discord (4★ — best support pick, ER + Concerto on Skill) · Autumntrace (4★ BP) · Broadblade#41 (F2P craftable)",
     talents: "Forte Circuit > Liberation > Skill (Basic/Intro last)",
+    teamMeta: {
+      tier: "C",
+      roleType: "sub-dps",
+      dmgTags: ["skill", "liberation"],
+      outro: { kind: "deepen", tags: ["skill"], strength: 3, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "danjin", why: "Skill-tagged carry that consumes the 38% Resonance Skill Amplify perfectly" },
+        { with: "chixia", why: "Her gatling counts as Resonance Skill DMG — the budget pairing" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate (ATK% on a budget)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Electro DMG% or Energy Regen%" },
@@ -837,6 +1096,20 @@ export const RESONATORS = [
     weapon: "Abyss Surges",
     weaponAlt: "Stonard (4★ BP, CR) · Marcato (4★ ER) · Gauntlets#21D (F2P craftable)",
     talents: "Basic Attack = Forte Circuit > Liberation > Skill > Intro",
+    teamMeta: {
+      tier: "C",
+      roleType: "main-dps",
+      dmgTags: ["basic", "heavy"],
+      outro: { kind: "amp-all", tags: ["glacio"], strength: 1, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: false,
+      fieldHungry: true,
+      coordinated: false,
+      pairBonus: [
+        { with: "sanhua", why: "Glacio resonance plus 38% Basic Deepen covering his Glacio-infused basic chains in Striding Lion, off a ~5s concerto loop" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Glacio DMG% x2 (or Glacio DMG% + ER%)" },
@@ -878,6 +1151,21 @@ export const RESONATORS = [
     weapon: "Blazing Brilliance (effectively 100% uptime on her)",
     weaponAlt: "Emerald of Genesis (best standard-banner) · Red Spring · Sword#18 (F2P craftable) · Commando of Conviction",
     talents: "Resonance Skill = Forte Circuit > Liberation > Basic > Intro",
+    teamMeta: {
+      tier: "B",
+      roleType: "sub-dps",
+      dmgTags: ["skill", "liberation"],
+      outro: { kind: "deepen", tags: ["havoc"], strength: 1, untilSwap: true },
+      sustain: false,
+      needsSustain: true,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "taoqi", why: "Shields offset the HP drain and her 38% Skill Deepen amps the zero-cooldown skill spam" },
+        { with: "buling", why: "Sustain for the drain plus Skill-DMG amplification on the same axis — the budget Havoc core" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate (or CRIT DMG)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Havoc DMG% x2" },
@@ -919,6 +1207,21 @@ export const RESONATORS = [
     weapon: "The Last Dance (if available)",
     weaponAlt: "Static Mist (practical standard-banner BiS) · Thunderbolt / Novaburst (4★) · Pistols#26 (F2P craftable)",
     talents: "Forte Circuit > Liberation > Skill > Basic",
+    teamMeta: {
+      tier: "C",
+      roleType: "main-dps",
+      dmgTags: ["skill", "liberation"],
+      outro: { kind: "none", tags: [], strength: 1, untilSwap: false },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: false,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "lumi", why: "Lumi's 38% Resonance Skill Amplify lands squarely on the gatling dump" },
+        { with: "mortefi", why: "Coordinated volleys fire during every gatling string — the free starter core" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "CRIT Rate" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Fusion DMG% x2" },
@@ -960,6 +1263,22 @@ export const RESONATORS = [
     weapon: "Stellar Symphony (caveat: its heal-triggered ATK buff has partial anti-synergy since her Skill itself doesn't heal)",
     weaponAlt: "Variation (best 4★ — Concerto on Skill) · Call of the Abyss (best F2P) · Ocean's Gift",
     talents: "Forte Circuit > Liberation > Skill (normals last)",
+    teamMeta: {
+      tier: "A",
+      roleType: "healer-amp",
+      dmgTags: [],
+      outro: { kind: "amp-all", tags: ["skill"], strength: 2, untilSwap: false },
+      sustain: true,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "danjin", why: "Heals the HP drain while her Skill-DMG amplification lands on Danjin's skill-spam" },
+        { with: "xuanling", why: "Her Electro Flare application triggers Xuanling's guaranteed-crit Shadow procs while she heals and amps teamwide" },
+        { with: "changli", why: "Her Liberation field amplifies Resonance Skill DMG — exactly the tag Changli's True Sight casts carry" },
+      ],
+    },
     stats: [
       { id: "4cost-main", label: "4-Cost Main Stat", target: "Healing Bonus (or HP%)" },
       { id: "3cost-main", label: "3-Cost Main Stats", target: "Energy Regen% x2 (ER + ATK% once S2)" },
@@ -1000,6 +1319,22 @@ export const RESONATORS = [
     weapon: "Blazing Brilliance",
     weaponAlt: "Emerald of Genesis (standard 5★ — 85-90% of signature) · Commando of Conviction (S5) · Lumingloss (free event 4★) · Sword of Voyager (early stopgap)",
     talents: "Forte Circuit > Liberation > Skill > Basic > Intro",
+    teamMeta: {
+      tier: "S",
+      roleType: "main-dps",
+      dmgTags: ["skill", "liberation"],
+      outro: { kind: "deepen", tags: ["fusion", "liberation"], strength: 2, untilSwap: true },
+      sustain: false,
+      needsSustain: false,
+      quickSwap: true,
+      fieldHungry: false,
+      coordinated: false,
+      pairBonus: [
+        { with: "encore", why: "One-way Fusion loop: her 20% Fusion + 25% Liberation Deepen (10s, drops on swap) feeds Encore's Cosmos Rave immediately; Encore's Thermal Field adds burn damage back but no buff" },
+        { with: "buling", why: "Buling's Liberation field amplifies Resonance Skill DMG — exactly the tag Changli's True Sight casts carry" },
+        { with: "yangyang", why: "Free quickswap partner: 20 Resonance Energy per Outro accelerates her Liberation loop and the vortex groups targets for True Sight" },
+      ],
+    },
     stats: [
       { id: "main-4c", label: "4-Cost Main Stat", target: "CRIT Rate (CRIT DMG if weapon skews CR — keep ~1:2)" },
       { id: "main-3c", label: "3-Cost Main Stats (x2)", target: "Fusion DMG %" },
@@ -1035,3 +1370,5 @@ export const RESONATORS = [
 ];
 
 export const ATTRIBUTE_ORDER = ["glacio", "fusion", "electro", "aero", "spectro", "havoc"];
+
+export const TEAM_META_VERSION = 1;
