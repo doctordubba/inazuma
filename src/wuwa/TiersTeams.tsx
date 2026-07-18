@@ -13,6 +13,7 @@ const NAMES = {
   shorekeeper: "Shorekeeper",
   xuanling: "Yangyang: Xuanling",
   lucy: "Lucy",
+  changli: "Changli",
   rebecca: "Rebecca",
   "luuk-herssen": "Luuk Herssen",
   lynae: "Lynae",
@@ -37,6 +38,7 @@ const ATTR = {
   shorekeeper: "spectro",
   xuanling: "havoc",
   lucy: "spectro",
+  changli: "fusion",
   rebecca: "electro",
   "luuk-herssen": "spectro",
   lynae: "spectro",
@@ -67,6 +69,7 @@ const TIERS = [
       { id: "shorekeeper", role: "Healer / Amplifier", why: "The gold-standard universal support — crit-buffing Stellarealm, constant healing, All-DMG Amp Outro; anchors the fastest ToA clears." },
       { id: "xuanling", role: "Main DPS", why: "v3.5 flagship Havoc Heavy-Attack carry; Havoc Bane loops and guaranteed-crit Shadow procs top the current DPS charts." },
       { id: "lucy", role: "Main DPS", why: "S-tier Spectro Heavy/Hack carry; the Hack-Shifting debuff system gives her teams multipliers nothing else in this roster matches." },
+      { id: "changli", role: "Main DPS (Quick-Swap)", why: "Still S-tier in endgame modes as of v3.5 — elite damage-per-second-of-field-time, and her Fusion + Liberation Deepen Outro makes her the engine of the roster's mono-Fusion loop." },
     ],
   },
   {
@@ -182,6 +185,18 @@ const TEAMS = [
     ],
     why: "The Lucy team for when Rebecca and Shorekeeper are committed to the other Tower side: Lynae's generic All-DMG Amp is tag-agnostic, so Lucy loses the Hack synergy but keeps a full premium buff stack.",
     rotation: "Same concerto flow — enter Lucy only after both Outros land so her Compaction window is fully amplified.",
+  },
+  {
+    id: "phoenix-waltz",
+    name: "Phoenix Waltz",
+    power: "top-meta / strong",
+    members: [
+      { id: "shorekeeper", slot: "Healer / Amp" },
+      { id: "encore", slot: "Fusion DPS · loop half A" },
+      { id: "changli", slot: "Fusion DPS · loop half B" },
+    ],
+    why: "The roster's mono-Fusion double-carry: Encore's Thermal Field Outro Deepens Changli's Fusion damage, and Changli's 20% Fusion + 25% Liberation Deepen feeds Encore's Cosmos Rave right back — the Outros compound in both directions while Shorekeeper's Stellarealm crits and heals both.",
+    rotation: "Shorekeeper setup → Encore builds Concerto and Outros into Changli → Changli True Sight dump + Liberation → Outro back into Encore's buffed Cosmos Rave → repeat the loop.",
   },
   {
     id: "encore-classic",
