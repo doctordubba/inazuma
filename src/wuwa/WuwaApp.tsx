@@ -4,10 +4,12 @@ import { RESONATORS, ATTRIBUTE_THEME, ATTRIBUTE_ORDER, WUWA_VERSION } from "./wu
 import EchoCompendium from "./EchoCompendium";
 import FieldManual from "./FieldManual";
 import TiersTeams from "./TiersTeams";
+import TeamLab from "./TeamLab";
 
 const WUWA_STORAGE_KEY = "wuwa-build-progress-v1";
 const WUWA_COLLAPSE_KEY = "wuwa-build-collapsed-v1";
 const WUWA_TAB_KEY = "wuwa-build-tab-v1";
+const WUWA_TIER_FILTER_KEY = "wuwa-tier-filter-v1";
 
 const RESONATORS_BY_ATTRIBUTE = ATTRIBUTE_ORDER.reduce((acc, attr) => {
   acc[attr] = RESONATORS.filter((c) => c.element === attr);
@@ -17,6 +19,7 @@ const RESONATORS_BY_ATTRIBUTE = ATTRIBUTE_ORDER.reduce((acc, attr) => {
 const PAGES = {
   resonators: "resonators",
   tiers: "tiers",
+  teams: "teams",
   echoes: "echoes",
   guides: "guides",
 };
@@ -26,6 +29,7 @@ function getPageFromHash() {
   const seg = hash.replace(/^#\/?/, "").toLowerCase();
   const sub = seg.replace(/^wuwa\/?/, "").replace(/\/+$/, "");
   if (sub === "tiers") return PAGES.tiers;
+  if (sub === "teams") return PAGES.teams;
   if (sub === "echoes") return PAGES.echoes;
   if (sub === "guides") return PAGES.guides;
   return PAGES.resonators;
@@ -63,7 +67,14 @@ export default function WuwaApp() {
                 className={`nav-link ${page === PAGES.tiers ? "active" : ""}`}
                 aria-current={page === PAGES.tiers ? "page" : undefined}
               >
-                Tiers &amp; Teams
+                Tier List
+              </a>
+              <a
+                href="#/wuwa/teams"
+                className={`nav-link ${page === PAGES.teams ? "active" : ""}`}
+                aria-current={page === PAGES.teams ? "page" : undefined}
+              >
+                Team Lab
               </a>
               <a
                 href="#/wuwa/echoes"
@@ -90,6 +101,8 @@ export default function WuwaApp() {
 
           {page === PAGES.tiers ? (
             <TiersTeams />
+          ) : page === PAGES.teams ? (
+            <TeamLab />
           ) : page === PAGES.echoes ? (
             <EchoCompendium />
           ) : page === PAGES.guides ? (
@@ -103,10 +116,13 @@ export default function WuwaApp() {
   );
 }
 
+const TIER_FILTER_OPTIONS = ["all", "S", "A", "B", "C"];
+
 function ResonatorsPage() {
   const [progress, setProgress] = useState({});
   const [collapsed, setCollapsed] = useState({});
   const [hydrated, setHydrated] = useState(false);
+  const [tierFilter, setTierFilter] = useState("all");
 
   useEffect(() => {
     try {
@@ -114,11 +130,27 @@ function ResonatorsPage() {
       if (raw) setProgress(JSON.parse(raw));
       const rawCol = localStorage.getItem(WUWA_COLLAPSE_KEY);
       if (rawCol) setCollapsed(JSON.parse(rawCol));
+      const rawTier = localStorage.getItem(WUWA_TIER_FILTER_KEY);
+      if (rawTier && TIER_FILTER_OPTIONS.includes(rawTier)) setTierFilter(rawTier);
     } catch (e) {
       // ignore
     }
     setHydrated(true);
   }, []);
+
+  const hasTierMeta = RESONATORS.some((c) => c.teamMeta && c.teamMeta.tier);
+
+  const setTierFilterPersist = (t) => {
+    setTierFilter(t);
+    try {
+      localStorage.setItem(WUWA_TIER_FILTER_KEY, t);
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const matchesTier = (c) =>
+    tierFilter === "all" || (c.teamMeta && c.teamMeta.tier === tierFilter);
 
   const toggleCollapsed = (attr) => {
     const next = { ...collapsed, [attr]: !collapsed[attr] };
@@ -149,6 +181,7 @@ function ResonatorsPage() {
 
   const goToResonator = (id) => {
     const target = RESONATORS.find((c) => c.id === id);
+    if (target && !matchesTier(target)) setTierFilterPersist("all");
     if (target && collapsed[target.element]) {
       const next = { ...collapsed, [target.element]: false };
       setCollapsed(next);
@@ -205,14 +238,30 @@ function ResonatorsPage() {
               Reset
             </button>
           </div>
+          {hasTierMeta && (
+            <div className="tier-filter" role="group" aria-label="Filter resonators by tier">
+              {TIER_FILTER_OPTIONS.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  className={`tier-filter-chip ${tierFilter === t ? "active" : ""}`}
+                  aria-pressed={tierFilter === t}
+                  onClick={() => setTierFilterPersist(t)}
+                >
+                  {t === "all" ? "All" : t}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </header>
 
       <main className="elements">
         {ATTRIBUTE_ORDER.map((attr) => {
           const theme = ATTRIBUTE_THEME[attr];
-          const chars = RESONATORS_BY_ATTRIBUTE[attr];
-          if (!chars || chars.length === 0) return null;
+          const allChars = RESONATORS_BY_ATTRIBUTE[attr];
+          const chars = (allChars || []).filter(matchesTier);
+          if (chars.length === 0) return null;
           const isOpen = !collapsed[attr];
           const groupTotal = chars.reduce((s, c) => s + c.stats.length, 0);
           const groupDone = chars.reduce(
@@ -257,6 +306,7 @@ function ResonatorsPage() {
                       roster={RESONATORS}
                       themeMap={ATTRIBUTE_THEME}
                       tabStorageKey={WUWA_TAB_KEY}
+                      badge={c.teamMeta && c.teamMeta.tier ? "Tier " + c.teamMeta.tier : undefined}
                     />
                   ))}
                 </div>
@@ -305,5 +355,36 @@ const wuwaOverrides = `
 
 .wuwa-root .rx-details li::before {
   background: #8fd3d8;
+}
+
+.wuwa-root .tier-filter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.wuwa-root .tier-filter-chip {
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(236, 254, 255, 0.6);
+  border: 1px solid rgba(143, 211, 216, 0.3);
+  border-radius: 999px;
+  padding: 3px 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.wuwa-root .tier-filter-chip:hover {
+  background: rgba(143, 211, 216, 0.1);
+}
+
+.wuwa-root .tier-filter-chip.active {
+  background: rgba(143, 211, 216, 0.2);
+  color: #f0fbfc;
+  border-color: #8fd3d8;
 }
 `;
