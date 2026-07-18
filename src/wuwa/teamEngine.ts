@@ -213,6 +213,33 @@ const CURATED: CuratedTeam[] = [
       "Yangyang Skill (group) → Liberation → Heron Echo → Outro into Changli → True Sight enhanced casts + Liberation → swap out on cooldowns; Verina weaves in for ~10s per loop.",
   },
   {
+    id: "court-of-embers",
+    name: "Court of Embers (Changli Liberation Cell)",
+    memberIds: ["changli", "lynae", "verina"],
+    tier: "A",
+    why: "The in-roster analog of the classic Liberation-buffer Changli team: Lynae's 15% All-DMG Amp + 25% Resonance Liberation Deepen lands directly on Changli's Liberation-tagged burst (with her teamwide 24% DMG on Liberation stacking on top), and Verina's persistent All-Type Deepen plus healing round out a fully amplified swap loop.",
+    rotation:
+      "Verina quick pass + Outro → Lynae Liberation + Basic strings for Concerto → Outro into Changli → True Sight dumps into Radiance of Fealty inside both amps → swap out on cooldowns and repeat.",
+  },
+  {
+    id: "crimson-weiqi",
+    name: "Crimson Weiqi (Changli–Danjin Quick-Swap)",
+    memberIds: ["changli", "danjin", "shorekeeper"],
+    tier: "A",
+    why: "Two of the game's premier quick-swap blades sharing the field in alternating windows — Danjin's zero-cooldown Havoc spam fills every gap in Changli's cooldowns, while Shorekeeper's Stellarealm feeds crit to both and her healing erases Danjin's HP-drain tax entirely.",
+    rotation:
+      "Shorekeeper setup + Outro → Danjin skill-weave until crimson blooms spend → swap Changli on her cooldowns for True Sight + Liberation → back to Danjin — neither carry ever waits on-field; dodge-cancel everything.",
+  },
+  {
+    id: "ember-waltz",
+    name: "Ember Waltz (Budget Phoenix)",
+    memberIds: ["changli", "encore", "verina"],
+    tier: "A",
+    why: "Phoenix Waltz with the free healer: the Encore-Changli mono-Fusion Outro loop stays fully intact — Changli's 20% Fusion + 25% Liberation Deepen into Encore's Cosmos Rave, Thermal Field burn on the hand-back — and Verina's healing still holds Encore above her 70% HP damage gate, trading Shorekeeper's crit field for a f2p slot.",
+    rotation:
+      "Verina pass + Outro → Changli True Sight casts + Liberation → Outro into Encore → full Cosmos Rave inside the 10s Deepen → loop; keep Verina's heal ticking so the 70% gate never drops.",
+  },
+  {
     id: "trigger-discipline",
     name: "Trigger Discipline (Rebecca Main-DPS Cell)",
     memberIds: ["verina", "sanhua", "rebecca"],
