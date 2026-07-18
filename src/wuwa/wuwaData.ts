@@ -988,6 +988,50 @@ export const RESONATORS = [
       ],
     },
   },
+  {
+    id: "changli",
+    name: "Changli",
+    epithet: "Enlightener of the Blazing Feather",
+    element: "fusion",
+    role: "Quick-Swap Fusion Main DPS",
+    weaponType: "Sword",
+    set: "5pc Molten Rift · Nightmare: Inferno Rider main",
+    setAlt: "2pc Molten Rift + 2pc Lingering Tunes (transitional)",
+    weapon: "Blazing Brilliance",
+    weaponAlt: "Emerald of Genesis (standard 5★ — 85-90% of signature) · Commando of Conviction (S5) · Lumingloss (free event 4★) · Sword of Voyager (early stopgap)",
+    talents: "Forte Circuit > Liberation > Skill > Basic > Intro",
+    stats: [
+      { id: "main-4c", label: "4-Cost Main Stat", target: "CRIT Rate (CRIT DMG if weapon skews CR — keep ~1:2)" },
+      { id: "main-3c", label: "3-Cost Main Stats (x2)", target: "Fusion DMG %" },
+      { id: "main-1c", label: "1-Cost Main Stats (x2)", target: "ATK %" },
+      { id: "crit-rate", label: "CRIT Rate", target: "65-70%" },
+      { id: "crit-dmg", label: "CRIT DMG", target: "230-250% combined value" },
+      { id: "total-atk", label: "Total ATK", target: "2,000+" },
+      { id: "energy-regen", label: "Energy Regen", target: "~120% for comfortable Liberation cycling" },
+      { id: "substat-prio", label: "Substat priority", target: "CRIT Rate / CRIT DMG > ER (to ~120%) > Resonance Skill DMG % > ATK%" },
+    ],
+    note: "She is a quick-swap carry, not a field-camper: her True Sight enhanced casts — which count as Resonance Skill DMG — are the damage, delivered in short windows between swaps. Camping on-field basic-attacking wastes her; Resonance Skill DMG % substats are live rolls on her where they'd be dead on most carries. Still S-tier in endgame modes as of v3.5 — her kit has not been meaningfully power-crept.",
+    deep: {
+      lore: "Counselor to the Jinzhou Magistrate and a phoenix-feathered strategist who plays every conversation like a game of weiqi already won. The fire that wreathes her blade is the same one she keeps banked behind courtly manners — Changli never strikes first unless she has already decided the ending.",
+      kit: [
+        "Resonance Skill — Blazing Enlightenment: teleport-dash flame strikes that build her Forte; her mobility doubles as her dodge, making her one of the game's premier quick-swap skill-expression kits.",
+        "Forte Circuit — Enflamement: consumes 4 forte stacks for True Sight empowered casts whose damage counts as Resonance Skill DMG — the core of her output.",
+        "Resonance Liberation — Radiance of Fealty: a large Fusion nuke with generous invulnerability frames, used as a burst window and a defensive tool at once.",
+        "Outro: the incoming Resonator gains 20% Fusion DMG Deepen and 25% Resonance Liberation DMG Deepen — she buffs the partner who follows her, which is what makes mono-Fusion swap loops compound.",
+        "Intro and enhanced casts carry i-frames — weaving her in on a boss wind-up is free damage plus a free dodge.",
+      ],
+      tips: [
+        "Rotation shape: swap in on cooldowns, dump True Sight enhanced casts, Liberation when the burst window is buffed, swap out on Outro — repeat. Her DPS-per-second-of-field-time is elite; her camped DPS is not.",
+        "5pc Molten Rift's post-Skill Fusion buff has near-permanent uptime on her because every important cast is skill-tagged.",
+        "In this roster her best team is the double-Fusion loop with Encore: Encore's Thermal Field Outro Deepens Changli's Fusion damage, and Changli's Outro Deepens Encore's Fusion and Liberation right back.",
+      ],
+      synergies: [
+        { id: "encore", why: "The roster's mono-Fusion loop: Encore's Thermal Field Fusion Deepen feeds Changli's swap windows, and Changli's 20% Fusion + 25% Liberation Deepen feeds Encore's Cosmos Rave in return — the Outros compound in both directions." },
+        { id: "shorekeeper", why: "Universal premium slot: Stellarealm crit and sustain with no field-time appetite, exactly what a quick-swap carry wants from its third." },
+        { id: "buling", why: "Skill-amp healer — her Liberation field amplifies Resonance Skill DMG, which is precisely the tag Changli's True Sight casts carry." },
+      ],
+    },
+  },
 ];
 
 export const ATTRIBUTE_ORDER = ["glacio", "fusion", "electro", "aero", "spectro", "havoc"];
