@@ -213,6 +213,33 @@ const CURATED: CuratedTeam[] = [
       "Yangyang Skill (group) → Liberation → Heron Echo → Outro into Changli → True Sight enhanced casts + Liberation → swap out on cooldowns; Verina weaves in for ~10s per loop.",
   },
   {
+    id: "polestar-verdict",
+    name: "Polestar Verdict (Aemeath Liberation Core)",
+    memberIds: ["aemeath", "lynae", "shorekeeper"],
+    tier: "S",
+    why: "Aemeath's damage concentrates almost entirely in Resonance Liberation, and Lynae is the roster's exact answer to that — 25% Liberation Deepen plus 15% All-Type amp on her Outro, with a teamwide 24% DMG bonus off her own Liberation; Shorekeeper's Stellarealm supplies the crit and healing without contesting field time.",
+    rotation:
+      "Shorekeeper Skill + Liberation to plant the Stellarealm → Lynae Liberation (teamwide bonus) + Basic strings → Outro into Aemeath → pick the Resonance Mode for the fight, stack the Trail, dump Liberation inside both amps.",
+  },
+  {
+    id: "trail-of-embers",
+    name: "Trail of Embers (Aemeath Quick-Swap)",
+    memberIds: ["aemeath", "mortefi", "verina"],
+    tier: "A",
+    why: "Mortefi is the community-preferred quick-swap enabler for Aemeath's burst windows: ~3s of field time, then his Marcato coordinated volleys keep Fusion damage flowing off-field through her Resonance Mode cycles, while Verina covers sustain and the persistent 15% All-Type Deepen. Worth knowing the limit — Mortefi's 38% Deepen is Heavy Attack tagged and Aemeath's damage is Liberation, so he pays in field-time economy and raw Fusion output, not in tag-matched amplification.",
+    rotation:
+      "Verina quick pass + Outro → Mortefi Skill + Forte skill + Liberation → Outro into Aemeath → Fusion Burst mode for the AoE quick-swap loop, Liberation on cooldown; rotate back through Mortefi rather than camping.",
+  },
+  {
+    id: "twin-flames",
+    name: "Twin Flames (Aemeath–Changli Fusion)",
+    memberIds: ["aemeath", "changli", "verina"],
+    tier: "A",
+    why: "Two premier Fusion blades sharing the field, with a real execution tax: Changli's Outro grants 20% Fusion + 25% Liberation Deepen but only for 10s and only until someone swaps, so Aemeath must land her Basic chains and Liberation inside that window. Played cleanly it is a top-end double-carry; played loosely the buff evaporates.",
+    rotation:
+      "Verina pass → Changli True Sight casts + Liberation → Outro into Aemeath → immediately commit the Basic chain into Liberation inside the 10s window, no intermediate swaps → hand back to Changli on her cooldowns.",
+  },
+  {
     id: "court-of-embers",
     name: "Court of Embers (Changli Liberation Cell)",
     memberIds: ["changli", "lynae", "verina"],
