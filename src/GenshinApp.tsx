@@ -2385,6 +2385,9 @@ function NavBar({ route }) {
         <span className="nav-brand-text">Almanac</span>
       </a>
       <div className="nav-links">
+        <a href="#/" className="nav-link nav-exit">
+          ← Almanacs
+        </a>
         <a
           href="#/genshin/characters"
           className={`nav-link ${route.page === ROUTES.characters ? "active" : ""}`}
@@ -2412,9 +2415,6 @@ function NavBar({ route }) {
           aria-current={isRegions ? "page" : undefined}
         >
           Regions
-        </a>
-        <a href="#/" className="nav-link">
-          Games
         </a>
       </div>
     </nav>
@@ -3779,6 +3779,15 @@ const styles = `
   color: #f3ecd6;
   border-color: rgba(201, 168, 106, 0.3);
 }
+/* Exit to the game hub. Sits first in the row so it stays reachable
+   even when the link strip overflows and scrolls on narrow screens. */
+.nav-exit {
+  color: rgba(232, 228, 214, 0.72);
+  border-color: rgba(232, 228, 214, 0.18);
+  margin-right: 6px;
+}
+.nav-exit:hover { color: #f3ecd6; border-color: rgba(201, 168, 106, 0.45); }
+
 .nav-link.active {
   color: #c9a86a;
   border-color: rgba(201, 168, 106, 0.55);

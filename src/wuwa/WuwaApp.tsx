@@ -55,6 +55,9 @@ export default function WuwaApp() {
               <span className="nav-brand-text">Almanac · Resonant Tides</span>
             </a>
             <div className="nav-links">
+              <a href="#/" className="nav-link nav-exit">
+                ← Almanacs
+              </a>
               <a
                 href="#/wuwa"
                 className={`nav-link ${page === PAGES.resonators ? "active" : ""}`}
@@ -93,9 +96,6 @@ export default function WuwaApp() {
               <span className="nav-link" style={{ opacity: 0.4, cursor: "default" }}>
                 Regions — soon
               </span>
-              <a href="#/" className="nav-link">
-                Games
-              </a>
             </div>
           </nav>
 

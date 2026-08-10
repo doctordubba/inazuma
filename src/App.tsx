@@ -26,6 +26,13 @@ export default function App() {
     }
   }, [isLegacy, seg]);
 
+  // Land at the top when the route changes. Without this, navigating away
+  // from a long page (the Team Lab runs to thousands of pixels) drops you
+  // mid-document on the next one, far from the nav.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [seg]);
+
   if (seg.startsWith("genshin") || isLegacy) return <GenshinApp />;
   if (seg.startsWith("wuwa")) return <WuwaApp />;
   return <GameHub />;
