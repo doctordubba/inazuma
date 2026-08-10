@@ -3748,10 +3748,24 @@ const styles = `
 .nav-brand:hover { opacity: 1; }
 .nav-brand-mark { color: #c9a86a; font-size: 13px; letter-spacing: 0.6em; }
 
-.nav-links { display: flex; gap: 4px; }
+.nav-links {
+  display: flex;
+  gap: 4px;
+  /* Let the row scroll instead of being clipped by .page's overflow-x:hidden
+     once the link count outgrows the viewport (WuWa carries 7 items). */
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
 
 .nav-link {
   display: inline-block;
+  flex: 0 0 auto;
+  white-space: nowrap;
   padding: 8px 14px;
   color: rgba(232, 228, 214, 0.5);
   text-decoration: none;
@@ -4134,8 +4148,12 @@ const styles = `
   .rx-multiplier { display: none; }
   .rx-name { font-size: 20px; }
   .nav { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 8px; }
-  .nav-links { justify-content: center; }
+  /* flex-start first as the fallback: plain centering makes overflowing
+     leading items unreachable. "safe center" keeps it centred while it
+     still fits, and degrades to start-aligned once it overflows. */
+  .nav-links { justify-content: flex-start; justify-content: safe center; }
   .nav-brand { justify-content: center; }
+  .nav-link { letter-spacing: 0.22em; padding: 8px 11px; }
   .rx-group-title { font-size: 26px; }
 }
 
