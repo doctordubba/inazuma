@@ -1064,7 +1064,7 @@ const CHARACTERS = [
           { id: "ss-cd", label: "CRIT DMG", target: "≥ 120 % ⚠ speculative" },
           { id: "ss-er", label: "Energy Recharge", target: "150 – 180 %" },
         ],
-        note: "⚠ LEAK-BASED AND UNRELEASED — do not farm for this yet. Stellar reactions are Snezhnaya's mechanic, datamined rather than announced: Stellar-Conduct is expected in 6.7, Stellar-Swirl in a later patch. Leaks describe Stellar-Swirl as Anemo into a Cryo-affected target spawning a Polestar Wind Cluster that grows with repeated triggers and then detonates for large AoE Cryo DMG — and critically, BOTH the Anemo hit and the detonation are reported to be CRIT-capable. If that holds, a CRIT circlet stops being wasted on Mizuki for the first time in her life, which is the only reason this build exists as a placeholder. It also reportedly needs a dedicated Stellar-Swirl enabler who is not a released character. Treat every number here as a sketch.",
+        note: "⚠ LEAK-BASED AND UNRELEASED — do not farm for this yet. Stellar reactions are Snezhnaya's mechanic, datamined rather than announced: Stellar-Conduct is expected in 6.7, Stellar-Swirl in a later patch. Leaks describe Stellar-Swirl as Anemo into a Cryo-affected target spawning a Polestar Wind Cluster that grows with repeated triggers and then detonates for large AoE Cryo DMG — and critically, BOTH the Anemo hit and the detonation are reported to be CRIT-capable. If that holds, a CRIT circlet stops being wasted on Mizuki for the first time in her life, which is the only reason this build exists as a placeholder. It also needs a dedicated Stellar-Swirl enabler — leaks name Odette (projected 7.0) as that character, since she is reported to convert ordinary Cryo Swirl into Stellar-Swirl. Until she ships, this build has nothing to trigger. Treat every number here as a sketch.",
       },
     ],
     deep: {
@@ -1083,7 +1083,8 @@ const CHARACTERS = [
       ],
       synergies: [
         { id: "fischl", why: "The cleanest Swirl fuel in the game — Oz sits off-field applying Electro on a timer, so Mizuki always has exactly one element to convert without anyone contesting her field time." },
-        { id: "sandrone", why: "Cryo applicator, and the forward-looking pairing: if the leaked Stellar-Swirl ships as described (Anemo into a Cryo-affected target), a Cryo carry beside Mizuki is the shape that reaction is asking for." },
+        { id: "odette", why: "The forward-looking pairing: leaks describe Odette as the enabler who converts ordinary Cryo Swirl into Stellar-Swirl, and her double applies Cryo from the backline without contesting Mizuki's field time — exactly the shape a Stellar-Swirl team wants. ⚠ Both the reaction and Odette are unreleased." },
+        { id: "sandrone", why: "Alternate Cryo source for a Stellar-Swirl setup, and the Cryo half of Stellar-Conduct teams if you would rather build around that reaction instead." },
         { id: "xilonen", why: "Universal RES shred plus DEF-scaling healing in one slot — stacks with Mizuki's own 4pc VV shred and covers the sustain gap while she is locked into Dreamdrifter." },
       ],
     },
@@ -1327,6 +1328,48 @@ const CHARACTERS = [
         { id: "lohen", why: "Second Cryo unit for Cryo Resonance (+15% CR vs Cryo enemies), which the Disenchantment CR build leans on. Both want on-field time, so run one as the primary and quick-swap." },
         { id: "ororon", why: "Off-field Electro applier — his continuous Electro feeds Stella Superconduct against her Cryo, and his 4pc Scroll lifts the team's Cryo DMG by up to 28%." },
         { id: "xilonen", why: "Universal RES shred + DEF-scaling heal in one slot; her shred stacks with Stellar-Conduct's own RES shred to push Sandrone's Cryo DMG ceiling." },
+      ],
+    },
+  },
+  {
+    id: "odette",
+    name: "Odette",
+    epithet: "Prima Ballerina of the Korolevskiy Troupe",
+    element: "cryo",
+    role: "Stellar Enabler / Off-Field Cryo Sub-DPS",
+    weaponType: "Sword",
+    set: "⚠ unconfirmed — expect a Stellar-reaction set to ship with 7.0",
+    setAlt: "4pc Blizzard Strayer · 4pc Gilded Dreams · 2pc Cryo + 2pc EM (interim)",
+    weapon: "⚠ Signature unnamed in leaks (reported EM-scaling sword)",
+    weaponAlt: "Freedom-Sworn · Sacrificial Sword (4★ — Skill reset re-summons the double) · Iron Sting (4★ EM) · Xiphos' Moonlight (4★ EM/ER) · Favonius Sword (4★ battery)",
+    talents: "Skill › Burst ›› Normal ⚠ speculative",
+    stats: [
+      { id: "sands", label: "Sands main stat", target: "ATK % (EM if the buff scales on it)" },
+      { id: "goblet", label: "Goblet main stat", target: "Cryo DMG %" },
+      { id: "circlet", label: "Circlet main stat", target: "CRIT Rate / DMG" },
+      { id: "atk", label: "Total ATK", target: "≥ 2000 ⚠ she is reported ATK-scaling" },
+      { id: "em", label: "Elemental Mastery", target: "200 – 400 ⚠ hedge until scaling is known" },
+      { id: "er", label: "Energy Recharge", target: "160 – 200 % — Burst is the reaction amplifier" },
+    ],
+    note: "⚠ ENTIRELY LEAK-BASED — projected 7.0 Phase 1 (August 2026), nothing officially announced; treat every field here as provisional and re-verify on launch. What makes her structurally important: she is reported to be the ENABLER that converts a party's ordinary Superconduct and Cryo Swirl into their upgraded Stellar-Conduct and Stellar-Swirl forms. If that holds, she is the missing piece both Sandrone (Stellar-Conduct) and a Stellar-Swirl Anemo carry like Mizuki have been waiting on — no Odette, no Stellar reaction. Her own damage is described as ATK-scaling and secondary to that gatekeeping role.",
+    deep: {
+      lore: "Prima ballerina of Snezhnaya's Korolevskiy Troupe, who fights the way she performs — never quite alone. A second Odette keeps dancing at the back of the stage, and the cold she leaves behind is the part of the performance the audience is meant to feel rather than see.",
+      kit: [
+        "Skill — summons a dance double that remains on the field applying Cryo from the backline; this is her off-field application engine and what makes her a support rather than a carry.",
+        "Recasting the Skill triggers a duet that closes on a Stellar-Conduct or Stellar-Swirl hit — the pay-off beat of the rotation, and the reason her Skill wants cooldown reduction (Sacrificial Sword re-summons the double outright).",
+        "Burst — reported to raise the team's Stellar reaction damage; the amplifier half of her kit, which is why ER matters more on her than raw offensive stats.",
+        "Reaction gate: she is described as converting ordinary Superconduct and Cryo Swirl into Stellar-Conduct and Stellar-Swirl. Without an enabler of her kind on the team, the base reactions are all you get.",
+        "⚠ Every line above is datamined and unstable. Numbers, names, and even which reactions she gates can still change before release.",
+      ],
+      tips: [
+        "She slots into two different archetypes off the same build: pair her Cryo with Electro for Stellar-Conduct (Sandrone), or with an Anemo Swirl carry for Stellar-Swirl (Mizuki). The teammates change, the build does not.",
+        "Prioritise ER and Skill uptime over personal damage stats — her value is gating a reaction the rest of the team scales off, and a Stellar reaction that does not fire is worth nothing regardless of her CRIT.",
+        "Do NOT pre-farm artifacts for her yet. The set she wants most likely ships alongside her in 7.0, and the EM-vs-ATK split in her scaling is the single least settled thing in the leaks.",
+      ],
+      synergies: [
+        { id: "sandrone", why: "The pairing the leaks name directly: Sandrone's entire kit is built on Stellar-Conduct damage, and Odette is the off-field Cryo enabler that turns the team's Superconduct into it. She is reported as a strong off-field partner for Sandrone teams specifically." },
+        { id: "mizuki", why: "The Stellar-Swirl half: Mizuki is the premier on-field Anemo Swirl driver and Odette supplies both the Cryo aura and the conversion that would upgrade those Swirls into Stellar-Swirl." },
+        { id: "fischl", why: "Off-field Electro for the Cryo + Electro side of Stellar-Conduct, without contesting anyone's field time — Oz simply keeps the Electro half applied on a timer." },
       ],
     },
   },
@@ -1750,7 +1793,7 @@ const REACTION_GROUPS = [
     blurb:
       "Snezhnaya's signature mechanic and the datamined successor to Lunar reactions. NOTHING in this section is official — every detail comes from leaks and can change, slip, or be cut before release.",
     formula:
-      "Leaks describe a narrower family than Lunar: only two variants are known — Stellar-Conduct (expected 6.7) and Stellar-Swirl (a later patch). Like Lunar reactions, Stellar hits are reported to be CRIT-capable.",
+      "Leaks describe a narrower family than Lunar: only two variants are known — Stellar-Conduct (expected 6.7) and Stellar-Swirl (a later patch). Like Lunar reactions, Stellar hits are reported to be CRIT-capable — and like Lunar\u2019s Moonsign gate, both variants are said to require an enabler character (leaks point at Odette) rather than firing on element contact alone.",
     reactions: [
       {
         id: "stellar-conduct",
@@ -1765,6 +1808,7 @@ const REACTION_GROUPS = [
           "⚠ Datamined, not announced. Numbers, gating, and even the final name can still change.",
         ],
         examples: [
+          { id: "odette", role: "The reported enabler — converts the team's ordinary Superconduct into Stellar-Conduct. ⚠ Unreleased (projected 7.0)." },
           { id: "sandrone", role: "The 6.7 Stellar-Conduct carry — her Charged Attack and Burst are the reaction's payload." },
           { id: "fischl", role: "Off-field Electro half of the Cryo + Electro pairing." },
         ],
@@ -1783,8 +1827,8 @@ const REACTION_GROUPS = [
           "⚠ Arriving after Stellar-Conduct, in an unspecified later patch. Leak-based throughout.",
         ],
         examples: [
-          { id: "mizuki", role: "The obvious candidate carry — the game's premier on-field Anemo Swirl driver, with a placeholder Stellar-Swirl build on her card." },
-          { id: "sandrone", role: "Cryo applicator for the Anemo-into-Cryo requirement." },
+          { id: "odette", role: "The reported enabler — leaks describe her as converting ordinary Cryo Swirl into Stellar-Swirl. Without her the reaction does not exist. ⚠ Unreleased." },
+          { id: "mizuki", role: "The candidate carry — the game's premier on-field Anemo Swirl driver, with a placeholder Stellar-Swirl build on her card." },
           { id: "lohen", role: "Alternate Cryo source for the Cryo half of the pairing." },
         ],
       },
