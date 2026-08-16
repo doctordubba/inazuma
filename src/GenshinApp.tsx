@@ -6,6 +6,7 @@ import InazumaQuests from "./InazumaQuests";
 import SumeruQuests from "./SumeruQuests";
 import NatlanQuests from "./NatlanQuests";
 import NodKraiQuests from "./NodKraiQuests";
+import SnezhnayaQuests from "./SnezhnayaQuests";
 
 /* ============================================================
    IDEAL BUILD TARGETS
@@ -1393,7 +1394,7 @@ const REGIONS = [
   { id: "fontaine",  name: "Fontaine",   archon: "Focalors (Furina) · Hydro Archon",   element: "hydro",   status: "full", summary: "The Court of Hydraulics — and the Iudex who judges it. Full quest tracker available." },
   { id: "natlan",    name: "Natlan",     archon: "Mavuika · Pyro Archon",              element: "pyro",    status: "full", summary: "Tribes, dragons, and the fire of the Children of Echoes. Quest tracker available (Tribal Chronicles + Story Quests)." },
   { id: "nod-krai",  name: "Nod-Krai",   archon: "Frostmoon · (no Archon)",            element: "cryo",    status: "full", summary: "Northern reach of moonlit veils and the Frostmoon Scions. Home of Columbina, Jahoda, and Lauma. Quest tracker available." },
-  { id: "snezhnaya", name: "Snezhnaya",  archon: "The Tsaritsa · Cryo Archon",         element: "cryo",    status: "stub", summary: "The frozen seat of the Cryo Archon. Not yet open to travellers." },
+  { id: "snezhnaya", name: "Snezhnaya",  archon: "The Tsaritsa · Cryo Archon",         element: "cryo",    status: "full", summary: "The frozen seat of the Cryo Archon, opened in v7.0 'Everwinter Without Mercy'. Quest tracker available (Archon Ch VII + Eye of Graeae chains) — launch-window coverage." },
 ];
 
 const STORAGE_KEY = "genshin-build-progress-v1";
@@ -2297,6 +2298,7 @@ export default function GenshinApp() {
     sumeru:    SumeruQuests,
     natlan:    NatlanQuests,
     "nod-krai": NodKraiQuests,
+    snezhnaya: SnezhnayaQuests,
   };
   const FullBleedComponent =
     route.page === ROUTES.region ? FULL_BLEED_REGIONS[route.region] : null;
