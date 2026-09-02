@@ -829,6 +829,48 @@ const CHARACTERS = [
     },
   },
   {
+    id: "ineffa",
+    name: "Ineffa",
+    epithet: "Sentinel Construct of Nod-Krai",
+    element: "electro",
+    role: "Lunar-Charged Enabler / Sub-DPS / Shielder",
+    weaponType: "Polearm",
+    set: "4pc Silken Moon's Serenade",
+    setAlt: "4pc Aubade of Morningstar and Moon (personal off-field DMG) · 4pc Gilded Dreams (support/EM build) · 4pc Noblesse Oblige",
+    weapon: "Calamity Queller",
+    weaponAlt: "Staff of the Scarlet Sands · Staff of Homa · Engulfing Lightning (ER) · Prospector's Shovel (craftable — Moonsign synergy) · Wavebreaker's Fin (4★ ATK)",
+    talents: "Skill › Burst ›› Normal",
+    stats: [
+      { id: "sands", label: "Sands main stat", target: "ATK % (ER if Burst uptime slips)" },
+      { id: "goblet", label: "Goblet main stat", target: "ATK % (Electro DMG % if already at 2000 ATK)" },
+      { id: "circlet", label: "Circlet main stat", target: "ATK % → CRIT once the 2000 ATK cap is met" },
+      { id: "atk", label: "Total ATK", target: "≥ 2000 — hard breakpoint, caps her A1" },
+      { id: "em", label: "Elemental Mastery", target: "substats after ATK is capped" },
+      { id: "er", label: "Energy Recharge", target: "140 – 180 %" },
+    ],
+    note: "ATK is a BREAKPOINT stat, not a scaling one: every 100 ATK adds 0.7% to Lunar-Charged Base DMG up to +14%, which caps at exactly 2000 ATK. Stack ATK% until you hit 2000, then stop — every point past that does nothing for the buff and is better spent on CRIT or EM. Her shield and the Burst's EM share (6% of her ATK to the active character) also scale off the same pool, so the 2000 target serves three parts of her kit at once.",
+    deep: {
+      lore: "A construct out of Nod-Krai built to keep watch, and rebuilt often enough that the question of what she is has outlived everyone who could answer it. She speaks in the flat register of a machine reading its own logs, and shields her party the way a sentinel holds a doorway — without commentary, and without stepping aside.",
+      kit: [
+        "A1 — the conversion: when ANY party member triggers Electro-Charged, it becomes Lunar-Charged instead. Every 100 of Ineffa's ATK adds 0.7% to that reaction's Base DMG, capping at +14% (2000 ATK).",
+        "Moonsign +1: simply having her in the party raises the party's Moonsign by one level, which switches on Moonsign-gated portions of other Nod-Krai kits and Moonsign-gated gear (4pc Night of the Sky's Unveiling, Prospector's Shovel).",
+        "Skill — her main damage talent and the source of her ATK-scaling shield; level it first.",
+        "Burst — Supreme Instruction: Cyclonic Exterminator: grants Parameter Permutation for 20s, raising Ineffa's and the active character's Elemental Mastery by 6% of Ineffa's ATK.",
+        "Net effect: she is a second Moonsign enabler in her own right. Columbina gates the Lunar family; Ineffa specifically converts the Electro-Charged line and deepens Moonsign for everyone else.",
+      ],
+      tips: [
+        "Hit 2000 ATK and then stop. It is the single most important number on her sheet and it is a hard cap — an ATK Goblet past that point is worse than an Electro DMG one.",
+        "4pc Silken Moon's Serenade is BiS because it pushes party-wide EM and Lunar Reaction DMG, which compounds with her own Burst EM share. Take Aubade instead only if you want her personal off-field numbers.",
+        "Calamity Queller over the CRIT sticks: its raw ATK feeds the A1 buff, the shield, and the Burst's EM conversion simultaneously. Scarlet Sands is the pick once you are already at 2000 ATK and want her own damage to matter.",
+      ],
+      synergies: [
+        { id: "flins", why: "The pairing her kit is built for: Flins is the Lunar-Charged on-field DPS, and Ineffa both converts the team's Electro-Charged into Lunar-Charged and raises the Moonsign level his Burst field checks for." },
+        { id: "columbina", why: "Stacked Moonsign — Columbina gates the Lunar family and Ineffa adds a level on top, deepening every Lunar reaction the team produces while her shield covers Columbina's fragility." },
+        { id: "neuvillette", why: "The premium comp guides name (with Furina and Xilonen): Neuvillette floods Hydro for the Electro-Charged that Ineffa upgrades, and her Burst hands him a large EM share off her ATK pool." },
+      ],
+    },
+  },
+  {
     id: "chasca",
     name: "Chasca",
     epithet: "Dragoon of the Flamebound Skies",
@@ -1728,7 +1770,7 @@ const REACTION_GROUPS = [
     id: "lunar",
     label: "Lunar",
     blurb:
-      "Hydro-line reaction variants gated by a Moonsign Benediction character (Columbina). Unlike their base reactions, Lunar reactions can land CRIT Hits.",
+      "Hydro-line reaction variants gated by Moonsign. Columbina is the Moonsign Benediction character that opens the family; Ineffa adds a Moonsign level on top and converts the Electro-Charged line herself. Unlike their base reactions, Lunar reactions can land CRIT Hits.",
     formula:
       "Damage from each Lunar reaction sources from every character who applied its elements during the reaction — a team-stat output, not a single-trigger output.",
     reactions: [
@@ -1740,12 +1782,13 @@ const REACTION_GROUPS = [
         short: "Electro-Charged variant that spawns a CRIT-capable Thundercloud.",
         multiplier: "Repeated Electro DMG; can CRIT",
         details: [
-          "Trigger an Electro-Charged with a Moonsign Benediction character (Columbina) on the team — a Thundercloud appears that continuously deals Electro DMG to nearby Wet+Electro-afflicted enemies every ~2s for the duration.",
+          "Trigger an Electro-Charged with Moonsign active — via Columbina, or via Ineffa, whose A1 converts any party member's Electro-Charged into Lunar-Charged outright. A Thundercloud appears that continuously deals Electro DMG to nearby Wet+Electro-afflicted enemies every ~2s for the duration.",
           "DMG draws from all characters who applied Hydro/Electro during the reaction — both the trigger and the applicator matter.",
           "Unlike base Electro-Charged, Lunar-Charged DMG CAN CRIT.",
         ],
         examples: [
           { id: "flins", role: "Lunar-Charged on-field DPS — kit literally built around this reaction." },
+          { id: "ineffa", role: "Converts the party's Electro-Charged into Lunar-Charged and buffs its Base DMG by up to 14% off her ATK; also +1 Moonsign level." },
           { id: "columbina", role: "Moonsign enabler. Without her in the team there is no Lunar reaction." },
           { id: "fischl", role: "Off-field Electro contributor — Oz adds Electro applications to the rotation." },
         ],
