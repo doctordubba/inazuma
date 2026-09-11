@@ -1675,10 +1675,11 @@ export const RESONATORS = [
       { stat: "Liberation CRIT conversion", playable: "60% CR / 120% CD at 220% ER", tower: "80% CR / 160% CD cap at 260% ER" },
       { stat: "CRIT Rate (sheet)", playable: "0-10% subs only", tower: "≤20% subs, never a main stat" },
       { stat: "Healing Bonus", playable: "4-cost Healing Bonus (~26%)", tower: "4-cost + 10% Halo 2pc + 12% sig = ~48%" },
-      { stat: "DEF% (subs)", playable: "2x DEF% 1-cost", tower: "DEF% subs after ER (no hard target; est.)" },
+      { stat: "Total DEF", playable: "1,900-2,100 (Healing Bonus 4-cost, 2x DEF% 1-cost)", tower: "2,400-2,700 sheet (DEF% 4-cost + sig 16%; est.) — +20% more inside her field" },
+      { stat: "Healing Bonus", playable: "26% (4-cost) or 0% on the DEF% 4-cost route", tower: "~40-60% total incl. Halo 2pc + weapon; guides split 4-cost between Healing and DEF%" },
       { stat: "Outro uptime", playable: "Swap-cancel Skill before Outro", tower: "Unison lets Outro fire without full Concerto" },
     ],
-    benchVerdict: "260% total ER is the single gate: it caps both the 40% Interfered amp and her Liberation's built-in crit; everything else is filler.",
+    benchVerdict: "260% total ER is the gate: it caps the 40% Interfered amp and her Liberation's built-in crit, and neither needs DEF. DEF is second: ~2,000 keeps heals Tower-safe, 2,400+ only fattens heals and her small Liberation hit.",
     stats: [
       { id: "main-4c", label: "4-Cost Main Stat", target: "Healing Bonus (skip CRIT Rate/DMG mains)" },
       { id: "main-3c", label: "3-Cost Main Stats", target: "Energy Regen % ×2" },
@@ -1687,7 +1688,7 @@ export const RESONATORS = [
       { id: "lib-dmg", label: "Liberation DMG% (subs)", target: "Top damage substat once ER is capped" },
       { id: "crit-dmg", label: "CRIT DMG", target: "Filler after ER/Lib DMG — no fixed target" },
       { id: "crit-rate", label: "CRIT Rate", target: "Up to ~20% from subs, then stop — her Lib gains CRIT from ER" },
-      { id: "def", label: "DEF% (subs)", target: "Stack after ER for bigger heals; DEF% > flat DEF" },
+      { id: "def", label: "Total DEF", target: "~2,000 floor, 2,400-2,700 with a DEF% 4-cost — heals and Liberation DMG scale on it; DEF% > flat DEF, no breakpoint (est.)" },
     ],
     note: "Every important number in her kit checks one stat: hit 260% Energy Regen before anything else — it maxes her Interfered Marker team amp (enemies take 40% more DMG) and feeds her Liberation's built-in CRIT conversion. Do not build her like a crit healer: Healing Bonus 4-cost and double ER 3-costs, with CRIT Rate capped around 20% from substats only.",
     deep: {
