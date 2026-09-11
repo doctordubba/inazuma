@@ -302,6 +302,42 @@ const CURATED: CuratedTeam[] = [
     rotation:
       "Baizhi Skill + Liberation + Outro onto Danjin → Taoqi shield + Outro (Skill Deepen) into Danjin → greedy Skill/Chaoscleave loops without dodging out; Taoqi's Deepen drops if Danjin swaps, so burn the full window on-field.",
   },
+  {
+    id: "triple-tune-strain",
+    name: "Triple Tune Strain (Qingxiao Core)",
+    memberIds: ["mornye", "denia", "qingxiao"],
+    tier: "S",
+    why: "All three respond to Tune Strain – Interfered, so Mindlock stacks and Tune Break Boost build every loop — Game8 calls it Qingxiao's best team and it is the reason Denia and Mornye jumped to top picks in 3.6. Denia groups enemies and applies Shifting, Mornye heals, raises Off-Tune Buildup and grants the 25% Amp plus ER.",
+    rotation:
+      "Mornye (Skill → Liberation → Unison Outro) → Denia (Intro, Basic 4, Skill, Liberation, Basics, Skill ×2, Liberation, Echo, Outro) → Qingxiao full loop (Basic ×3, Heavy, Basic ×3 Lib-cancel, Skill Heavy-cancel, Heavy, Echo, Outro).",
+  },
+  {
+    id: "fusion-burst-core",
+    name: "Fusion Burst Core (Aemeath–Denia)",
+    memberIds: ["mornye", "denia", "aemeath"],
+    tier: "S",
+    why: "Denia in Fusion Burst mode loads stacks and a 60% enemy-side Fusion Burst Amp that survives swaps; Aemeath detonates them with Liberation (~7 triggers per rotation: 2 in Denia's turn, 5 in Aemeath's), and Mornye adds the 25% Amp and sustain.",
+    rotation:
+      "Mornye → Denia → Aemeath (Intro, Basic 3-4, Liberation, Echo, Basic 2-3-4, Tune Break, Forte, Basic 2-3-4, Forte, Heavy, Liberation, Outro).",
+  },
+  {
+    id: "tune-strain-luuk",
+    name: "Tune Strain (Luuk Herssen)",
+    memberIds: ["mornye", "lynae", "luuk-herssen"],
+    tier: "A",
+    why: "Lynae adds Tune Strain application and her Outro Amp, Mornye raises Off-Tune Buildup and sustains; damage climbs with Interfered stacks over Tower-length fights — still Prydwen's recommended Luuk team, though Qingxiao now outclasses him as the carry.",
+    rotation:
+      "Luuk — Intro → Basic 2,3 → Skill → Basic 1,2,3 → Skill → Basic 1,2,3 → Skill → Basic → Liberation → Outro.",
+  },
+  {
+    id: "quiet-snowfall",
+    name: "Quiet Snowfall (Hiyuki Quick-Swap)",
+    memberIds: ["mornye", "lynae", "hiyuki"],
+    tier: "A",
+    why: "Lynae's 15% all-DMG + 25% Liberation Amp Outro lands squarely on Hiyuki's Liberation-heavy kit, and Mornye completes it with healing, ER and the teamwide Amp; Game8's Tune-Break quick-swap variant lets Hiyuki skip basics after a Tune Break.",
+    rotation:
+      "Mornye → Lynae Liberation + strings → Outro into Hiyuki → Liberation-led burst, swap on Chronofrost Repose refund.",
+  },
 ];
 
 const CURATED_BY_KEY = new Map<string, CuratedTeam>(
