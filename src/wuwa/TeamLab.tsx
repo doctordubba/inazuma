@@ -3,7 +3,7 @@ import { RESONATORS, ATTRIBUTE_THEME } from "./wuwaData";
 import { generateTeams, TEAM_TIER_ORDER, shortName } from "./teamEngine";
 
 /* ============================================================
-   TEAM LAB — Wuthering Waves v3.5
+   TEAM LAB — Wuthering Waves v3.6
    Every viable trio, generated live from each resonator's
    teamMeta and ranked by the team engine. Rendered inside
    WuwaApp's .wuwa-root (almanacStyles already injected);
@@ -164,7 +164,7 @@ export default function TeamLab() {
         <div className="top-marks" aria-hidden="true">{"✦ ✦ ✦"}</div>
         <h1 className="title">Team Lab</h1>
         <p className="subtitle">
-          Every viable trio, generated and ranked from resonator metadata · v3.5
+          Every viable trio, generated and ranked from resonator metadata · v3.6
         </p>
       </header>
 
@@ -301,7 +301,7 @@ export default function TeamLab() {
       <footer className="bottom">
         <p>
           Scores derive from Outro matching, sustain coverage, field-time economy, and
-          curated synergy loops · v3.5 (July 2026)
+          curated synergy loops · v3.6 (Sept 2026)
         </p>
         <p className="bottom-faint">
           Proven comps carry community-verified rotations; everything else is honest

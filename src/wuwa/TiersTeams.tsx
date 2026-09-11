@@ -2,7 +2,7 @@ import { ATTRIBUTE_THEME } from "./wuwaData";
 
 /* ============================================================
    WUWA — TIER LIST
-   v3.5 tier placements and role glossary for the almanac
+   v3.6 tier placements and role glossary for the almanac
    roster. Team comps moved to the Team Lab (#/wuwa/teams).
    Tier data cross-checked against Prydwen / Game8 / community
    lists (July 2026).
@@ -32,6 +32,11 @@ const NAMES = {
   aalto: "Aalto",
   taoqi: "Taoqi",
   yuanwu: "Yuanwu",
+  jingran: "Jingran",
+  qingxiao: "Qingxiao",
+  denia: "Denia",
+  mornye: "Mornye",
+  hiyuki: "Hiyuki",
 };
 
 const ATTR = {
@@ -58,6 +63,11 @@ const ATTR = {
   aalto: "aero",
   taoqi: "havoc",
   yuanwu: "electro",
+  jingran: "fusion",
+  qingxiao: "aero",
+  denia: "fusion",
+  mornye: "fusion",
+  hiyuki: "glacio",
 };
 
 const TIERS = [
@@ -72,6 +82,11 @@ const TIERS = [
       { id: "lucy", role: "Main DPS", why: "S-tier Spectro Heavy/Hack carry; the Hack-Shifting debuff system gives her teams multipliers nothing else in this roster matches." },
       { id: "aemeath", role: "Main DPS (Liberation)", why: "Widely rated the top carry for current endgame content — two Resonance Modes cover single-target and AoE, and her Liberation damage ignores DEF and Fusion RES through her signature." },
       { id: "changli", role: "Main DPS (Quick-Swap)", why: "Still S-tier in endgame modes as of v3.5 — elite damage-per-second-of-field-time, and her Fusion + Liberation Deepen Outro makes her the engine of the roster's mono-Fusion loop." },
+      { id: "jingran", role: "Main DPS (Heavy, HP-scaling)", why: "3.6 T0 Fusion Heavy hypercarry; HP-scaling with DEF locked to 0, so he wants a real healer and a shield source, and is unusually signature-dependent." },
+      { id: "qingxiao", role: "Main DPS (Tune Strain)", why: "3.6 T0 Aero carry and a direct upgrade to Luuk Herssen — Mindlock stacks from every teammate's Tune Strain make her scale with the whole team's application." },
+      { id: "denia", role: "Sub-DPS / Amplifier", why: "Uncontested best-in-slot sub-DPS for both Fusion Burst (Aemeath) and Tune Strain (Qingxiao, Luuk) teams; dual-mode Outro, quick-swap in Tune Strain mode." },
+      { id: "mornye", role: "Healer / Amplifier", why: "Top support of the 3.x Tune Strain era: teamwide 25% All-DMG Amp for 30s, healing, ER, and Off-Tune Buildup; Unison lets her Outro without Concerto." },
+      { id: "hiyuki", role: "Main DPS (Liberation)", why: "T0 Glacio Liberation carry with one of the quickest main-DPS rotations; her 5pc Snowfall set pushes combat CR toward 100% off Liberation hits." },
     ],
   },
   {
@@ -81,7 +96,7 @@ const TIERS = [
     color: "#c9a86a",
     rows: [
       { id: "rebecca", role: "Sub-DPS", why: "Free 5-star from the Edgerunners collab: real personal Electro damage plus All-DMG and Heavy-Attack amplification — slots into Lucy and Xuanling teams alike." },
-      { id: "luuk-herssen", role: "Main DPS", why: "Still a very good Spectro mid-air Basic DPS, but amp-dependent — wants Lynae to keep Tune Strain damage competitive." },
+      { id: "luuk-herssen", role: "Main DPS", why: "Still a very good Spectro mid-air Basic DPS, but amp-dependent — wants Lynae and Mornye to keep Tune Strain damage competitive, and Qingxiao now outclasses him as the Tune Strain carry in 3.6." },
       { id: "lynae", role: "Amplifier", why: "Premier general amplifier of the 3.x era — 15% All-DMG Amp + 25% Liberation DMG Outro, teamwide 24% DMG on Liberation." },
       { id: "verina", role: "Healer / Amplifier", why: "Ages beautifully — near-Shorekeeper sustain with a 15% All-Type Deepen Outro and a revive safety net; the default second-team anchor." },
       { id: "sanhua", role: "Amplifier", why: "The textbook Deepen-buffers-age-well case: 38% Basic Attack Deepen and the fastest concerto in the game." },
@@ -145,7 +160,7 @@ export default function TiersTeams() {
         <div className="top-marks" aria-hidden="true">{"✦ ✦ ✦"}</div>
         <h1 className="title">Tier List</h1>
         <p className="subtitle">
-          Who to build and what they do — v3.5 placements for the almanac roster
+          Who to build and what they do — v3.6 placements for the almanac roster
         </p>
       </header>
 
@@ -208,7 +223,7 @@ export default function TiersTeams() {
 
       <footer className="bottom">
         <p>
-          Tier placements cross-checked against Prydwen, Game8, and community Tower lists · v3.5 (July 2026)
+          Tier placements cross-checked against Prydwen, Game8, and community Tower lists · v3.6 (Sept 2026)
         </p>
         <p className="bottom-faint">
           Tiers judge each resonator in their best role within this roster — a C-tier favorite you enjoy is still worth building.
