@@ -253,6 +253,89 @@ const COMBAT_SECTIONS = [
 
 const PROGRESSION_SECTIONS = [
   {
+    id: "tower-readiness",
+    title: "Tower Readiness",
+    blurb:
+      "The numbers you have to hit before Tower of Adversity stops being a wall. Every resonator card carries its own Tower Readiness table (Playable vs Tower-ready); this section is the doctrine behind those tables — the shape of the mode, the generic floors by role, and how to read a failed floor as a stat problem. Figures are v3.6 community consensus (Game8, Prydwen, HostedGG, wuwa.uk) and enemy HP is never published, so treat DPS framing as heuristic.",
+    entries: [
+      {
+        name: "The Tower, By the Numbers",
+        short:
+          "Four zones, a 28-day Hazard cycle, 30 Crests for the full reward track, 2 minutes per side.",
+        details: [
+          "ToA has four zones: Stable (1 tower, 4 stages), Experiment (2 towers x 4 stages), Overdrive (3 towers x 2 stages of Lv.100 enemies) and the rotating Hazard Zone (Resonant, Echoing and Hazard Towers). Stable/Experiment/Overdrive rewards are one-time (~2,200 Astrite total); the Hazard Zone is the recurring one.",
+          "Every Hazard Zone tower has 4 floors (12 total), each worth up to 3 Crests from tiered goals — 36 possible, but the reward track caps at 30, which is what the community calls a '30-star' clear. A 30-Crest cycle pays roughly 800 Astrite (older sources say 700) plus 840 Hazard Records.",
+          "The cycle resets every 28 days (the current 3.6 cycle resets 2026-09-14). If you met last cycle's clear conditions, the Resonant and Echoing floors auto-complete, so a maintained account re-clears only the 4 Hazard Tower floors (12 Crests) each cycle.",
+          "Each resonator has 10 Vigor shared across the three Hazard Zone towers. Hazard Tower floors cost 5 Vigor each (one character can do at most 2 of them); Resonant/Echoing floors cost 1-4. The floor Reset button refunds Vigor if you mis-assign.",
+          "Hazard Tower floors are timed at roughly 2 minutes per side, and the top Crest tier is tied to clearing inside that timer. 'Full clear' in practice means all 4 Hazard Tower floors at 3 Crests plus 18+ from the other two towers.",
+        ],
+      },
+      {
+        name: "Two Teams, Not One Super-Team",
+        short:
+          "Vigor math forces eight built characters for the Hazard Tower; lost stars come from a shallow roster far more often than low damage.",
+        details: [
+          "Four Hazard Tower floors at 5 Vigor each exceeds the 10 Vigor per character, so you need 2 full non-overlapping teams (8 built resonators) just for that tower — and floor 4 wants your strongest one. A fresh 30-Crest clear of all three towers wants about 3 working teams: 3 main DPS, 2 sub-DPS, 1-2 supports/healers.",
+          "Working DPS target: each Hazard Tower side must die inside ~120 seconds, i.e. within about 4 rotations of 25-30 seconds each with Liberation available every rotation. Needing 5+ rotations means the team is under-geared, not unlucky.",
+          "Read the cycle's buffs before locking teams. The 3.6 Hazard Tower grants +10% CRIT Rate and +30% CRIT DMG to the party for 28 seconds whenever a resonator is healed, and its first two floors favour Aero and Fusion — a healer on rotation is a damage buff this cycle, not just insurance.",
+          "Reserve the best supports (Shorekeeper, Mornye) for the Hazard Tower and spend elements the tower does not resist on the other two towers. Lock 2-3 floor assignments before spending a single point of Vigor.",
+        ],
+      },
+      {
+        name: "Stat Floors by Role",
+        short:
+          "Generic Playable → Tower-ready floors; the per-character tables on the roster cards override these where a kit is unusual.",
+        details: [
+          "Main DPS — Playable: 50% CRIT Rate / 200% CRIT DMG / 1,800 buffed ATK / ER 100-110% (Liberation every second rotation). Tower-ready: 60-70% CR / 230-250% CD / 2,000+ ATK / ER 115-130% only if the kit is Liberation-dependent, otherwise stop at 'Liberation every rotation' and put the rest into crit.",
+          "Sub-DPS — Playable: 40% CR / 120% CD / 1,500 ATK / ER 120% so the Liberation lands every rotation. Tower-ready: 55%+ CR / 160%+ CD / 1,800+ ATK / ER 130-150% on Moonlit Clouds or an ER 3-cost so the Outro and Liberation never desync.",
+          "Buffer / Support — Playable: ER 120-150%, 4-3-3-1-1 mains on the scaling stat (~1,500 ATK or ~20k HP), Outro every second rotation. Tower-ready: ER 150-180% (ER 3-cost + Moonlit Clouds), ~1,800 ATK or ~25k HP, Outro every rotation from a single 10-15 second field window, Fortes 8/8/8/8/8.",
+          "Healer — Playable: 20-25k HP, ER 150-180%, ER 3-cost + HP% or Healing Bonus 4-cost. Tower-ready: 28-32k+ HP, ER 180-220% (Verina) up to 230% sheet (Shorekeeper) so Liberation is up every rotation, Healing Bonus 26% 4-cost, Rejuvenating Glow 5-piece.",
+          "DEF-scaler (Taoqi, Yuanwu) — Playable: 2,200 DEF, 40% / 120% crit only if the kit deals damage, ER 110%. Tower-ready: 2,800-3,200+ DEF from DEF% 4/3/3/1/1 mains, 55% / 180% crit on the damage variant, ER 120-130%.",
+          "Crit Value shorthand: CV = 2 x CRIT Rate + CRIT DMG. On echo substats only, 200 is playable and 240+ is tower-ready; on sheet totals, ~300 is playable and ~360+ is tower-ready. Hold the 1:2 ratio while pushing both — 40% CR with 250% CD is a worse tower build than 60% / 210%.",
+        ],
+      },
+      {
+        name: "Echo Readiness Checklist",
+        short:
+          "Five +25 echoes on the right Sonata set with 3-4 useful substats each; a mismatched set costs more than a bad roll.",
+        details: [
+          "All 5 echoes at +25 on every tower character. A +25 echo exposes all 5 substats (revealed at +5/+10/+15/+20/+25) and each reveal is permanent, so the tuning gate from the Echo Economy section applies harder here, not softer.",
+          "Tuning costs 10 Tuners per substat — 50 per finished echo, ~250 per character, more with waste. Budget Tuners per character, not per drop.",
+          "Standard layout is 4-3-3-1-1 (12 cost): a 4-cost CRIT Rate 22% / CRIT DMG 44% (HP% or Healing Bonus for healers), 3-costs Elemental DMG 30% + ATK% (or ER for supports), 1-costs ATK%/HP%/DEF% by scaling stat.",
+          "Substat rolls have 8 tiers: CRIT Rate 6.3-10.5%, CRIT DMG 12.6-21.0%, ATK% 6.4-11.6%, ER 6.8-12.4%. A max CRIT Rate roll is worth two-thirds more than a minimum one, which is why per-echo grading matters.",
+          "Per-echo Crit Value (2 x CR + CD from substats, max 42): an acceptable tower echo is ~20+ (one crit line above mid-roll plus ATK% or ER), a great one is double-crit at 30+. Aim for 3-4 of 5 useful substats; 5/5 is a chase, not a requirement.",
+          "Run the correct 5-piece Sonata on every tower character — Moonlit Clouds on Outro buffers, Rejuvenating Glow on healers, the carry's element set on the carry. Any +0 echo already showing two priority substats is almost always worth taking to +25.",
+        ],
+      },
+      {
+        name: "Investment Before Substats",
+        short:
+          "Level 90 / weapon 90 / Fortes 8 on every tower character before a single Tuner goes to min-maxing.",
+        details: [
+          "Character level 90 and weapon level 90 for every Hazard Tower character. A level-80 weapon or an under-ascended signature caps the whole team's output more than any substat can recover.",
+          "Main DPS Fortes: at least 6/8/8/8/6 (Liberation and Forte Circuit first), with 10/10/10/6/6 on Liberation, Forte and Skill as the tower-ready endpoint. Spread 6/6/6/6/6 → 10/6/6/6/6 → 10/10/6/6/6; never 10/1/1/1/1.",
+          "Supports and healers stop at 8/8/8/8/8 (or 8 on the three skills they actually use) — level 9-10 material costs outweigh the ~5% gain.",
+          "Unlock every inherent-skill node and all four stat-bonus nodes on the Forte tree (+12% CRIT/ATK-class totals) before chasing echo substats — they are cheaper than any roll.",
+          "Resonance Chains are not required. 30 Crests is a roster-depth and gearing check; S0 characters with level-90 weapons clear it, so a second team's echoes beat a first team's dupes.",
+        ],
+      },
+      {
+        name: "Why You Lost the Star",
+        short:
+          "Every missed Crest has a number behind it — read the symptom, fix the stat, then re-run.",
+        details: [
+          "Liberation or Outro not ready each rotation → raise ER to 120%+ on sub-DPS and buffers (ER 3-cost + Moonlit Clouds) and 180-230% on healers; on the main DPS stop at the ER that gives Liberation every rotation (often 100-115%) and put the rest into crit.",
+          "Healer or support dies to Hazard Tower boss hits → HP% on the 3-cost and 1-cost slots (28-32k HP), level 90 on the healer, and heal on rotation to trigger the cycle's heal buff.",
+          "Side clears in 150-180 s instead of under 120 s (2 Crests, not 3) → check the DPS has 60%+ / 200%+ crit at 1:2, 2,000+ buffed ATK, +25 echoes and Fortes at 8+; if all true, swap to an element the floor does not resist or that the tower buffs.",
+          "Ran out of Vigor before floor 3-4 → plan two non-overlapping teams before starting, put the strongest on floor 4, and use Reset to refund a mis-assignment.",
+          "Strong first team but stuck at 20-24 of 30 → build the second full team to +25 echoes and the right Sonata rather than min-maxing the first team's substats.",
+          "Big crits but inconsistent DPS → CRIT Rate is under the 1:2 line (e.g. 40% CR / 250% CD); trade CD rolls or swap the 4-cost to CRIT Rate 22% until CR sits at 55-70%.",
+          "Damage fine in the overworld, falls off in the tower → a level-6 Liberation/Forte Circuit or a level-80 weapon caps output, and floors with raised RES to your element need a team swap, not more echoes.",
+        ],
+      },
+    ],
+  },
+  {
     id: "team-building",
     title: "Team Building",
     blurb:
