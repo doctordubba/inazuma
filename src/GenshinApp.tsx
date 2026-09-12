@@ -2909,12 +2909,8 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roste
         talents:   activeAlt.talents   ?? char.talents,
         stats:     activeAlt.stats     ?? char.stats,
         note:      activeAlt.note      ?? char.note,
-        benchmarks:   activeAlt.benchmarks   ?? char.benchmarks,
-        benchVerdict: activeAlt.benchVerdict ?? char.benchVerdict,
       }
     : char;
-
-  const hasBench = Array.isArray(resolved.benchmarks) && resolved.benchmarks.length > 0;
 
   const done = resolved.stats.filter((s) => checked[s.id]).length;
   const total = resolved.stats.length;
@@ -3009,34 +3005,6 @@ function CharacterCard({ char, checked, onToggle, hydrated, flash, onGoTo, roste
           />
         ))}
       </section>
-
-      {hasBench && (
-        <section className="bench" aria-label="Tower of Adversity stat targets">
-          <div className="bench-head">
-            <span className="bench-title">Tower Readiness</span>
-            <span className="bench-sub">what the sheet must read</span>
-          </div>
-          <div className="bench-grid" role="table">
-            <div className="bench-row bench-cols" role="row">
-              <span className="bench-stat" role="columnheader">Stat</span>
-              <span className="bench-col" role="columnheader">Playable</span>
-              <span className="bench-col bench-col-tower" role="columnheader">Tower-ready</span>
-            </div>
-            {resolved.benchmarks.map((b, i) => (
-              <div key={i} className="bench-row" role="row">
-                <span className="bench-stat" role="cell">{b.stat}</span>
-                <span className="bench-val" role="cell">{b.playable}</span>
-                <span className="bench-val bench-val-tower" role="cell">{b.tower}</span>
-              </div>
-            ))}
-          </div>
-          {resolved.benchVerdict && (
-            <p className="bench-verdict">
-              <span className="bench-verdict-mark">⚑</span> {resolved.benchVerdict}
-            </p>
-          )}
-        </section>
-      )}
 
       {resolved.note && (
         <p className="note">
@@ -3590,79 +3558,6 @@ const styles = `
 
 .note-mark { color: var(--accent); font-style: normal; margin-right: 6px; }
 
-/* ---- Tower Readiness benchmark table ---- */
-.bench {
-  margin: 4px 0 18px;
-  border: 1px solid rgba(201, 168, 106, 0.18);
-  background: rgba(0, 0, 0, 0.18);
-}
-.bench-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px 8px;
-  border-bottom: 1px solid rgba(201, 168, 106, 0.18);
-}
-.bench-title {
-  font-family: 'Manrope', sans-serif;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-.bench-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 13px;
-  color: rgba(232, 228, 214, 0.5);
-}
-.bench-grid { display: grid; }
-.bench-row {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr 1.15fr;
-  gap: 10px;
-  align-items: start;
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  font-size: 12.5px;
-}
-.bench-row:last-child { border-bottom: none; }
-.bench-cols {
-  padding: 7px 12px 6px;
-  background: rgba(255, 255, 255, 0.025);
-}
-.bench-col, .bench-cols .bench-stat {
-  font-family: 'Manrope', sans-serif;
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(232, 228, 214, 0.5);
-}
-.bench-col-tower { color: var(--accent); opacity: 0.85; }
-.bench-stat { color: #e8e4d6; min-width: 0; overflow-wrap: anywhere; }
-.bench-val {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 15px;
-  line-height: 1.3;
-  color: rgba(232, 228, 214, 0.75);
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
-.bench-val-tower { color: var(--accent); font-weight: 600; }
-.bench-verdict {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(232, 228, 214, 0.65);
-  margin: 0;
-  padding: 10px 12px;
-  border-top: 1px solid rgba(201, 168, 106, 0.18);
-}
-.bench-verdict-mark { color: var(--accent); font-style: normal; margin-right: 6px; }
 
 .card-foot {
   display: flex;
@@ -4367,8 +4262,6 @@ const styles = `
   .char-name { font-size: 28px; }
   .stat { font-size: 12px; gap: 8px; grid-template-columns: 20px 1fr 1.35fr; padding: 12px 4px; }
   .stat-target { font-size: 13px; overflow-wrap: anywhere; }
-  .bench-row { grid-template-columns: 1fr 0.9fr 1fr; gap: 8px; padding: 8px 10px; font-size: 12px; }
-  .bench-val { font-size: 14px; }
   .ess-row { grid-template-columns: 62px 1fr; font-size: 12px; }
   .ess-label { letter-spacing: 0.18em; }
   .deep-lore { font-size: 14px; }
